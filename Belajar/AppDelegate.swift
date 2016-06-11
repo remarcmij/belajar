@@ -7,30 +7,22 @@
 //
 
 import UIKit
-import SQLite
+import FMDB
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        do {
-            if let path = NSBundle.mainBundle().pathForResource("Topics", ofType: "sqlite3") {
-                let db = try Connection(path, readonly: true)
-                print("Topics database succesfully opened in readonly mode")
-                
-                for row in try db.prepare("SELECT ID, FileName FROM Topics") {
-                    print("ID: \(row[0]), Filename: \(row[1])")
-                }
-            } else {
-                print("Topics database not found")
-            }
-        } catch {
-            print("An error occurred: \(error)")
+        var topics: [Topic]
+        let topicRepository = TopicRepository.sharedInstance
+        topics = topicRepository.getTopicsFor("harmani")
+        
+        if let article = topicRepository.getArticle(topics[0].id) {
+            print(article.htmlText)
         }
         
         return true

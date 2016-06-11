@@ -16,7 +16,9 @@
 		1AB995761D0715D60039FF6E /* BelajarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995751D0715D60039FF6E /* BelajarUITests.swift */; };
 		1AB995851D07166C0039FF6E /* Topics.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AB995841D07166C0039FF6E /* Topics.sqlite3 */; };
 		1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DC1D096E75007CA509 /* Topic.swift */; };
-		1AFB93E01D09754E007CA509 /* TopicMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DF1D09754E007CA509 /* TopicMapper.swift */; };
+		1AFB93E21D0986BF007CA509 /* TopicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E11D0986BF007CA509 /* TopicRepository.swift */; };
+		1AFB93E51D098763007CA509 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E41D098763007CA509 /* Util.swift */; };
+		1AFB93E71D09C0CD007CA509 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E61D09C0CD007CA509 /* Article.swift */; };
 		62F13112ACE304BE099DB8E5 /* Pods_BelajarUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98584B3ED30467C096589DE5 /* Pods_BelajarUITests.framework */; };
 		7C77FA738E3F821D1300686C /* Pods_BelajarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE46797365B15BA68EEA1CC /* Pods_BelajarTests.framework */; };
 		8B3F5AFF3D2E3DEF217EBA55 /* Pods_Belajar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362C6F5CE5E4F590D90066FB /* Pods_Belajar.framework */; };
@@ -55,7 +57,9 @@
 		1AB995771D0715D60039FF6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1AB995841D07166C0039FF6E /* Topics.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Topics.sqlite3; sourceTree = "<group>"; };
 		1AFB93DC1D096E75007CA509 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
-		1AFB93DF1D09754E007CA509 /* TopicMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicMapper.swift; sourceTree = "<group>"; };
+		1AFB93E11D0986BF007CA509 /* TopicRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicRepository.swift; sourceTree = "<group>"; };
+		1AFB93E41D098763007CA509 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		1AFB93E61D09C0CD007CA509 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		362C6F5CE5E4F590D90066FB /* Pods_Belajar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Belajar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		395A131BB762C9A8ACC92FA4 /* Pods-Belajar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Belajar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Belajar/Pods-Belajar.release.xcconfig"; sourceTree = "<group>"; };
 		4D72DC61688F70171D12936A /* Pods-BelajarUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelajarUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelajarUITests/Pods-BelajarUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 		1AB995541D0715D60039FF6E /* Belajar */ = {
 			isa = PBXGroup;
 			children = (
+				1AFB93E31D098723007CA509 /* Helpers */,
 				1AFB93DE1D0974F5007CA509 /* Stores */,
 				1AFB93DB1D096DF5007CA509 /* Models */,
 				1AB995831D0716470039FF6E /* Supporting Files */,
@@ -163,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				1AFB93DC1D096E75007CA509 /* Topic.swift */,
+				1AFB93E61D09C0CD007CA509 /* Article.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -170,9 +176,17 @@
 		1AFB93DE1D0974F5007CA509 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				1AFB93DF1D09754E007CA509 /* TopicMapper.swift */,
+				1AFB93E11D0986BF007CA509 /* TopicRepository.swift */,
 			);
 			name = Stores;
+			sourceTree = "<group>";
+		};
+		1AFB93E31D098723007CA509 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1AFB93E41D098763007CA509 /* Util.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		A1B866D91633528858E166C8 /* Frameworks */ = {
@@ -461,10 +475,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AFB93E01D09754E007CA509 /* TopicMapper.swift in Sources */,
+				1AFB93E51D098763007CA509 /* Util.swift in Sources */,
 				1AB995581D0715D60039FF6E /* ViewController.swift in Sources */,
+				1AFB93E71D09C0CD007CA509 /* Article.swift in Sources */,
 				1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */,
 				1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */,
+				1AFB93E21D0986BF007CA509 /* TopicRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

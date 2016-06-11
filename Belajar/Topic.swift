@@ -22,4 +22,20 @@ struct Topic {
     var pubDate: String?
     var icon: String?
     var lastModified: String
+    
+    static let fieldNames = [
+        "ID",
+        "FileName",
+        "Publication",
+        "Chapter",
+        "GroupName",
+        "SortIndex",
+        "Title",
+        "SubTitle",
+        "Author",
+        "Publisher",
+        "PubDate",
+        "Icon",
+        "LastModified"
+    ]
 }
