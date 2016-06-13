@@ -18,12 +18,12 @@ struct Article {
     var htmlText: String
     
     static let fieldNames = [
-        "ID",
-        "TopicID",
-        "ForeignLang",
-        "NativeLang",
-        "Style",
-        "MdText",
-        "HtmlText"
+        "id",
+        "topicId",
+        "foreignLang",
+        "nativeLang",
+        "style",
+        "mdText",
+        "htmlText"
     ]
 }

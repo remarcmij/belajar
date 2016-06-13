@@ -10,7 +10,7 @@ import Foundation
 
 struct Topic {
     var id: Int = -1
-    var filename: String
+    var fileName: String
     var publication: String
     var chapter: String
     var groupName: String
@@ -24,18 +24,18 @@ struct Topic {
     var lastModified: String
     
     static let fieldNames = [
-        "ID",
-        "FileName",
-        "Publication",
-        "Chapter",
-        "GroupName",
-        "SortIndex",
-        "Title",
-        "SubTitle",
-        "Author",
-        "Publisher",
-        "PubDate",
-        "Icon",
-        "LastModified"
+        "id",
+        "fileName",
+        "publication",
+        "chapter",
+        "groupName",
+        "sortIndex",
+        "title",
+        "subTitle",
+        "author",
+        "publisher",
+        "pubDate",
+        "icon",
+        "lastModified"
     ]
 }

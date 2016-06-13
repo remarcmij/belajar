@@ -17,14 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        let topicStore = TopicStore.sharedInstance
+        let dictStore = DictionaryStore.sharedInstance
+
         var topics: [Topic]
-        let topicRepository = TopicRepository.sharedInstance
-        topics = topicRepository.getTopicsFor("harmani")
+        topics = topicStore.getTopicsFor("harmani")
         
-        if let article = topicRepository.getArticle(topics[0].id) {
-            print(article.htmlText)
+        let rs = dictStore.searchWord("belakang", withLang: "id")
+        while rs.next() == true {
+            let lemma = DictionaryStore.lemmaFromResultSet(rs)
+            print(lemma)
         }
-        
         return true
     }
     
