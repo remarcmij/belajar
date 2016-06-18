@@ -15,7 +15,7 @@ class DictionaryStore {
     static let sharedInstance = DictionaryStore()
     
     init() {
-        let databasePath = NSBundle.mainBundle().pathForResource("Dictionary", ofType: "sqlite")
+        let databasePath = Bundle.main().pathForResource("Dictionary", ofType: "sqlite")
         database = FMDatabase(path: databasePath)
         if !database.open() {
             fatalError("could not open Dictionary database")
@@ -31,7 +31,7 @@ class DictionaryStore {
         }
     }
     
-    func searchWord(word: String, withLang lang: String? = nil, andAttr attr: String? = nil) -> FMResultSet {
+    func search(word: String, lang: String? = nil, attr: String? = nil) -> FMResultSet {
         var values: [AnyObject] = [word]
         
         var sql = "SELECT \(joinWithComma(Lemma.fieldNames)) FROM DictView WHERE word=?"
@@ -44,26 +44,26 @@ class DictionaryStore {
             values.append(attr)
         }
 
-        let startTime = NSDate()
+        let startTime = Date()
         let rs = try! database.executeQuery(sql, values: values)
-        let endTime = NSDate()
+        let endTime = Date()
 
-        let elapsed = endTime.timeIntervalSinceDate(startTime) * 1000
+        let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("search query for \(word) took \(elapsed) ms")
         
         return rs
     }
     
-    static func lemmaFromResultSet(rs: FMResultSet) -> Lemma {
-        return Lemma(id: Int(rs.intForColumnIndex(0)),
-                     word: rs.stringForColumnIndex(1),
-                     lang: rs.stringForColumnIndex(2),
-                     attr: rs.stringForColumnIndex(3).characters.first!,
-                     groupName: rs.stringForColumnIndex(4),
-                     dictOrder: Int(rs.intForColumnIndex(5)),
-                     homonym: Int(rs.intForColumnIndex(6)),
-                     text: rs.stringForColumnIndex(7),
-                     base: rs.stringForColumnIndex(8),
-                     baseLang: rs.stringForColumnIndex(9))
+    static func createLemma(fromResultSet rs: FMResultSet) -> Lemma {
+        return Lemma(id: Int(rs.int(forColumnIndex: 0)),
+                     word: rs.string(forColumnIndex: 1),
+                     lang: rs.string(forColumnIndex: 2),
+                     attr: rs.string(forColumnIndex: 3).characters.first!,
+                     groupName: rs.string(forColumnIndex: 4),
+                     dictOrder: Int(rs.int(forColumnIndex: 5)),
+                     homonym: Int(rs.int(forColumnIndex: 6)),
+                     text: rs.string(forColumnIndex: 7),
+                     base: rs.string(forColumnIndex: 8),
+                     baseLang: rs.string(forColumnIndex: 9))
     }
 }

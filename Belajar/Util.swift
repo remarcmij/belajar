@@ -8,8 +8,8 @@
 
 import Foundation
 
-func joinWithComma(fieldNames: [String], omitNames: Set<String> = []) -> String {
+func joinWithComma(_ fieldNames: [String], omitNames: Set<String> = []) -> String {
     return fieldNames
         .filter {fieldName in !omitNames.contains(fieldName)}
-        .joinWithSeparator(",")
+        .joined(separator: ",")
 }

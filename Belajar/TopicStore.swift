@@ -16,7 +16,7 @@ class TopicStore {
     static let sharedInstance = TopicStore()
     
     init() {
-        let databasePath = NSBundle.mainBundle().pathForResource("Topics", ofType: "sqlite")
+        let databasePath = Bundle.main().pathForResource("Topics", ofType: "sqlite")
         database = FMDatabase(path: databasePath)
         if !database.open() {
             fatalError("could not open Topics database")
@@ -31,59 +31,65 @@ class TopicStore {
         }
     }
     
-    func getPublications() -> [Topic] {
+    /// Returns an array for Topics representing "publications", i.e.
+    /// with `chapter='index`
+    func getCollection() -> [Topic] {
         let sql = "SELECT \(joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter='index'"
         return executeTopicQuery(sql, values: nil)
     }
     
-    func getTopicsFor(publication: String) -> [Topic] {
+    /// Returns an array for Topics for a given publication, representing its "topics".
+    ///
+    /// - Parameter publication: the name of the publication for which topics are
+    ///   to be returned
+    func getPublicationTopics(for publication: String) -> [Topic] {
         let sql = "SELECT \(joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter!='index' AND publication=?"
         return executeTopicQuery(sql, values: [publication])
     }
     
-    func getArticle(topicId: Int) -> Article? {
+    func getArticle(withTopicId topicId: Int) -> Article? {
         let sql = "SELECT \(joinWithComma(Article.fieldNames)) FROM Articles WHERE topicId=?"
         let rs = try! database.executeQuery(sql, values: [topicId])
         if !rs.next() {
             return nil
         }
-        return articleFromResultSet(rs)
+        return makeArticle(from: rs)
     }
     
-    private func executeTopicQuery(sql: String, values: [AnyObject]!) -> [Topic] {
+    private func executeTopicQuery(_ sql: String, values: [AnyObject]!) -> [Topic] {
         var topics = [Topic]()
         let rs = try! database.executeQuery(sql + " ORDER BY sortIndex", values: values)
         while rs.next() == true {
-            topics.append(topicFromResultSet(rs))
+            topics.append(makeTopic(from: rs))
         }
         return topics
     }
     
-    private func topicFromResultSet(rs: FMResultSet) -> Topic {
+    private func makeTopic(from rs: FMResultSet) -> Topic {
         return Topic(
-            id: Int(rs.intForColumnIndex(0)),
-            fileName: rs.stringForColumnIndex(1),
-            publication: rs.stringForColumnIndex(2),
-            chapter: rs.stringForColumnIndex(3),
-            groupName: rs.stringForColumnIndex(4),
-            sortIndex: Int(rs.intForColumnIndex(5)),
-            title: rs.stringForColumnIndex(6),
-            subtitle: rs.stringForColumnIndex(7),
-            author: rs.stringForColumnIndex(8),
-            publisher: rs.stringForColumnIndex(9),
-            pubDate: rs.stringForColumnIndex(10),
-            icon: rs.stringForColumnIndex(11),
-            lastModified: rs.stringForColumnIndex(12))
+            id: Int(rs.int(forColumnIndex: 0)),
+            fileName: rs.string(forColumnIndex: 1),
+            publication: rs.string(forColumnIndex: 2),
+            chapter: rs.string(forColumnIndex: 3),
+            groupName: rs.string(forColumnIndex: 4),
+            sortIndex: Int(rs.int(forColumnIndex: 5)),
+            title: rs.string(forColumnIndex: 6),
+            subtitle: rs.string(forColumnIndex: 7),
+            author: rs.string(forColumnIndex: 8),
+            publisher: rs.string(forColumnIndex: 9),
+            pubDate: rs.string(forColumnIndex: 10),
+            icon: rs.string(forColumnIndex: 11),
+            lastModified: rs.string(forColumnIndex: 12))
     }
     
-    private func articleFromResultSet(rs: FMResultSet) -> Article {
+    private func makeArticle(from rs: FMResultSet) -> Article {
         return Article(
-            id: Int(rs.intForColumnIndex(0)),
-            topicId: Int(rs.intForColumnIndex(1)),
-            foreignLang: rs.stringForColumnIndex(2),
-            nativeLang: rs.stringForColumnIndex(3),
-            style: rs.stringForColumnIndex(4),
-            mdText: rs.stringForColumnIndex(5),
-            htmlText: rs.stringForColumnIndex(6))
+            id: Int(rs.int(forColumnIndex: 0)),
+            topicId: Int(rs.int(forColumnIndex: 1)),
+            foreignLang: rs.string(forColumnIndex: 2),
+            nativeLang: rs.string(forColumnIndex: 3),
+            style: rs.string(forColumnIndex: 4),
+            mdText: rs.string(forColumnIndex: 5),
+            htmlText: rs.string(forColumnIndex: 6))
     }
 }

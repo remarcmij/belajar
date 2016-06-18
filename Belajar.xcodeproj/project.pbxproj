@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A12C2311D0ED36D00A16796 /* CustomErrors.swift */; };
+		1A275EC91D1179CC00D38BC4 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */; };
 		1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995551D0715D60039FF6E /* AppDelegate.swift */; };
-		1AB995581D0715D60039FF6E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995571D0715D60039FF6E /* ViewController.swift */; };
 		1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB995591D0715D60039FF6E /* Main.storyboard */; };
 		1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AB9955C1D0715D60039FF6E /* Assets.xcassets */; };
 		1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB9955E1D0715D60039FF6E /* LaunchScreen.storyboard */; };
 		1AB9956B1D0715D60039FF6E /* BelajarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB9956A1D0715D60039FF6E /* BelajarTests.swift */; };
 		1AB995761D0715D60039FF6E /* BelajarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995751D0715D60039FF6E /* BelajarUITests.swift */; };
+		1AD397A41D11A54500365164 /* PublicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A31D11A54500365164 /* PublicationViewController.swift */; };
+		1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A51D11B20500365164 /* ArticleViewController.swift */; };
+		1AD397AA1D11E13200365164 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 1AD397A91D11E13200365164 /* www */; };
 		1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DC1D096E75007CA509 /* Topic.swift */; };
 		1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E11D0986BF007CA509 /* TopicStore.swift */; };
 		1AFB93E51D098763007CA509 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E41D098763007CA509 /* Util.swift */; };
@@ -47,9 +50,9 @@
 
 /* Begin PBXFileReference section */
 		1A12C2311D0ED36D00A16796 /* CustomErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomErrors.swift; sourceTree = "<group>"; };
+		1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		1AB995521D0715D60039FF6E /* Belajar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Belajar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB995551D0715D60039FF6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1AB995571D0715D60039FF6E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1AB9955A1D0715D60039FF6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1AB9955C1D0715D60039FF6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AB9955F1D0715D60039FF6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,6 +63,9 @@
 		1AB995711D0715D60039FF6E /* BelajarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BelajarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB995751D0715D60039FF6E /* BelajarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BelajarUITests.swift; sourceTree = "<group>"; };
 		1AB995771D0715D60039FF6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AD397A31D11A54500365164 /* PublicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicationViewController.swift; sourceTree = "<group>"; };
+		1AD397A51D11B20500365164 /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
+		1AD397A91D11E13200365164 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		1AFB93DC1D096E75007CA509 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		1AFB93E11D0986BF007CA509 /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
 		1AFB93E41D098763007CA509 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -107,6 +113,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A275EC71D11796300D38BC4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */,
+				1AD397A31D11A54500365164 /* PublicationViewController.swift */,
+				1AD397A51D11B20500365164 /* ArticleViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		1AB995491D0715D60039FF6E = {
 			isa = PBXGroup;
 			children = (
@@ -132,12 +148,13 @@
 		1AB995541D0715D60039FF6E /* Belajar */ = {
 			isa = PBXGroup;
 			children = (
+				1AD397A91D11E13200365164 /* www */,
+				1A275EC71D11796300D38BC4 /* Controllers */,
 				1AFB93E31D098723007CA509 /* Helpers */,
 				1AFB93DE1D0974F5007CA509 /* Stores */,
 				1AFB93DB1D096DF5007CA509 /* Models */,
 				1AB995831D0716470039FF6E /* Supporting Files */,
 				1AB995551D0715D60039FF6E /* AppDelegate.swift */,
-				1AB995571D0715D60039FF6E /* ViewController.swift */,
 				1AB995591D0715D60039FF6E /* Main.storyboard */,
 				1AB9955C1D0715D60039FF6E /* Assets.xcassets */,
 				1AB9955E1D0715D60039FF6E /* LaunchScreen.storyboard */,
@@ -295,18 +312,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Belajar NL";
 				TargetAttributes = {
 					1AB995511D0715D60039FF6E = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 7A9AF2AN9H;
+						DevelopmentTeamName = "Jim Cramer";
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 					};
 					1AB995651D0715D60039FF6E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1AB995511D0715D60039FF6E;
 					};
 					1AB995701D0715D60039FF6E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 1AB995511D0715D60039FF6E;
 					};
 				};
@@ -336,6 +359,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AD397AA1D11E13200365164 /* www in Resources */,
 				1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */,
 				1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */,
 				1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */,
@@ -490,8 +514,10 @@
 			files = (
 				1AFB93E51D098763007CA509 /* Util.swift in Sources */,
 				1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */,
-				1AB995581D0715D60039FF6E /* ViewController.swift in Sources */,
 				1AFB93E71D09C0CD007CA509 /* Article.swift in Sources */,
+				1AD397A41D11A54500365164 /* PublicationViewController.swift in Sources */,
+				1A275EC91D1179CC00D38BC4 /* CollectionViewController.swift in Sources */,
+				1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */,
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
 				1AFB93EF1D0ECF88007CA509 /* Lemma.swift in Sources */,
 				1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */,
@@ -569,6 +595,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -615,7 +642,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -641,10 +669,12 @@
 			baseConfigurationReference = 94A9B4D6B48C7FDE2CE63B52 /* Pods-Belajar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -653,10 +683,13 @@
 			baseConfigurationReference = 395A131BB762C9A8ACC92FA4 /* Pods-Belajar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -669,6 +702,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.BelajarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Belajar.app/Belajar";
 			};
 			name = Debug;
@@ -682,6 +716,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.BelajarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Belajar.app/Belajar";
 			};
 			name = Release;
@@ -694,6 +730,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.BelajarUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Belajar;
 			};
 			name = Debug;
@@ -706,6 +743,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.BelajarUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Belajar;
 			};
 			name = Release;

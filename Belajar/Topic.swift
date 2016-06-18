@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Topic {
+class Topic: NSObject {
     var id: Int = -1
     var fileName: String
     var publication: String
@@ -22,6 +22,26 @@ struct Topic {
     var pubDate: String?
     var icon: String?
     var lastModified: String
+    
+    init(id: Int, fileName: String, publication: String, chapter: String, groupName: String,
+         sortIndex: Int, title: String, subtitle: String?, author: String?, publisher: String?,
+         pubDate: String?, icon: String?, lastModified: String) {
+        self.id = id
+        self.fileName = fileName
+        self.publication = publication
+        self.chapter = chapter
+        self.groupName = groupName
+        self.sortIndex = sortIndex
+        self.title = title
+        self.subtitle = subtitle
+        self.author = author
+        self.publisher = publisher
+        self.pubDate = pubDate
+        self.icon = icon
+        self.lastModified = lastModified
+        
+        super.init()
+    }
     
     static let fieldNames = [
         "id",
