@@ -10,8 +10,8 @@ import Foundation
 import FMDB
 
 class TopicStore {
-
-    private let database: FMDatabase!
+    
+    private let database: FMDatabase
     
     static let sharedInstance = TopicStore()
     
@@ -25,16 +25,14 @@ class TopicStore {
     }
     
     deinit {
-        if database != nil {
-            database.close()
-            print("Topics database closed")
-        }
+        database.close()
+        print("Topics database closed")
     }
     
     /// Returns an array for Topics representing "publications", i.e.
     /// with `chapter='index`
     func getCollection() -> [Topic] {
-        let sql = "SELECT \(joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter='index'"
+        let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter='index'"
         return executeTopicQuery(sql, values: nil)
     }
     
@@ -43,12 +41,12 @@ class TopicStore {
     /// - Parameter publication: the name of the publication for which topics are
     ///   to be returned
     func getPublicationTopics(for publication: String) -> [Topic] {
-        let sql = "SELECT \(joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter!='index' AND publication=?"
+        let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter!='index' AND publication=?"
         return executeTopicQuery(sql, values: [publication])
     }
     
     func getArticle(withTopicId topicId: Int) -> Article? {
-        let sql = "SELECT \(joinWithComma(Article.fieldNames)) FROM Articles WHERE topicId=?"
+        let sql = "SELECT \(Util.joinWithComma(Article.fieldNames)) FROM Articles WHERE topicId=?"
         let rs = try! database.executeQuery(sql, values: [topicId])
         if !rs.next() {
             return nil

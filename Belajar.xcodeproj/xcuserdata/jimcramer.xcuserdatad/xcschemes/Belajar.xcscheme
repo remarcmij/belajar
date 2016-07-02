@@ -38,16 +38,6 @@
                ReferencedContainer = "container:Belajar.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1AB995701D0715D60039FF6E"
-               BuildableName = "BelajarUITests.xctest"
-               BlueprintName = "BelajarUITests"
-               ReferencedContainer = "container:Belajar.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

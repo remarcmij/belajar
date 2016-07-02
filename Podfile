@@ -7,6 +7,7 @@ target 'Belajar' do
 
   # Pods for Belajar
   pod 'FMDB'
+  pod 'TTTAttributedLabel'   
   
   target 'BelajarTests' do
     inherit! :search_paths

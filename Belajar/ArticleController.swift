@@ -9,10 +9,8 @@
 import UIKit
 import WebKit
 
-class ArticleViewController: UIViewController {
+class ArticleController: UIViewController {
     
-    private var webView: WKWebView
-   
     var topic: Topic! {
         didSet {
             navigationItem.title = topic.title
@@ -24,25 +22,20 @@ class ArticleViewController: UIViewController {
     }()
     
     static let htmlTemplate: String = {
-        let indexPath = Bundle.main().pathForResource("www/index", ofType: "html")!
-        let indexURL = URL(fileURLWithPath: indexPath)
-        return try! NSString(contentsOf: indexURL, encoding: String.Encoding.utf8.rawValue) as String
+        let indexURL = Bundle.main().urlForResource("index", withExtension: "html", subdirectory: "www")!
+        return try! String(contentsOf: indexURL, encoding: String.Encoding.utf8)
     }()
     
     static let folderURL: URL = {
-        let folderPath = Bundle.main().resourcePath! + "/www"
-        return URL(fileURLWithPath: folderPath)
+        return Bundle.main().urlForResource("www", withExtension: nil)!
     }()
 
-    required init(coder aDecoder: NSCoder) {
-        webView = WKWebView(frame: CGRect.zero)
-        super.init(coder: aDecoder)!
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let webView = WKWebView(frame: CGRect.zero)
         view.addSubview(webView)
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal,
                                         toItem: view, attribute: .height, multiplier: 1, constant: 0)
@@ -54,6 +47,5 @@ class ArticleViewController: UIViewController {
             let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
             webView.load(htmlDoc.data(using: String.Encoding.utf8)!, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: self.dynamicType.folderURL)
         }
-        
     }
 }

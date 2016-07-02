@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15G12a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zN0-Xb-bBD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15G24b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zN0-Xb-bBD">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,7 +8,7 @@
         <!--Belajar-->
         <scene sceneID="FNp-fu-zzt">
             <objects>
-                <tableViewController id="tY6-37-gQQ" customClass="CollectionViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="tY6-37-gQQ" customClass="CollectionController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="boF-OC-83Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,16 +47,22 @@
                             <outlet property="delegate" destination="tY6-37-gQQ" id="5vl-vW-pqX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Belajar" id="LTM-N8-0eI"/>
+                    <navigationItem key="navigationItem" title="Belajar" id="LTM-N8-0eI">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="vzK-fp-R3x">
+                            <connections>
+                                <segue destination="S4N-VP-cIr" kind="show" id="fcu-66-Sps"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wla-jh-DY0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="999.20000000000005" y="-1.3493253373313345"/>
         </scene>
-        <!--Publication View Controller-->
+        <!--Publication Controller-->
         <scene sceneID="mYg-4l-9cY">
             <objects>
-                <tableViewController id="a5R-43-K3Q" customClass="PublicationViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="a5R-43-K3Q" customClass="PublicationController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2qL-Ci-mfi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,15 +101,53 @@
                             <outlet property="delegate" destination="a5R-43-K3Q" id="cCE-U5-un4"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5h2-GJ-I6c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1881" y="-1"/>
         </scene>
-        <!--Article View Controller-->
+        <!--Dictionary Controller-->
+        <scene sceneID="keH-4Z-OAs">
+            <objects>
+                <tableViewController id="S4N-VP-cIr" customClass="DictionaryController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="28" sectionFooterHeight="28" id="K6H-88-R2V">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="69" id="9U5-Dd-hrf" userLabel="LemmaCell">
+                                <frame key="frameInset" minY="92" width="375" height="69"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9U5-Dd-hrf" id="mob-Mq-WRg">
+                                    <frame key="frameInset" width="375" height="68.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BodyCell" rowHeight="69" id="eq4-QM-6fu" userLabel="LemmaCell">
+                                <frame key="frameInset" minY="161" width="375" height="69"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eq4-QM-6fu" id="LpJ-xG-Byd">
+                                    <frame key="frameInset" width="375" height="68.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="S4N-VP-cIr" id="vMl-Oa-6tn"/>
+                            <outlet property="delegate" destination="S4N-VP-cIr" id="xnG-9M-eaQ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YxO-LV-28P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="784.79999999999995" y="751.57421289355329"/>
+        </scene>
+        <!--Article Controller-->
         <scene sceneID="aQm-tK-8SK">
             <objects>
-                <viewController id="MN4-SG-tnN" customClass="ArticleViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="MN4-SG-tnN" customClass="ArticleController" customModule="Belajar" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MeL-YX-emS"/>
                         <viewControllerLayoutGuide type="bottom" id="BOQ-io-zEe"/>

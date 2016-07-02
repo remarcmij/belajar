@@ -1,5 +1,5 @@
 //
-//  PublicationViewController.swift
+//  CollectionViewController.swift
 //  Belajar
 //
 //  Created by Jim Cramer on 15/06/16.
@@ -8,16 +8,10 @@
 
 import UIKit
 
-class PublicationViewController: UITableViewController {
-    
-    var indexTopic: Topic! {
-        didSet {
-            navigationItem.title = indexTopic.title
-        }
-    }
+class CollectionController: UITableViewController {
     
     lazy var topics: [Topic] = {
-        return TopicStore.sharedInstance.getPublicationTopics(for: self.indexTopic.publication)
+        return TopicStore.sharedInstance.getCollection()
     }()
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,15 +25,15 @@ class PublicationViewController: UITableViewController {
         cell.detailTextLabel?.text = topic.subtitle
         return cell
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowArticle" {
+        if segue.identifier == "ShowPublication" {
             if let row = tableView.indexPathForSelectedRow?.row {
-                let topic = topics[row]
-                let articleViewController = segue.destinationViewController as! ArticleViewController
-                articleViewController.topic = topic
+                let indexTopic = topics[row]
+                let publicationViewController = segue.destinationViewController as! PublicationController
+                publicationViewController.indexTopic = indexTopic
             }
         }
     }
-
+    
 }

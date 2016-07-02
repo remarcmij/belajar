@@ -8,15 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A12C2311D0ED36D00A16796 /* CustomErrors.swift */; };
-		1A275EC91D1179CC00D38BC4 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */; };
+		1A275EC91D1179CC00D38BC4 /* CollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A275EC81D1179CC00D38BC4 /* CollectionController.swift */; };
+		1A4547261D16F3580003BA2F /* DictionaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4547251D16F3580003BA2F /* DictionaryController.swift */; };
+		1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */; };
+		1A8375E91D251ED400B31980 /* LanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E81D251ED400B31980 /* LanguageHelper.swift */; };
+		1A8375EB1D2522A700B31980 /* SpeechTextLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */; };
+		1A8375ED1D25503000B31980 /* DutchLanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375EC1D25503000B31980 /* DutchLanguageHelper.swift */; };
 		1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995551D0715D60039FF6E /* AppDelegate.swift */; };
 		1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB995591D0715D60039FF6E /* Main.storyboard */; };
 		1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AB9955C1D0715D60039FF6E /* Assets.xcassets */; };
 		1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB9955E1D0715D60039FF6E /* LaunchScreen.storyboard */; };
 		1AB9956B1D0715D60039FF6E /* BelajarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB9956A1D0715D60039FF6E /* BelajarTests.swift */; };
 		1AB995761D0715D60039FF6E /* BelajarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995751D0715D60039FF6E /* BelajarUITests.swift */; };
-		1AD397A41D11A54500365164 /* PublicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A31D11A54500365164 /* PublicationViewController.swift */; };
-		1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A51D11B20500365164 /* ArticleViewController.swift */; };
+		1ABDFB2D1D2690D600D84677 /* IndonesianLanguageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */; };
+		1ABDFB2F1D27B87700D84677 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABDFB2E1D27B87700D84677 /* Constants.swift */; };
+		1AD397A41D11A54500365164 /* PublicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A31D11A54500365164 /* PublicationController.swift */; };
+		1AD397A61D11B20500365164 /* ArticleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A51D11B20500365164 /* ArticleController.swift */; };
 		1AD397AA1D11E13200365164 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 1AD397A91D11E13200365164 /* www */; };
 		1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DC1D096E75007CA509 /* Topic.swift */; };
 		1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E11D0986BF007CA509 /* TopicStore.swift */; };
@@ -50,7 +57,12 @@
 
 /* Begin PBXFileReference section */
 		1A12C2311D0ED36D00A16796 /* CustomErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomErrors.swift; sourceTree = "<group>"; };
-		1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		1A275EC81D1179CC00D38BC4 /* CollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionController.swift; sourceTree = "<group>"; };
+		1A4547251D16F3580003BA2F /* DictionaryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryController.swift; sourceTree = "<group>"; };
+		1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndonesianLanguageHelper.swift; sourceTree = "<group>"; };
+		1A8375E81D251ED400B31980 /* LanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageHelper.swift; sourceTree = "<group>"; };
+		1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechTextLexer.swift; sourceTree = "<group>"; };
+		1A8375EC1D25503000B31980 /* DutchLanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DutchLanguageHelper.swift; sourceTree = "<group>"; };
 		1AB995521D0715D60039FF6E /* Belajar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Belajar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB995551D0715D60039FF6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AB9955A1D0715D60039FF6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -63,8 +75,10 @@
 		1AB995711D0715D60039FF6E /* BelajarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BelajarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB995751D0715D60039FF6E /* BelajarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BelajarUITests.swift; sourceTree = "<group>"; };
 		1AB995771D0715D60039FF6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1AD397A31D11A54500365164 /* PublicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicationViewController.swift; sourceTree = "<group>"; };
-		1AD397A51D11B20500365164 /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
+		1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndonesianLanguageHelperTests.swift; sourceTree = "<group>"; };
+		1ABDFB2E1D27B87700D84677 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1AD397A31D11A54500365164 /* PublicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicationController.swift; sourceTree = "<group>"; };
+		1AD397A51D11B20500365164 /* ArticleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleController.swift; sourceTree = "<group>"; };
 		1AD397A91D11E13200365164 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		1AFB93DC1D096E75007CA509 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		1AFB93E11D0986BF007CA509 /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
@@ -116,9 +130,10 @@
 		1A275EC71D11796300D38BC4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1A275EC81D1179CC00D38BC4 /* CollectionViewController.swift */,
-				1AD397A31D11A54500365164 /* PublicationViewController.swift */,
-				1AD397A51D11B20500365164 /* ArticleViewController.swift */,
+				1A275EC81D1179CC00D38BC4 /* CollectionController.swift */,
+				1AD397A31D11A54500365164 /* PublicationController.swift */,
+				1AD397A51D11B20500365164 /* ArticleController.swift */,
+				1A4547251D16F3580003BA2F /* DictionaryController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -168,6 +183,7 @@
 			children = (
 				1AB9956A1D0715D60039FF6E /* BelajarTests.swift */,
 				1AB9956C1D0715D60039FF6E /* Info.plist */,
+				1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */,
 			);
 			path = BelajarTests;
 			sourceTree = "<group>";
@@ -214,6 +230,11 @@
 			children = (
 				1AFB93E41D098763007CA509 /* Util.swift */,
 				1A12C2311D0ED36D00A16796 /* CustomErrors.swift */,
+				1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */,
+				1A8375E81D251ED400B31980 /* LanguageHelper.swift */,
+				1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */,
+				1A8375EC1D25503000B31980 /* DutchLanguageHelper.swift */,
+				1ABDFB2E1D27B87700D84677 /* Constants.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -513,12 +534,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AFB93E51D098763007CA509 /* Util.swift in Sources */,
+				1ABDFB2F1D27B87700D84677 /* Constants.swift in Sources */,
 				1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */,
 				1AFB93E71D09C0CD007CA509 /* Article.swift in Sources */,
-				1AD397A41D11A54500365164 /* PublicationViewController.swift in Sources */,
-				1A275EC91D1179CC00D38BC4 /* CollectionViewController.swift in Sources */,
-				1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */,
+				1A8375E91D251ED400B31980 /* LanguageHelper.swift in Sources */,
+				1AD397A41D11A54500365164 /* PublicationController.swift in Sources */,
+				1A8375ED1D25503000B31980 /* DutchLanguageHelper.swift in Sources */,
+				1A275EC91D1179CC00D38BC4 /* CollectionController.swift in Sources */,
+				1AD397A61D11B20500365164 /* ArticleController.swift in Sources */,
+				1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */,
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
+				1A8375EB1D2522A700B31980 /* SpeechTextLexer.swift in Sources */,
+				1A4547261D16F3580003BA2F /* DictionaryController.swift in Sources */,
 				1AFB93EF1D0ECF88007CA509 /* Lemma.swift in Sources */,
 				1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */,
 				1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */,
@@ -531,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AB9956B1D0715D60039FF6E /* BelajarTests.swift in Sources */,
+				1ABDFB2D1D2690D600D84677 /* IndonesianLanguageHelperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,9 +699,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -685,10 +715,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -23,7 +23,7 @@ class BelajarTests: XCTestCase {
     
     func testExample() {
         let fieldNames = ["firstName", "lastName"]
-        let result = joinWithComma(fieldNames)
+        let result = Util.joinWithComma(fieldNames)
         XCTAssert(result == "firstName,lastName")
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.

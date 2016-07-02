@@ -10,7 +10,7 @@ import Foundation
 import FMDB
 
 class DictionaryStore {
-    private let database: FMDatabase!
+    private let database: FMDatabase
     
     static let sharedInstance = DictionaryStore()
     
@@ -25,16 +25,14 @@ class DictionaryStore {
     }
     
     deinit {
-        if database != nil {
-            database.close()
-            print("Dictionary database closed")
-        }
+        database.close()
+        print("Dictionary database closed")
     }
     
-    func search(word: String, lang: String? = nil, attr: String? = nil) -> FMResultSet {
+    func search(word: String, lang: String? = nil, attr: String? = nil) -> [Lemma] {
         var values: [AnyObject] = [word]
         
-        var sql = "SELECT \(joinWithComma(Lemma.fieldNames)) FROM DictView WHERE word=?"
+        var sql = "SELECT \(Util.joinWithComma(Lemma.fieldNames)) FROM DictView WHERE word=?"
         if let lang = lang {
             sql += " AND lang=?"
             values.append(lang)
@@ -43,18 +41,23 @@ class DictionaryStore {
             sql += " AND attr=?"
             values.append(attr)
         }
-
+        
         let startTime = Date()
         let rs = try! database.executeQuery(sql, values: values)
         let endTime = Date()
-
+        
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
+        
+        var lemmas = [Lemma]()
+        while rs.next() == true {
+            lemmas.append(self.dynamicType.makeLemma(fromResultSet: rs))
+        }
         print("search query for \(word) took \(elapsed) ms")
         
-        return rs
+        return lemmas
     }
     
-    static func createLemma(fromResultSet rs: FMResultSet) -> Lemma {
+    static func makeLemma(fromResultSet rs: FMResultSet) -> Lemma {
         return Lemma(id: Int(rs.int(forColumnIndex: 0)),
                      word: rs.string(forColumnIndex: 1),
                      lang: rs.string(forColumnIndex: 2),

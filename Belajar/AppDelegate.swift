@@ -17,11 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        let rs = DictionaryStore.sharedInstance.search(word: "belakang", lang: "id")
-        while rs.next() == true {
-            let lemma = DictionaryStore.createLemma(fromResultSet: rs)
-            print(lemma)
-        }
         return true
     }
     
