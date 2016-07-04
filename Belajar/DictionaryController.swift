@@ -31,7 +31,8 @@ private let linkAttributes = [
 
 class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
     
-    var lemmas: [Lemma]!
+    var aggregates: [LemmaAggregate]!
+    var attributedStringCache = [Int: AttributedString]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,34 +42,28 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         NotificationCenter.default().addObserver(self, selector: #selector(receiveLookupNotification), name: lookupNotification, object: nil)
-        
-        lemmas = DictionaryStore.sharedInstance.search(word: "air", lang: "id")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        self.tableView.reloadData()
+        lookup(word: "lari", lang: "id")
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lemmas.count
+        return aggregates?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = indexPath.row
-        let lemma = lemmas[row]
+        let aggregate = aggregates[row]
         
-        if (row == 0 || lemmas[row-1].base != lemma.base) {
-            return getHeaderCell(lemma: lemma, cellForRowAt: indexPath)
+        if (row == 0 || aggregates[row-1].base != aggregate.base) {
+            return getHeaderCell(aggregate: aggregate, cellForRowAt: indexPath)
         } else {
-            return getBodyCell(lemma: lemma, cellForRowAt: indexPath)
+            return getBodyCell(aggregate: aggregate, cellForRowAt: indexPath)
         }
     }
-    
-    private func getHeaderCell(lemma: Lemma, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    private func getHeaderCell(aggregate: LemmaAggregate, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath)
         if cell.viewWithTag(1) == nil {
-            
             let headerLabel = TTTAttributedLabel(frame: CGRect.zero)
             headerLabel.tag = 1
             headerLabel.isUserInteractionEnabled = true
@@ -87,27 +82,25 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
             var constraints = [NSLayoutConstraint]()
             constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[headerLabel]-16-|", options: [], metrics: nil, views: viewsDict))
             constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[bodyLabel]-16-|", options: [], metrics: nil, views: viewsDict))
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[headerLabel]-8-[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
+            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-24-[headerLabel]-8-[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
             NSLayoutConstraint.activate(constraints)
-            
         }
         
         let headerLabel = cell.viewWithTag(1) as! TTTAttributedLabel
-        var headerText = "**\(lemma.base.uppercased())**"
-        if lemma.base != lemma.word {
-            headerText = "→ " + headerText
+        var headerText = "**\(aggregate.base.uppercased())**"
+        if aggregate.base != aggregate.word {
+            headerText = "▷ " + headerText
         }
         headerLabel.setText(Util.makeAttributedText(from: headerText, useSmallFont: true))
         
         let bodyLabel = cell.viewWithTag(2) as! TTTAttributedLabel
-        bodyLabel.setText(Util.makeAttributedText(from: lemma.text))
+        bodyLabel.setText(getAttributedString(for: aggregate.body, index: indexPath.row))
         return cell
     }
     
-    private func getBodyCell(lemma: Lemma, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    private func getBodyCell(aggregate: LemmaAggregate, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "BodyCell", for: indexPath)
         if cell.viewWithTag(1) == nil {
-            
             let bodyLabel = makeBodyLabel()
             bodyLabel.tag = 1
             cell.contentView.addSubview(bodyLabel)
@@ -117,13 +110,12 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
             
             var constraints = [NSLayoutConstraint]()
             constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[bodyLabel]-16-|", options: [], metrics: nil, views: viewsDict))
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
+            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
             NSLayoutConstraint.activate(constraints)
-            
         }
         
         let bodyLabel = cell.viewWithTag(1) as! TTTAttributedLabel
-        bodyLabel.setText(Util.makeAttributedText(from: lemma.text))
+        bodyLabel.setText(getAttributedString(for: aggregate.body, index: indexPath.row))
         return cell
     }
     
@@ -138,9 +130,18 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
     
     func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
         let word = url.query!.components(separatedBy: "=")[1];
-        if let decodedWord = word.removingPercentEncoding {
-            NotificationCenter.default().post(name: lookupNotification, object: nil, userInfo: ["word": decodedWord])
+        if let decoded = word.removingPercentEncoding {
+            NotificationCenter.default().post(name: lookupNotification, object: nil, userInfo: ["word": decoded])
         }
+    }
+    
+    private func getAttributedString(for text: String, index: Int) -> AttributedString {
+        if let attributedString = attributedStringCache[index] {
+            return attributedString
+        }
+        let attributedString = Util.makeAttributedText(from: text)
+        attributedStringCache[index] = attributedString
+        return attributedString
     }
     
     func receiveLookupNotification(notification: Notification) {
@@ -151,10 +152,18 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
     }
     
     func lookup(word: String, lang: String) {
+        let startTime = Date()
+        
         let normalisedWord = word.folding(.diacriticInsensitiveSearch, locale: Locale.current()).lowercased()
-        lemmas = DictionaryStore.sharedInstance.search(word: normalisedWord, lang: lang)
+        aggregates = DictionaryStore.sharedInstance.aggregateSearch(word: normalisedWord, lang: lang)
+
+        attributedStringCache.removeAll()
         self.tableView.reloadData()
         self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+
+        let endTime = Date()
+        let elapsed = endTime.timeIntervalSince(startTime) * 1000
+        print("lookup \(word) took \(elapsed) ms")
     }
     
 }

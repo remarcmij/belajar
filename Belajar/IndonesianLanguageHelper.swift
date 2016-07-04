@@ -66,13 +66,13 @@ class IndonesianLanguageHelper : LanguageHelper {
     
     func getWordVariations(for word: String) -> [String] {
         var variations = [String]()
-        getVariations(for: word, variations: &variations, prefixApplied: false)
+        getVariations(for: word, variations: &variations, isMeNPrefixApplied: false)
         return variations
     }
     
-    private func getVariations(for word: String, variations: inout [String], prefixApplied: Bool) {
+    private func getVariations(for word: String, variations: inout [String], isMeNPrefixApplied: Bool) {
         
-        var isMeNPrefixed = prefixApplied;
+        var isMeNPrefixed = isMeNPrefixApplied;
         
         if !variations.contains(word) {
             variations.append(word)
@@ -84,17 +84,17 @@ class IndonesianLanguageHelper : LanguageHelper {
         
         if let match = simpleSuffix.firstMatch(in: word) {
             let variation = word.substring(with: match.range(at: 1))
-            getVariations(for: variation, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = kuMuKauPrefix.firstMatch(in: word) {
             let variation = word.substring(with: match.range(at: 1))
-            getVariations(for: variation, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = duplication.firstMatch(in: word) {
             let variation = word.substring(with: match.range(at: 1))
-            getVariations(for: variation, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = diPrefix.firstMatch(in: word) {
@@ -103,68 +103,68 @@ class IndonesianLanguageHelper : LanguageHelper {
                 let meNWord = prefixWithMeN(variation)
                 isMeNPrefixed = true
                 if (meNWord != variation) {
-                    getVariations(for: meNWord, variations: &variations, prefixApplied: isMeNPrefixed)
+                    getVariations(for: meNWord, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
                 }
             }
             if perPrefix.firstMatch(in: variation) != nil {
-                getVariations(for: "mem" + variation, variations: &variations, prefixApplied: isMeNPrefixed)
+                getVariations(for: "mem" + variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
             }
         }
         
         if let match = terPrefix.firstMatch(in: word) {
             let variation = word.substring(with: match.range(at: 1))
-            getVariations(for: variation, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if kanISuffix.firstMatch(in: word) != nil && !isMeNPrefixed {
             let meNWord = prefixWithMeN(word)
             isMeNPrefixed = true
             if meNWord != word {
-                getVariations(for: meNWord, variations: &variations, prefixApplied: isMeNPrefixed)
+                getVariations(for: meNWord, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
             }
         }
         
         if let match = sePrefix.firstMatch(in: word) {
             let variation = word.substring(with: match.range(at: 1))
-            getVariations(for: variation, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if perPrefix.firstMatch(in: word) != nil && !isMeNPrefixed {
             isMeNPrefixed = true
-            getVariations(for: "mem" + word, variations: &variations, prefixApplied: isMeNPrefixed)
+            getVariations(for: "mem" + word, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
     }
     
     private func prefixWithMeN(_ word: String) -> String {
-        var result = word
+        var word = word
         if beginVowels.firstMatch(in: word) != nil {
-            result = "meng" + word
+            word = "meng" + word
         } else if beginBF.firstMatch(in: word) != nil{
-            result = "mem" + word
+            word = "mem" + word
         } else if beginP.firstMatch(in: word) != nil {
             // initial p is lost
             if perPrefix.firstMatch(in: word) == nil {
-                result = result.substring(from: 1)
+                word = word.substring(from: 1)
             }
-            result = "mem" + result
+            word = "mem" + word
         } else if beginDTCJSyZ.firstMatch(in: word) != nil {
             // initial t is lost
             if beginT.firstMatch(in: word) != nil {
-                result = word.substring(from: 1)
+                word = word.substring(from: 1)
             }
-            result = "men" + result
+            word = "men" + word
         } else if beginS.firstMatch(in: word) != nil {
             // initial s is lost
-            result = "meny" + word.substring(from: 1)
+            word = "meny" + word.substring(from: 1)
         } else if beginGHKKh.firstMatch(in: word) != nil {
             // initial k is lost
             if beginK.firstMatch(in: word) != nil {
-                result = word.substring(from: 1)
+                word = word.substring(from: 1)
             }
-            result = "meng" + word
+            word = "meng" + word
         } else if beginLRMNNyNgWY.firstMatch(in: word) != nil {
-            result = "me" + word
+            word = "me" + word
         }
-        return result
+        return word
     }
 }
