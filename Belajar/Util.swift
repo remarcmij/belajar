@@ -16,7 +16,6 @@ class Util {
     }
     
     private static let markdownRegExp = try! RegularExpression(pattern: "\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|__(.+?)__|_(.+?)_", options: [])
-    private static let foreignWordRegExp = try! RegularExpression(pattern: "[-'()\\p{L}]{2,}", options: [])
     
     private static var regularFont: UIFont = {
         let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
@@ -69,13 +68,13 @@ class Util {
                 let snippet = text.substring(with: NSMakeRange(startPos, outerRange.location - startPos))
                 attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
             }
-
+            
             if match.range(at: 1).location != NSNotFound {
                 let snippet = text.substring(with: match.range(at: 1))
-                makeClickableText(from: snippet, font: boldFont, attributedString: attributedString)
+                attributedString.append(makeClickableWord(from: snippet, font: boldFont))
             } else if match.range(at: 2).location != NSNotFound {
                 let snippet = text.substring(with: match.range(at: 2))
-                makeClickableText(from: snippet, font: italicFont, attributedString: attributedString)
+                attributedString.append(makeClickableWord(from: snippet, font: italicFont))
             } else if match.range(at: 3).location != NSNotFound {
                 let snippet = text.substring(with: match.range(at: 3))
                 attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
@@ -83,7 +82,7 @@ class Util {
                 let snippet = text.substring(with: match.range(at: 4))
                 attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
             }
-
+            
             startPos = outerRange.location + outerRange.length
         }
         
@@ -91,35 +90,15 @@ class Util {
             let snippet = text.substring(from: startPos)
             attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
         }
-        
-        
+
         return attributedString
     }
     
-    static func makeClickableText(from snippet: NSString, font: UIFont, attributedString: NSMutableAttributedString) {
-        var startPos = 0
-        let matches = Util.foreignWordRegExp.matches(in: snippet as String, options: [], range: NSMakeRange(0, snippet.length))
-        for match in matches {
-            if match.range.location > startPos {
-                let leadingText = snippet.substring(with: NSMakeRange(startPos, match.range.location - startPos))
-                attributedString.append(AttributedString(string: leadingText, attributes: [NSFontAttributeName: font]))
-            }
-            
-            let word = snippet.substring(with: match.range)
-            let urlEncoded = word.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-            let url = URL(string: "http://www.belajar.nl/lookup?lookup=\(urlEncoded)")!
-            let attributes = [NSFontAttributeName: font,
-                              NSLinkAttributeName: url]
-            attributedString.append(AttributedString(string: word, attributes: attributes))
-            startPos = match.range.location + match.range.length
-        }
-        
-        if (startPos < snippet.length) {
-            let trailingText = snippet.substring(from: startPos)
-            attributedString.append(AttributedString(string: trailingText, attributes: [NSFontAttributeName: font]))
-        }
+    static func makeClickableWord(from word: NSString, font: UIFont) -> AttributedString {
+        let urlEncoded = word.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        let url = URL(string: "http://belajar.nl/q?word=\(urlEncoded)")!
+        let attributes = [NSFontAttributeName: font,
+                          NSLinkAttributeName: url]
+        return AttributedString(string: word as String, attributes: attributes)
     }
-    
-
-    
 }

@@ -31,8 +31,11 @@ private let linkAttributes = [
 
 class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
     
-    var aggregates: [LemmaAggregate]!
-    var attributedStringCache = [Int: AttributedString]()
+    var word: String!
+    var lang: String!
+
+    private var aggregates: [LemmaAggregate]!
+    private var attributedStringCache = [Int: AttributedString]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +45,10 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         NotificationCenter.default().addObserver(self, selector: #selector(receiveLookupNotification), name: lookupNotification, object: nil)
-        lookup(word: "lari", lang: "id")
+        
+        if word != nil {
+            lookup(word: word, lang: lang)
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,7 +66,7 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
             return getBodyCell(aggregate: aggregate, cellForRowAt: indexPath)
         }
     }
-
+    
     private func getHeaderCell(aggregate: LemmaAggregate, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath)
         if cell.viewWithTag(1) == nil {
@@ -154,13 +160,20 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
     func lookup(word: String, lang: String) {
         let startTime = Date()
         
+        let wasNil = aggregates == nil
+        
         let normalisedWord = word.folding(.diacriticInsensitiveSearch, locale: Locale.current()).lowercased()
-        aggregates = DictionaryStore.sharedInstance.aggregateSearch(word: normalisedWord, lang: lang)
-
-        attributedStringCache.removeAll()
-        self.tableView.reloadData()
-        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-
+        if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
+            let synopsis = Lemma.makeSynopsis(lemmas: result.0)
+            aggregates = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
+        }
+        
+        if !wasNil {
+            attributedStringCache.removeAll()
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
+        
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("lookup \(word) took \(elapsed) ms")

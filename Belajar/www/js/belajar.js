@@ -19,13 +19,8 @@ window.onload = function() {
 			if (targetElement.tagName === 'SPAN') {
 				ev.preventDefault();
 				ev.stopPropagation();
-				if (hostApp.isSpeechEnabled()) {
-					text = targetElement.parentElement.innerText;
-					hostApp.speakForeign(prepareForSpeech(text).trim());
-				} else {
-					word = targetElement.innerText.trim();
-					hostApp.lookup(word);
-				}
+                word = targetElement.innerText.trim();
+                webkit.messageHandlers.wordClick.postMessage(word + "|" + targetElement.parentElement.innerText)
 			}
 		};
 	}

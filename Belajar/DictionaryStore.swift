@@ -128,6 +128,20 @@ class DictionaryStore {
         return aggregates
     }
     
+    func lookupWord(word: String) -> ([Lemma], String)? {
+        let languageHelper = getLanguageHelperFor(lang: foreignLang)
+        let wordVariations = languageHelper.getWordVariations(for: word)
+        
+        for variation in wordVariations {
+            let lemmas = search(word: variation, lang: foreignLang, attr: "k")
+            if lemmas.count != 0 {
+                return (lemmas, variation)
+            }
+        }
+        
+        return nil
+    }
+    
     static func makeLemma(fromResultSet rs: FMResultSet) -> Lemma {
         return Lemma(id: Int(rs.int(forColumnIndex: 0)),
                      word: rs.string(forColumnIndex: 1),

@@ -9,17 +9,12 @@
 import Foundation
 
 protocol LanguageHelper {
-    static func getFor(lang: String) -> LanguageHelper
     var substitutions: [String: String] {get}
     func encodeForSpeech(text: String) -> String
     func getWordVariations(for word: String) -> [String]
 }
 
 extension LanguageHelper {
-    static func getFor(lang: String) -> LanguageHelper {
-        return DutchLanguageHelper()
-    }
-    
     func encodeForSpeech(text: String) -> String {
         let lexer = SpeechTextLexer(targetText: text)
         let buffer = NSMutableString()
@@ -52,5 +47,16 @@ extension LanguageHelper {
     
     func getWordVariations(for word: String) -> [String] {
         return [word]
+    }
+}
+
+func getLanguageHelperFor(lang: String) -> LanguageHelper {
+    switch lang {
+    case "id":
+        return IndonesianLanguageHelper()
+    case "nl":
+        return DutchLanguageHelper()
+    default:
+        fatalError()
     }
 }

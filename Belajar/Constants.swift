@@ -9,3 +9,6 @@
 import Foundation
 
 let lookupNotification = Notification.Name("lookupNotification")
+
+let foreignLang = "id"
+let nativeLang = "nl"

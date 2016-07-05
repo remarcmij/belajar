@@ -9,7 +9,10 @@
 import UIKit
 import WebKit
 
-class ArticleController: UIViewController {
+class ArticleController: UIViewController, WKScriptMessageHandler {
+    
+    private var clickedWord: String?
+    private var clickedText: String?
     
     var topic: Topic! {
         didSet {
@@ -29,12 +32,14 @@ class ArticleController: UIViewController {
     static let folderURL: URL = {
         return Bundle.main().urlForResource("www", withExtension: nil)!
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let webView = WKWebView(frame: CGRect.zero)
         view.addSubview(webView)
+        
+        webView.configuration.userContentController.add(MyMessageHandler(delegate: self), name: "wordClick");
         
         webView.translatesAutoresizingMaskIntoConstraints = false
         let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal,
@@ -45,7 +50,43 @@ class ArticleController: UIViewController {
         
         if let htmlText = article?.htmlText {
             let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
-            webView.load(htmlDoc.data(using: String.Encoding.utf8)!, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: self.dynamicType.folderURL)
+            //            webView.load(htmlDoc.data(using: String.Encoding.utf8)!, mimeType: "text/html",
+            //                         characterEncodingName: "utf-8", baseURL: self.dynamicType.folderURL)
+            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
+        }
+    }
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "wordClick" {
+            let components = (message.body as! String).components(separatedBy: "|")
+            clickedWord = components[0]
+            clickedText = components[1]
+            print("Javascript clickedWord: \(clickedWord) clickedText: \(clickedText)")
+            performSegue(withIdentifier: "ShowDictionary", sender: self)
+        } else {
+            print("something else called")
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDictionary" {
+            print("prepare called")
+            let dictionaryController = segue.destinationViewController as! DictionaryController
+            dictionaryController.word = clickedWord
+            dictionaryController.lang = foreignLang
+            clickedWord = nil
+        }
+    }
+    
+    class MyMessageHandler: NSObject,  WKScriptMessageHandler {
+        weak var delegate: WKScriptMessageHandler?
+        
+        init(delegate: WKScriptMessageHandler) {
+            self.delegate = delegate
+            super.init()
+        }
+        
+        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+            delegate?.userContentController(userContentController, didReceive: message)
         }
     }
 }

@@ -59,7 +59,7 @@
             </objects>
             <point key="canvasLocation" x="999.20000000000005" y="-1.3493253373313345"/>
         </scene>
-        <!--Publication Controller-->
+        <!--Publication-->
         <scene sceneID="mYg-4l-9cY">
             <objects>
                 <tableViewController id="a5R-43-K3Q" customClass="PublicationController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
@@ -102,6 +102,13 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Publication" id="sf4-8B-0dC">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="NQT-s1-KH8">
+                            <connections>
+                                <segue destination="S4N-VP-cIr" kind="show" id="IYY-5y-OYk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5h2-GJ-I6c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -142,9 +149,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YxO-LV-28P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="784.79999999999995" y="751.57421289355329"/>
+            <point key="canvasLocation" x="1881" y="842"/>
         </scene>
-        <!--Article Controller-->
+        <!--Article-->
         <scene sceneID="aQm-tK-8SK">
             <objects>
                 <viewController id="MN4-SG-tnN" customClass="ArticleController" customModule="Belajar" sceneMemberID="viewController">
@@ -157,6 +164,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Article" id="5Dp-ay-gab">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="j2h-ND-kEL">
+                            <connections>
+                                <segue destination="S4N-VP-cIr" kind="show" identifier="ShowDictionary" id="Xj9-qz-OLk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0v2-gd-TJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -181,4 +195,7 @@
             <point key="canvasLocation" x="60" y="-1.3493253373313345"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="fcu-66-Sps"/>
+    </inferredMetricsTieBreakers>
 </document>
