@@ -8,7 +8,9 @@
 
 import Foundation
 
-let lookupNotification = Notification.Name("lookupNotification")
-
-let foreignLang = "id"
-let nativeLang = "nl"
+struct Constants {
+    static let WordClickNotification = Notification.Name("wordClickNotification")
+    static let WordLookupNotification = Notification.Name("wordLookupNotification")
+    static let ForeignLang = "id"
+    static let NativeLang = "nl"
+}

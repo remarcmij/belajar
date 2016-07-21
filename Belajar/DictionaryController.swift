@@ -7,169 +7,124 @@
 //
 
 import UIKit
-import TTTAttributedLabel
 
-extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-    
-    convenience init(netHex: Int) {
-        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
-    }
-}
-
-private let linkColor = UIColor(netHex: 0x303F9F)
-private let linkAttributes = [
-    NSUnderlineStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleNone.rawValue),
-    NSForegroundColorAttributeName: linkColor
-]
-
-class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
+class DictionaryController : UITableViewController {
     
     var word: String!
     var lang: String!
+    
+    private var lemmaHomonyms = [LemmaHomonym]()
+    private var dictionaryPopoverDelegate: DictionaryPopoverDelegate?
+    
+    private struct Storyboard {
+        static let LemmaHeaderCell = "LemmaHeaderCell"
+        static let LemmaBodyCell = "LemmaBodyCell"
+    }
 
-    private var aggregates: [LemmaAggregate]!
-    private var attributedStringCache = [Int: AttributedString]()
+    // MARK: - life cycle
+
+    deinit {
+        LemmaBaseCell.clearCache()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
         
-        self.tableView.estimatedRowHeight = 97.0
-        self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        NotificationCenter.default().addObserver(self, selector: #selector(receiveLookupNotification), name: lookupNotification, object: nil)
+        dictionaryPopoverDelegate = DictionaryPopoverDelegate(controller: self)
         
         if word != nil {
             lookup(word: word, lang: lang)
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(receiveWordClickNotification),
+                                       name: Constants.WordClickNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(receiveWordLookupNotification),
+                                       name: Constants.WordLookupNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return aggregates?.count ?? 0
+        return lemmaHomonyms.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let row = indexPath.row
-        let aggregate = aggregates[row]
-        
-        if (row == 0 || aggregates[row-1].base != aggregate.base) {
-            return getHeaderCell(aggregate: aggregate, cellForRowAt: indexPath)
+        let lemmaHomonym = lemmaHomonyms[row]
+        if (row == 0 || lemmaHomonyms[row-1].base != lemmaHomonym.base) {
+            return getHeaderCell(lemmaHomonym: lemmaHomonym, cellForRowAt: indexPath)
         } else {
-            return getBodyCell(aggregate: aggregate, cellForRowAt: indexPath)
+            return getBodyCell(lemmaHomonym: lemmaHomonym, cellForRowAt: indexPath)
         }
     }
     
-    private func getHeaderCell(aggregate: LemmaAggregate, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath)
-        if cell.viewWithTag(1) == nil {
-            let headerLabel = TTTAttributedLabel(frame: CGRect.zero)
-            headerLabel.tag = 1
-            headerLabel.isUserInteractionEnabled = true
-            headerLabel.delegate = self
-            headerLabel.linkAttributes = linkAttributes
-            cell.contentView.addSubview(headerLabel)
-            
-            let bodyLabel = makeBodyLabel();
-            bodyLabel.tag = 2
-            cell.contentView.addSubview(bodyLabel)
-            
-            let viewsDict = ["headerLabel": headerLabel, "bodyLabel": bodyLabel]
-            headerLabel.translatesAutoresizingMaskIntoConstraints = false
-            bodyLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-            var constraints = [NSLayoutConstraint]()
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[headerLabel]-16-|", options: [], metrics: nil, views: viewsDict))
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[bodyLabel]-16-|", options: [], metrics: nil, views: viewsDict))
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-24-[headerLabel]-8-[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
-            NSLayoutConstraint.activate(constraints)
-        }
-        
-        let headerLabel = cell.viewWithTag(1) as! TTTAttributedLabel
-        var headerText = "**\(aggregate.base.uppercased())**"
-        if aggregate.base != aggregate.word {
-            headerText = "▷ " + headerText
-        }
-        headerLabel.setText(Util.makeAttributedText(from: headerText, useSmallFont: true))
-        
-        let bodyLabel = cell.viewWithTag(2) as! TTTAttributedLabel
-        bodyLabel.setText(getAttributedString(for: aggregate.body, index: indexPath.row))
-        return cell
-    }
+    // MARK: - notification receivers
     
-    private func getBodyCell(aggregate: LemmaAggregate, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "BodyCell", for: indexPath)
-        if cell.viewWithTag(1) == nil {
-            let bodyLabel = makeBodyLabel()
-            bodyLabel.tag = 1
-            cell.contentView.addSubview(bodyLabel)
-            
-            let viewsDict = ["bodyLabel": bodyLabel]
-            bodyLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-            var constraints = [NSLayoutConstraint]()
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[bodyLabel]-16-|", options: [], metrics: nil, views: viewsDict))
-            constraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[bodyLabel]-4-|", options: [], metrics: nil, views: viewsDict))
-            NSLayoutConstraint.activate(constraints)
-        }
-        
-        let bodyLabel = cell.viewWithTag(1) as! TTTAttributedLabel
-        bodyLabel.setText(getAttributedString(for: aggregate.body, index: indexPath.row))
-        return cell
-    }
-    
-    private func makeBodyLabel() -> TTTAttributedLabel {
-        let bodyLabel = TTTAttributedLabel(frame: CGRect.zero)
-        bodyLabel.isUserInteractionEnabled = true
-        bodyLabel.delegate = self
-        bodyLabel.numberOfLines = 0
-        bodyLabel.linkAttributes = linkAttributes
-        return bodyLabel
-    }
-    
-    func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
-        let word = url.query!.components(separatedBy: "=")[1];
-        if let decoded = word.removingPercentEncoding {
-            NotificationCenter.default().post(name: lookupNotification, object: nil, userInfo: ["word": decoded])
-        }
-    }
-    
-    private func getAttributedString(for text: String, index: Int) -> AttributedString {
-        if let attributedString = attributedStringCache[index] {
-            return attributedString
-        }
-        let attributedString = Util.makeAttributedText(from: text)
-        attributedStringCache[index] = attributedString
-        return attributedString
-    }
-    
-    func receiveLookupNotification(notification: Notification) {
+    /// Registered to receive a notification when a lemma body word is clicked.
+    /// Invokes a popover with a dictionary synopsis of the clicked word
+    ///
+    /// - parameters:
+    ///     - notification: The received notification
+    ///
+    func receiveWordClickNotification(notification: Notification) {
         if let word = notification.userInfo?["word"] as? String {
-            print("received notification \(word)")
-            lookup(word: word, lang: "id")
+            dictionaryPopoverDelegate?.wordClickPopover(word: word)
         }
     }
     
-    func lookup(word: String, lang: String) {
+    /// Registered to receive a notification when a lemma base header is clicked.
+    /// Invokes a direct dictionary search for the clicked lemma base
+    ///
+    /// - parameters:
+    ///     - notification: The received notification
+    ///
+    func receiveWordLookupNotification(notification: Notification) {
+        if let word = notification.userInfo?["word"] as? String {
+            lookup(word: word, lang: Constants.ForeignLang)
+        }
+    }
+    
+    // MARK: - private helper functions
+    
+    private func getHeaderCell(lemmaHomonym: LemmaHomonym, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.LemmaHeaderCell, for: indexPath) as! LemmaHeaderCell
+        cell.setLemmaText(with: lemmaHomonym, forRow: indexPath.row)
+        return cell
+    }
+    
+    private func getBodyCell(lemmaHomonym: LemmaHomonym, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.LemmaBodyCell, for: indexPath) as! LemmaBodyCell
+        cell.setLemmaText(with: lemmaHomonym, forRow: indexPath.row)
+        return cell
+    }
+    
+    private func lookup(word: String, lang: String) {
         let startTime = Date()
         
-        let wasNil = aggregates == nil
+        let wasEmpty = lemmaHomonyms.isEmpty
         
-        let normalisedWord = word.folding(.diacriticInsensitiveSearch, locale: Locale.current()).lowercased()
+        let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current).lowercased()
         if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
-            let synopsis = Lemma.makeSynopsis(lemmas: result.0)
-            aggregates = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
+            lemmaHomonyms = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
         }
         
-        if !wasNil {
-            attributedStringCache.removeAll()
+        if !wasEmpty {
+            LemmaBaseCell.clearCache()
             self.tableView.reloadData()
             self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
@@ -178,5 +133,5 @@ class DictionaryController : UITableViewController, TTTAttributedLabelDelegate {
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("lookup \(word) took \(elapsed) ms")
     }
-    
 }
+

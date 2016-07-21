@@ -10,10 +10,16 @@ import UIKit
 
 class CollectionController: UITableViewController {
     
-    lazy var topics: [Topic] = {
+    private lazy var topics: [Topic] = {
         return TopicStore.sharedInstance.getCollection()
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.estimatedRowHeight = 85.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return topics.count
     }
@@ -30,8 +36,8 @@ class CollectionController: UITableViewController {
         if segue.identifier == "ShowPublication" {
             if let row = tableView.indexPathForSelectedRow?.row {
                 let indexTopic = topics[row]
-                let publicationViewController = segue.destinationViewController as! PublicationController
-                publicationViewController.indexTopic = indexTopic
+                let masterViewViewController = segue.destinationViewController as! MasterViewController
+                masterViewViewController.indexTopic = indexTopic
             }
         }
     }

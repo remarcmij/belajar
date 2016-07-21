@@ -50,7 +50,7 @@ extension LanguageHelper {
     }
 }
 
-func getLanguageHelperFor(lang: String) -> LanguageHelper {
+func getLanguageHelper(for lang: String) -> LanguageHelper {
     switch lang {
     case "id":
         return IndonesianLanguageHelper()

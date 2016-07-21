@@ -24,7 +24,7 @@ private extension RegularExpression {
     }
 }
 
-class IndonesianLanguageHelper : LanguageHelper {
+class IndonesianLanguageHelper: LanguageHelper {
     
     var substitutions: [String: String] {
         return [
@@ -43,12 +43,11 @@ class IndonesianLanguageHelper : LanguageHelper {
         "bukan",
         "ini",
         "sekali"
-    ])
+        ])
     
     private let simpleSuffix = try! RegularExpression(pattern: "^(.{2,})(?:nya|ku|kau|mu|[klt]ah|pun)$", options: [])
     private let kuMuKauPrefix = try! RegularExpression(pattern: "^(?:ku|mu|kau)(.{2,})$", options: [])
     private let diPrefix = try! RegularExpression(pattern: "^(?:di)(.{2,})$", options: [])
-//    private let lahPunSuffix = try! RegularExpression(pattern: "^(.{2,})(?:[klt]ah|pun)$", options: [])
     private let terPrefix = try! RegularExpression(pattern: "^(?:ter)(.{2,})$", options: [])
     private let kanISuffix = try! RegularExpression(pattern: "^[^m].{2,}(kan|i)$", options: [])
     private let sePrefix = try! RegularExpression(pattern: "^(?:se)(.{2,})$", options: [])

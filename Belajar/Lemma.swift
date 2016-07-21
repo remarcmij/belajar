@@ -8,7 +8,7 @@
 
 import Foundation
 
-private let xxx = try! RegularExpression(pattern: "", options: [])
+private let finalSemicolonRegex = try! RegularExpression(pattern: ";$", options: [])
 
 struct Lemma {
     var id: Int
@@ -37,10 +37,10 @@ struct Lemma {
     
     static func makeSynopsis(lemmas: [Lemma]) -> String {
         var homonymGroups = [[Lemma]?]()
-        var homonymGroup = [Lemma]()
         
         var prevBase: String?
         var prevHomonym = -1
+        var homonymGroup = [Lemma]()
         
         for lemma in lemmas {
             if prevBase == nil {
@@ -54,9 +54,7 @@ struct Lemma {
             homonymGroup.append(lemma)
         }
         
-        if homonymGroup.count != 0 {
-            homonymGroups.append(homonymGroup)
-        }
+        homonymGroups.append(homonymGroup)
         
         let result = NSMutableString()
         
@@ -68,7 +66,12 @@ struct Lemma {
                 if buffer.length == 0 {
                     buffer.append(text)
                 } else {
-                    text = text.replacingOccurrences(of: "**\(lemma.word)**", with: lemma.word)
+                    let lemmaWordRegex = try! RegularExpression(
+                        pattern: "\\*\\*\(lemma.word)\\*\\*. *(\\d+)", options: [])
+                    text = lemmaWordRegex.stringByReplacingMatches(
+                        in: text, options: [],
+                        range: NSMakeRange(0, text.utf16.count), withTemplate: "$1")
+                    buffer.append(" ")
                     buffer.append(text)
                 }
             }
@@ -77,7 +80,10 @@ struct Lemma {
                 result.append("\n")
             }
             
-            result.append(buffer as String)
+            let homonymText = finalSemicolonRegex.stringByReplacingMatches(
+                in: buffer as String, options: [],
+                range: NSMakeRange(0, buffer.length), withTemplate: ".")
+            result.append(homonymText)
         }
         
         return result as String

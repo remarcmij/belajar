@@ -9,7 +9,7 @@
 import Foundation
 import FMDB
 
-struct LemmaAggregate {
+struct LemmaHomonym {
     let base: String
     let baseLang: String
     let homonym: Int
@@ -23,7 +23,7 @@ class DictionaryStore {
     static let sharedInstance = DictionaryStore()
     
     init() {
-        let databasePath = Bundle.main().pathForResource("Dictionary", ofType: "sqlite")
+        let databasePath = Bundle.main.pathForResource("Dictionary", ofType: "sqlite")
         database = FMDatabase(path: databasePath)
         if !database.open() {
             fatalError("could not open Dictionary database")
@@ -64,7 +64,7 @@ class DictionaryStore {
         return lemmas
     }
     
-    func aggregateSearch(word: String, lang: String? = nil) -> [LemmaAggregate] {
+    func aggregateSearch(word: String, lang: String? = nil) -> [LemmaHomonym] {
         var values: [AnyObject] = [word]
         
         var sql = "SELECT \(Util.joinWithComma(Lemma.fieldNames)) FROM DictView WHERE word=?"
@@ -78,7 +78,7 @@ class DictionaryStore {
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         
-        var aggregates = [LemmaAggregate]()
+        var aggregates = [LemmaHomonym]()
         var prevBase = ""
         var prevBaseLang = ""
         var prevHomonym = -1
@@ -103,7 +103,7 @@ class DictionaryStore {
             }
             
             if (base != prevBase || homonym != prevHomonym) {
-                let aggregate = LemmaAggregate(base: prevBase, baseLang: prevBaseLang, homonym: prevHomonym, word: word, body: buffer as String)
+                let aggregate = LemmaHomonym(base: prevBase, baseLang: prevBaseLang, homonym: prevHomonym, word: word, body: buffer as String)
                 aggregates.append(aggregate)
                 prevBase = base
                 prevBaseLang = baseLang
@@ -118,7 +118,7 @@ class DictionaryStore {
         }
         
         if (buffer.length > 0) {
-            let aggregate = LemmaAggregate(base: base, baseLang: baseLang, homonym: homonym, word: word, body: buffer as String)
+            let aggregate = LemmaHomonym(base: base, baseLang: baseLang, homonym: homonym, word: word, body: buffer as String)
             aggregates.append(aggregate)
         }
         
@@ -129,11 +129,11 @@ class DictionaryStore {
     }
     
     func lookupWord(word: String) -> ([Lemma], String)? {
-        let languageHelper = getLanguageHelperFor(lang: foreignLang)
+        let languageHelper = getLanguageHelper(for: Constants.ForeignLang)
         let wordVariations = languageHelper.getWordVariations(for: word)
         
         for variation in wordVariations {
-            let lemmas = search(word: variation, lang: foreignLang, attr: "k")
+            let lemmas = search(word: variation, lang: Constants.ForeignLang, attr: "k")
             if lemmas.count != 0 {
                 return (lemmas, variation)
             }
