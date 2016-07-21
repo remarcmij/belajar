@@ -28,11 +28,11 @@
 		1AB995761D0715D60039FF6E /* BelajarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995751D0715D60039FF6E /* BelajarUITests.swift */; };
 		1ABDFB2D1D2690D600D84677 /* IndonesianLanguageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */; };
 		1ABDFB2F1D27B87700D84677 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABDFB2E1D27B87700D84677 /* Constants.swift */; };
+		1ACA705C1D417989004536E0 /* AttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */; };
 		1AD397A41D11A54500365164 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A31D11A54500365164 /* MasterViewController.swift */; };
 		1AD397A61D11B20500365164 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A51D11B20500365164 /* DetailViewController.swift */; };
 		1AD397AA1D11E13200365164 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 1AD397A91D11E13200365164 /* www */; };
 		1AD758921D34FEC9004756C4 /* DictionaryPopoverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD758911D34FEC9004756C4 /* DictionaryPopoverDelegate.swift */; };
-		1AD758941D3533A5004756C4 /* AttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD758931D3533A5004756C4 /* AttributedStringHelper.swift */; };
 		1AD758961D353C79004756C4 /* DictionaryPopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD758951D353C79004756C4 /* DictionaryPopoverController.swift */; };
 		1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DC1D096E75007CA509 /* Topic.swift */; };
 		1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E11D0986BF007CA509 /* TopicStore.swift */; };
@@ -92,11 +92,11 @@
 		1AB995771D0715D60039FF6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndonesianLanguageHelperTests.swift; sourceTree = "<group>"; };
 		1ABDFB2E1D27B87700D84677 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringHelper.swift; sourceTree = "<group>"; };
 		1AD397A31D11A54500365164 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		1AD397A51D11B20500365164 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		1AD397A91D11E13200365164 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		1AD758911D34FEC9004756C4 /* DictionaryPopoverDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryPopoverDelegate.swift; sourceTree = "<group>"; };
-		1AD758931D3533A5004756C4 /* AttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringHelper.swift; sourceTree = "<group>"; };
 		1AD758951D353C79004756C4 /* DictionaryPopoverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryPopoverController.swift; sourceTree = "<group>"; };
 		1AFB93DC1D096E75007CA509 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		1AFB93E11D0986BF007CA509 /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
@@ -261,7 +261,7 @@
 				1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */,
 				1A8375EC1D25503000B31980 /* DutchLanguageHelper.swift */,
 				1ABDFB2E1D27B87700D84677 /* Constants.swift */,
-				1AD758931D3533A5004756C4 /* AttributedStringHelper.swift */,
+				1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -576,7 +576,6 @@
 				1AD397A61D11B20500365164 /* DetailViewController.swift in Sources */,
 				1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */,
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
-				1AD758941D3533A5004756C4 /* AttributedStringHelper.swift in Sources */,
 				1A027A721D40D4740033B605 /* LemmaBodyCell.swift in Sources */,
 				1A027A761D410C720033B605 /* SearchResultsController.swift in Sources */,
 				1A8375EB1D2522A700B31980 /* SpeechTextLexer.swift in Sources */,
@@ -585,6 +584,7 @@
 				1AFB93EF1D0ECF88007CA509 /* Lemma.swift in Sources */,
 				1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */,
 				1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */,
+				1ACA705C1D417989004536E0 /* AttributedStringHelper.swift in Sources */,
 				1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

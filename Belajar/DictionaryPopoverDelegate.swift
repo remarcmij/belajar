@@ -57,9 +57,8 @@ class DictionaryPopoverDelegate: NSObject {
             .lowercased()
         
         if let controller = viewController,
-            let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
+            let (_, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
             resolvedWord = variation
-            let synopsis = Lemma.makeSynopsis(lemmas: lemmas)
             
             let popoverController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DictPopover") as! DictionaryPopoverController
             controller.present(popoverController, animated: true, completion: {

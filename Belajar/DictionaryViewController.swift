@@ -8,17 +8,10 @@
 
 import UIKit
 
-class DictionaryViewController : UITableViewController, UISearchResultsUpdating, SearchResultsControllerDelegate {
+class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate {
     
     var word: String!
     var lang: String!
-    
-    @IBOutlet private weak var searchBar: UISearchBar! {
-        didSet {
-            // must be set in software; setting in Storyboard doesn't work
-            searchBar.autocapitalizationType = .none
-        }
-    }
     
     private var lemmaHomonyms = [LemmaHomonym]()
     private var dictionaryPopoverDelegate: DictionaryPopoverDelegate!
@@ -28,9 +21,9 @@ class DictionaryViewController : UITableViewController, UISearchResultsUpdating,
         static let LemmaHeaderCell = "LemmaHeaderCell"
         static let LemmaBodyCell = "LemmaBodyCell"
     }
-
+    
     // MARK: - life cycle
-
+    
     deinit {
         LemmaBaseCell.clearCache()
     }
@@ -44,34 +37,43 @@ class DictionaryViewController : UITableViewController, UISearchResultsUpdating,
         
         let searchResultsController = storyboard!.instantiateViewController(withIdentifier: "SearchResultsController") as! SearchResultsController
         searchResultsController.delegate = self
+        searchResultsController.modalPresentationStyle = .popover
         
         searchController = UISearchController(searchResultsController: searchResultsController)
         searchController.searchResultsUpdater = self
-    
-      
+        
         let searchBar = searchController.searchBar
+        searchBar.delegate = self
         searchBar.showsSearchResultsButton = true
-        searchBar.showsScopeBar = true
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.sizeToFit()
         
-        tableView.tableHeaderView  = searchBar
-//        searchController.hidesNavigationBarDuringPresentation = false
-//        definesPresentationContext = true
+        navigationItem.titleView = searchBar
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
         
         if word != nil {
+            searchBar.text = word!
             lookup(word: word, lang: lang)
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(receiveWordClickNotification),
                                        name: Constants.WordClickNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(receiveWordLookupNotification),
                                        name: Constants.WordLookupNotification, object: nil)
+
+        if word == nil {
+            // show keyboard (needs delay, otherwise becomeFirstResponder return false
+            DispatchQueue.main.after(when: .now() + 0.5) { [weak self] in
+                self?.searchController.searchBar.becomeFirstResponder()
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -144,27 +146,31 @@ class DictionaryViewController : UITableViewController, UISearchResultsUpdating,
     }
     
     func lookup(word: String, lang: String) {
-        let startTime = Date()
         
-//        let wasEmpty = lemmaHomonyms.isEmpty
+        let startTime = Date()
         
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current).lowercased()
         if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord, lang: lang) {
             lemmaHomonyms = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
         }
         
-//        if !wasEmpty {
-            LemmaBaseCell.clearCache()
-            tableView.reloadData()
-            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-//        }
+        LemmaBaseCell.clearCache()
+        tableView.reloadData()
+        
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        //        hideSearchBar()
         
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("lookup \(word) took \(elapsed) ms")
     }
+    
+    private func hideSearchBar() {
+        tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
+    }
+}
 
-    // MARK: - UISearchResultsUpdating
+extension DictionaryViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
@@ -175,6 +181,10 @@ class DictionaryViewController : UITableViewController, UISearchResultsUpdating,
         
         (searchController.searchResultsController as? SearchResultsController)?.autoCompleteItems = autoCompleteItems
     }
-
 }
 
+extension DictionaryViewController: UISearchBarDelegate {
+    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
+        print("resultslistbutton clicked")
+    }
+}
