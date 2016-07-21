@@ -17,6 +17,8 @@ struct LemmaHomonym {
     let body: String
 }
 
+typealias AutoCompleteItem = (word: String, lang: String)
+
 class DictionaryStore {
     private let database: FMDatabase
     
@@ -35,6 +37,36 @@ class DictionaryStore {
     deinit {
         database.close()
         print("Dictionary database closed")
+    }
+    
+    func autoCompleteSearch(term: String, lang: String?) -> [AutoCompleteItem] {
+        var values: [AnyObject] = [term]
+        values.append(makeStopTerm(term: term))
+        
+        let sql = NSMutableString()
+        sql.setString("SELECT word, lang FROM AutoComplete WHERE word>=? AND word<?")
+        if lang != nil {
+            sql.append(" AND lang=?")
+            values.append(lang!)
+        }
+        sql.append(" ORDER BY word, lang LIMIT 100;")
+        
+        let rs = try! database.executeQuery(sql as String!, values: values)
+        var results = [AutoCompleteItem]()
+        
+        while rs.next() == true {
+            results.append((word: rs.string(forColumnIndex: 0), lang: rs.string(forColumnIndex: 1)))
+        }
+        rs.close()
+        return results
+    }
+    
+    private func makeStopTerm(term: String) -> String {
+        let utf16Chars = term.utf16
+        let lastChar = utf16Chars.last! + 1
+        let startIndex = term.utf16.startIndex
+        let endIndex = term.utf16.endIndex.advanced(by: -1)
+        return String(utf16Chars[startIndex..<endIndex]) + String(UnicodeScalar(lastChar))
     }
     
     func search(word: String, lang: String? = nil, attr: String? = nil) -> [Lemma] {
@@ -59,6 +91,7 @@ class DictionaryStore {
         while rs.next() == true {
             lemmas.append(self.dynamicType.makeLemma(fromResultSet: rs))
         }
+        rs.close()
         print("search for \(word) took \(elapsed) ms")
         
         return lemmas
@@ -117,6 +150,8 @@ class DictionaryStore {
             buffer.append(text)
         }
         
+        rs.close()
+        
         if (buffer.length > 0) {
             let aggregate = LemmaHomonym(base: base, baseLang: baseLang, homonym: homonym, word: word, body: buffer as String)
             aggregates.append(aggregate)
@@ -128,12 +163,12 @@ class DictionaryStore {
         return aggregates
     }
     
-    func lookupWord(word: String) -> ([Lemma], String)? {
-        let languageHelper = getLanguageHelper(for: Constants.ForeignLang)
+    func lookupWord(word: String, lang: String = Constants.ForeignLang) -> ([Lemma], String)? {
+        let languageHelper = getLanguageHelper(for: lang)
         let wordVariations = languageHelper.getWordVariations(for: word)
         
         for variation in wordVariations {
-            let lemmas = search(word: variation, lang: Constants.ForeignLang, attr: "k")
+            let lemmas = search(word: variation, lang: lang, attr: "k")
             if lemmas.count != 0 {
                 return (lemmas, variation)
             }

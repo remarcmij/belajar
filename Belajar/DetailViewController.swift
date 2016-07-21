@@ -57,12 +57,12 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
         dictionaryPopoverDelegate = DictionaryPopoverDelegate(controller: self)
-//        
-//        // todo: move text injection to model
-//        if let htmlText = article?.htmlText {
-//            let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
-//            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
-//        }
+        //
+        //        // todo: move text injection to model
+        //        if let htmlText = article?.htmlText {
+        //            let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
+        //            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
+        //        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -108,10 +108,13 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDictionary" {
-            let dictionaryController = segue.destinationViewController as! DictionaryController
-            dictionaryController.word = resolvedWord
-            dictionaryController.lang = Constants.ForeignLang
-            resolvedWord = nil
+            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionaryViewController {
+                
+                //            let dictionaryController = segue.destinationViewController as! DictionaryViewController
+                dictionaryController.word = resolvedWord
+                dictionaryController.lang = Constants.ForeignLang
+                resolvedWord = nil
+            }
         }
     }
     

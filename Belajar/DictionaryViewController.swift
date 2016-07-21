@@ -8,13 +8,21 @@
 
 import UIKit
 
-class DictionaryController : UITableViewController {
+class DictionaryViewController : UITableViewController, UISearchResultsUpdating, SearchResultsControllerDelegate {
     
     var word: String!
     var lang: String!
     
+    @IBOutlet private weak var searchBar: UISearchBar! {
+        didSet {
+            // must be set in software; setting in Storyboard doesn't work
+            searchBar.autocapitalizationType = .none
+        }
+    }
+    
     private var lemmaHomonyms = [LemmaHomonym]()
-    private var dictionaryPopoverDelegate: DictionaryPopoverDelegate?
+    private var dictionaryPopoverDelegate: DictionaryPopoverDelegate!
+    private var searchController: UISearchController!
     
     private struct Storyboard {
         static let LemmaHeaderCell = "LemmaHeaderCell"
@@ -33,6 +41,24 @@ class DictionaryController : UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         dictionaryPopoverDelegate = DictionaryPopoverDelegate(controller: self)
+        
+        let searchResultsController = storyboard!.instantiateViewController(withIdentifier: "SearchResultsController") as! SearchResultsController
+        searchResultsController.delegate = self
+        
+        searchController = UISearchController(searchResultsController: searchResultsController)
+        searchController.searchResultsUpdater = self
+    
+      
+        let searchBar = searchController.searchBar
+        searchBar.showsSearchResultsButton = true
+        searchBar.showsScopeBar = true
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
+        searchBar.sizeToFit()
+        
+        tableView.tableHeaderView  = searchBar
+//        searchController.hidesNavigationBarDuringPresentation = false
+//        definesPresentationContext = true
         
         if word != nil {
             lookup(word: word, lang: lang)
@@ -71,6 +97,10 @@ class DictionaryController : UITableViewController {
         } else {
             return getBodyCell(lemmaHomonym: lemmaHomonym, cellForRowAt: indexPath)
         }
+    }
+    
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - notification receivers
@@ -113,25 +143,38 @@ class DictionaryController : UITableViewController {
         return cell
     }
     
-    private func lookup(word: String, lang: String) {
+    func lookup(word: String, lang: String) {
         let startTime = Date()
         
-        let wasEmpty = lemmaHomonyms.isEmpty
+//        let wasEmpty = lemmaHomonyms.isEmpty
         
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current).lowercased()
-        if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
+        if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord, lang: lang) {
             lemmaHomonyms = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
         }
         
-        if !wasEmpty {
+//        if !wasEmpty {
             LemmaBaseCell.clearCache()
-            self.tableView.reloadData()
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
+            tableView.reloadData()
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+//        }
         
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("lookup \(word) took \(elapsed) ms")
     }
+
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let term = searchBar.text!.lowercased()
+        guard !term.isEmpty else { return }
+        
+        let autoCompleteItems = DictionaryStore.sharedInstance.autoCompleteSearch(term: term, lang: nil)
+        
+        (searchController.searchResultsController as? SearchResultsController)?.autoCompleteItems = autoCompleteItems
+    }
+
 }
 

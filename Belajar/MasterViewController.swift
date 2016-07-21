@@ -99,14 +99,3 @@ class MasterViewController: UITableViewController {
     }
 }
 
-// MARK: - Extensions
-
-extension UIViewController {
-    var contentViewController: UIViewController {
-        if let navcon = self as? UINavigationController {
-            return navcon.viewControllers.first ?? self
-        } else {
-            return self
-        }
-    }
-}
