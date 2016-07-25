@@ -9,24 +9,40 @@
 import UIKit
 
 
-class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate {
+class DictionarySearchViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
     
     var word: String!
     var lang: String!
     
-    private var lemmaHomonyms = [LemmaHomonym]()
+    @IBOutlet private weak var tableViewFooterLabel: UILabel! {
+        didSet {
+            // add some white space after last lemma
+            tableViewFooterLabel.text = " "
+        }
+    }
+    
+    private var aggregates = [LemmaBatch]()
     private var dictionaryPopoverDelegate: DictionaryPopoverDelegate!
     private var searchController: UISearchController!
     
+    private static var theSearchResultsController: SearchResultsController = {
+        return UIStoryboard.init(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "SearchResultsController") as! SearchResultsController
+    }()
+    
     private struct Storyboard {
-        static let LemmaHeaderCell = "LemmaHeaderCell"
-        static let LemmaBodyCell = "LemmaBodyCell"
+        static let HeaderCell = "headerCell"
+        static let ContinuationCell = "continuationCell"
+        static let ReferenceCell = "referenceCell"
     }
     
     // MARK: - life cycle
     
     deinit {
-        LemmaBaseCell.clearCache()
+        // ref: http://stackoverflow.com/questions/32282401/attempting-to-load-the-view-of-a-view-controller-while-it-is-deallocating-uis
+        searchController.view.removeFromSuperview()
+        
+        LemmaCell.clearCache()
     }
     
     override func viewDidLoad() {
@@ -34,11 +50,10 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        dictionaryPopoverDelegate = DictionaryPopoverDelegate(controller: self)
+        dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
         
-        let searchResultsController = storyboard!.instantiateViewController(withIdentifier: "SearchResultsController") as! SearchResultsController
+        let searchResultsController = self.dynamicType.theSearchResultsController
         searchResultsController.delegate = self
-        searchResultsController.modalPresentationStyle = .popover
         
         searchController = UISearchController(searchResultsController: searchResultsController)
         searchController.searchResultsUpdater = self
@@ -55,7 +70,6 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         definesPresentationContext = true
         
         if word != nil {
-            searchBar.text = word!
             lookup(word: word, lang: lang)
         }
     }
@@ -63,12 +77,9 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(receiveWordClickNotification),
-                                       name: Constants.WordClickNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(receiveWordLookupNotification),
-                                       name: Constants.WordLookupNotification, object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveWordClickNotification),
+                                               name: Constants.WordClickNotification, object: nil)
+        
         if word == nil {
             // show keyboard (needs delay, otherwise becomeFirstResponder return false
             DispatchQueue.main.after(when: .now() + 0.5) { [weak self] in
@@ -89,21 +100,42 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lemmaHomonyms.count
+        return aggregates.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        let lemmaHomonym = lemmaHomonyms[row]
-        if (row == 0 || lemmaHomonyms[row-1].base != lemmaHomonym.base) {
-            return getHeaderCell(lemmaHomonym: lemmaHomonym, cellForRowAt: indexPath)
+        let aggregate = aggregates[row]
+        
+        let identifier: String
+        if (row == 0 || aggregates[row-1].base != aggregate.base) {
+            if aggregate.base == word {
+                identifier = Storyboard.HeaderCell
+            } else {
+                identifier = Storyboard.ReferenceCell
+            }
         } else {
-            return getBodyCell(lemmaHomonym: lemmaHomonym, cellForRowAt: indexPath)
+            identifier = Storyboard.ContinuationCell
         }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LemmaCell
+        cell.setLemmaGroup(with: aggregate, forRow: indexPath.row)
+        
+        if row == 0 {
+            cell.hideSeparator()
+        }
+        
+        return cell
     }
     
     @IBAction func dismiss(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func baseButtonTapped(_ sender: UIButton) {
+        if let word = sender.title(for: .normal) {
+            lookup(word: word.lowercased(), lang: Constants.ForeignLang)
+        }
     }
     
     // MARK: - notification receivers
@@ -120,29 +152,17 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         }
     }
     
-    /// Registered to receive a notification when a lemma base header is clicked.
-    /// Invokes a direct dictionary search for the clicked lemma base
-    ///
-    /// - parameters:
-    ///     - notification: The received notification
-    ///
-    func receiveWordLookupNotification(notification: Notification) {
-        if let word = notification.userInfo?["word"] as? String {
-            lookup(word: word, lang: Constants.ForeignLang)
-        }
-    }
-    
     // MARK: - private helper functions
     
-    private func getHeaderCell(lemmaHomonym: LemmaHomonym, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.LemmaHeaderCell, for: indexPath) as! LemmaHeaderCell
-        cell.setLemmaText(with: lemmaHomonym, forRow: indexPath.row)
+    private func getHeaderCell(aggregate: LemmaBatch, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.HeaderCell, for: indexPath) as! LemmaHeaderCell
+        cell.setLemmaGroup(with: aggregate, forRow: indexPath.row)
         return cell
     }
     
-    private func getBodyCell(lemmaHomonym: LemmaHomonym, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.LemmaBodyCell, for: indexPath) as! LemmaBodyCell
-        cell.setLemmaText(with: lemmaHomonym, forRow: indexPath.row)
+    private func getBodyCell(aggregate: LemmaBatch, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.ContinuationCell, for: indexPath) as! LemmaContinuationCell
+        cell.setLemmaGroup(with: aggregate, forRow: indexPath.row)
         return cell
     }
     
@@ -151,15 +171,18 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         let startTime = Date()
         
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current).lowercased()
-        if let result = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord, lang: lang) {
-            lemmaHomonyms = DictionaryStore.sharedInstance.aggregateSearch(word: result.1, lang: lang)
+        self.word = normalisedWord
+        self.lang = lang
+        
+        if let (_, word) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord, lang: lang) {
+            let lemmas = DictionaryStore.sharedInstance.search(word: word, lang: lang)
+            aggregates = Lemma.batchLemmas(word: word, lemmas: lemmas)
         }
         
-        LemmaBaseCell.clearCache()
+        LemmaCell.clearCache()
         tableView.reloadData()
         
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        //        hideSearchBar()
         
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
@@ -169,9 +192,10 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     private func hideSearchBar() {
         tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
     }
+    
 }
 
-extension DictionaryViewController: UISearchResultsUpdating {
+extension DictionarySearchViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
@@ -184,7 +208,7 @@ extension DictionaryViewController: UISearchResultsUpdating {
     }
 }
 
-extension DictionaryViewController: UISearchBarDelegate {
+extension DictionarySearchViewController: UISearchBarDelegate {
     func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
         print("resultslistbutton clicked")
     }

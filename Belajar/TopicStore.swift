@@ -9,7 +9,7 @@
 import Foundation
 import FMDB
 
-class TopicStore {
+final class TopicStore {
     
     private let database: FMDatabase
     

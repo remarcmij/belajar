@@ -7,33 +7,58 @@
 //
 
 import Foundation
+import FMDB
 
-private let finalSemicolonRegex = try! RegularExpression(pattern: ";$", options: [])
+private let batchChunkSize = 5
 
-struct Lemma {
-    var id: Int
+class LemmaBatch {
+    // note: class in preference of struct to minimise reference counting
+    // on individual string properties
+    let base: String
+    let baseLang: String
+    let word: String
+    let body: String
+    
+    init(base: String, baseLang: String, word: String, body: String) {
+        self.base = base
+        self.baseLang = baseLang
+        self.word = word
+        self.body = body
+    }
+}
+
+class Lemma {
     var word: String
-    var lang: String
-    var attr: Character
-    var groupName: String
-    var dictOrder: Int
     var homonym: Int
     var text: String
     var base: String
     var baseLang: String
     
+    init(word: String, homonym: Int, text: String, base: String, baseLang: String) {
+        self.word = word
+        self.homonym = homonym
+        self.text = text
+        self.base = base
+        self.baseLang = baseLang
+    }
+    
     static let fieldNames = [
-        "id",
         "word",
-        "lang",
-        "attr",
-        "groupName",
-        "dictOrder",
         "homonym",
         "text",
         "base",
         "baseLang"
     ]
+    
+    static func makeLemma(fromResultSet rs: FMResultSet) -> Lemma {
+        return Lemma(word: rs.string(forColumnIndex: 0),
+                     homonym: Int(rs.int(forColumnIndex: 1)),
+                     text: rs.string(forColumnIndex: 2),
+                     base: rs.string(forColumnIndex: 3),
+                     baseLang: rs.string(forColumnIndex: 4))
+    }
+
+    private static let finalSemicolonRegex = try! RegularExpression(pattern: ";$", options: [])
     
     static func makeSynopsis(lemmas: [Lemma]) -> String {
         var homonymGroups = [[Lemma]?]()
@@ -88,4 +113,50 @@ struct Lemma {
         
         return result as String
     }
+    
+    static func batchLemmas(word: String, lemmas: [Lemma]) -> [LemmaBatch] {
+        
+        var batches = [LemmaBatch]()
+        var prevBase = ""
+        var prevBaseLang = ""
+        var prevHomonym = -1
+        var buffer = NSMutableString()
+        var lemmaCount = 0
+        
+        for lemma in lemmas {
+            
+            if (prevBase.isEmpty) {
+                prevBase = lemma.base
+                prevBaseLang = lemma.baseLang
+                prevHomonym = lemma.homonym
+            }
+            
+            if (lemma.base != prevBase || lemma.homonym != prevHomonym || (lemma.base == word && lemmaCount >= batchChunkSize)) {
+                let batch = LemmaBatch(base: prevBase, baseLang: prevBaseLang,
+                                             word: word, body: buffer as String)
+                batches.append(batch)
+                prevBase = lemma.base
+                prevBaseLang = lemma.baseLang
+                prevHomonym = lemma.homonym
+                lemmaCount = 0
+                buffer = NSMutableString()
+            }
+            
+            if (buffer.length > 0) {
+                buffer.append("\n")
+            }
+            buffer.append(lemma.text)
+            lemmaCount += 1
+        }
+        
+        if (buffer.length > 0) {
+            let lastLemma = lemmas.last!
+            let batch = LemmaBatch(base: lastLemma.base, baseLang: lastLemma.baseLang,
+                                         word: word, body: buffer as String)
+            batches.append(batch)
+        }
+        
+        return batches
+    }
+
 }

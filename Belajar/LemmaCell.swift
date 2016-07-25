@@ -23,7 +23,7 @@ extension UIColor {
     }
 }
 
-class LemmaBaseCell: UITableViewCell, TTTAttributedLabelDelegate {
+class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
 
     private static var attributedStringCache = [Int: AttributedString]()
     private static let linkColor = UIColor(netHex: 0x303F9F)
@@ -40,14 +40,10 @@ class LemmaBaseCell: UITableViewCell, TTTAttributedLabelDelegate {
         attributedStringCache.removeAll()
     }
     
-    func setLemmaText(with lemmaHomonym: LemmaHomonym, forRow rowIndex: Int) {
-        bodyText = getAttributedString(from: lemmaHomonym.body, cacheIndex: rowIndex * 2, clickAction: "synopsis")
-        
-        var text = "**\(lemmaHomonym.base.uppercased())**"
-        if lemmaHomonym.base != lemmaHomonym.word {
-            text = "▷ " + text
-        }
-        headerText = getAttributedString(from: text, cacheIndex: rowIndex * 2 + 1, clickAction: "lookup", useSmallFont: true)
+    func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
+        bodyText = getAttributedString(from: lemmaBatch.body, cacheIndex: rowIndex, clickAction: "synopsis")
+        headerText = AttributedStringHelper.makeClickableWord(from: lemmaBatch.base.uppercased(),
+                                                              clickAction: "lookup", font: PreferredFont.get(type: .smallCapsBold))
     }
     
     private func getAttributedString(from sourceString: String, cacheIndex: Int, clickAction: String, useSmallFont: Bool = false) -> AttributedString {
@@ -59,8 +55,12 @@ class LemmaBaseCell: UITableViewCell, TTTAttributedLabelDelegate {
         return attributedString
     }
    
+    func hideSeparator() {
+        // to be overridden by subclasses
+    }
 
     // MARK: - TTTAttributedLabelDelegate
+    
     /// Called when substring marked with an NSLinkAttributeName attribute is clicked.
     ///
     /// - parameters:

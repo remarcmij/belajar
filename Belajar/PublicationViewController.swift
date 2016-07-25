@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class PublicationViewController: UITableViewController {
     
     var indexTopic: Topic! {
         didSet {
@@ -18,12 +18,12 @@ class MasterViewController: UITableViewController {
         }
     }
     
-    //    private var detailViewController: DetailViewController?
+    //    private var articleViewController: ArticleViewController?
     
     private var topics = [Topic]()
     
     private struct Storyboard {
-        static let PublicationCell = "PublicationCell"
+        static let PublicationTableViewCell = "PublicationTableViewCell"
         static let ShowDetail = "ShowDetail"
     }
     
@@ -34,16 +34,15 @@ class MasterViewController: UITableViewController {
         
         //        if let split = splitViewController {
         //            let controllers = split.viewControllers
-        //            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+        //            articleViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ArticleViewController
         //        }
         
         tableView.estimatedRowHeight = tableView.rowHeight // Storyboard height
         tableView.rowHeight = UITableViewAutomaticDimension
-        indexTopic = Topic(id: 0, fileName: "", publication: "harmani", chapter: "", groupName: "", sortIndex: 0, title: "Harmani", subtitle: "", author: "", publisher: "", pubDate: "", icon: "", lastModified: "")
         
-        definesPresentationContext = true
-        //        let collectionController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DictPopover") as! DictionaryPopoverController
-        //        present(collectionController, animated: true, completion: nil)
+//        definesPresentationContext = true
+        //        let libraryViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DictPopover") as! DictionaryPopoverController
+        //        present(libraryViewController, animated: true, completion: nil)
     }
     
     // MARK: - UITableViewDataSource
@@ -58,17 +57,17 @@ class MasterViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.PublicationCell, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.PublicationTableViewCell, for: indexPath) as! PublicationTableViewCell
         let topic = topics[indexPath.row]
-        cell.textLabel?.text = topic.title
-        cell.detailTextLabel?.text = topic.subtitle
+        cell.titleLabel?.text = topic.title
+        cell.subtitleLabel?.text = topic.subtitle
         return cell
     }
     
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let detailController = splitViewController?.viewControllers.last?.contentViewController as? DetailViewController {
+        if let detailController = splitViewController?.viewControllers.last?.contentViewController as? ArticleViewController {
             // FIXME: use presented dic
             detailController.topic = topics[indexPath.row]
             detailController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
@@ -86,7 +85,7 @@ class MasterViewController: UITableViewController {
             contentController = navController.viewControllers[0] ?? contentController
         }
         
-        guard let detailController = contentController as? DetailViewController,
+        guard let detailController = contentController as? ArticleViewController,
             let cell = sender as? UITableViewCell,
             let indexPath = tableView.indexPath(for: cell),
             let identifier = segue.identifier,

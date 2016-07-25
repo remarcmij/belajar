@@ -8,13 +8,19 @@
 
 import UIKit
 
+protocol DictionaryPopoverPresenter {
+    func lookup(word: String, lang: String)
+}
+
 class DictionaryPopoverDelegate: NSObject {
-    private weak var viewController: UIViewController?
+    private weak var presenter: UIViewController?
     private var resolvedWord: String?
     
-    init(controller: UIViewController) {
-        self.viewController = controller;
-        controller.definesPresentationContext = true
+    init(presenter: UIViewController) {
+        assert((presenter as? DictionaryPopoverPresenter) != nil,
+               "presenter should conform to DictionaryPopoverPresenter protocol")
+        self.presenter = presenter;
+        presenter.definesPresentationContext = true
         super.init()
     }
     
@@ -22,7 +28,7 @@ class DictionaryPopoverDelegate: NSObject {
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current)
             .lowercased()
         
-        if let controller = viewController,
+        if let controller = presenter,
             let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
             resolvedWord = variation
             let synopsis = Lemma.makeSynopsis(lemmas: lemmas)
@@ -32,19 +38,22 @@ class DictionaryPopoverDelegate: NSObject {
             let attributedString = AttributedStringHelper.makeAttributedText(from: synopsis, clickAction: nil, useSmallFont: true)
             
             alert.setValue(attributedString, forKey: "attributedMessage")
-            alert.addAction(UIAlertAction(title: "more...", style: .default, handler: {[weak self] action in
-                if let weakSelf = self {
-                    print("action lookup \(weakSelf.resolvedWord!)")
-                    NotificationCenter.default.post(name: Constants.WordLookupNotification,
-                                                    object: nil, userInfo: ["word": weakSelf.resolvedWord!])
-                }
+            alert.addAction(UIAlertAction(title: "more...", style: .default, handler: {[weak weakSelf = self] action in
+                (weakSelf!.presenter as! DictionaryPopoverPresenter).lookup(word: weakSelf!.resolvedWord!, lang: Constants.ForeignLang)
+//                    DispatchQueue.main.async() { _ in
+//                        NotificationCenter.default.post(name: Constants.WordLookupNotification,
+//                                                        object: weakSelf.presenter,
+//                                                        userInfo: ["word": weakSelf.resolvedWord!])
+//                    }
+
+//                }
                 }))
             alert.addAction(UIAlertAction(title: "say", style: .default, handler: {  _ in print("cancelled") }))
             
             alert.view.isUserInteractionEnabled = true
             alert.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.alertViewTapped(sender:))))
             
-            controller.present(alert, animated: true, completion: {
+            controller.present(alert, animated: false, completion: {
                 alert.view.superview?.isUserInteractionEnabled = true
                 alert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.alertViewBackgroundTapped(sender:))))
             })
@@ -56,7 +65,7 @@ class DictionaryPopoverDelegate: NSObject {
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current)
             .lowercased()
         
-        if let controller = viewController,
+        if let controller = presenter,
             let (_, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
             resolvedWord = variation
             
@@ -79,7 +88,7 @@ class DictionaryPopoverDelegate: NSObject {
     func alertViewBackgroundTapped(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             print("background clicked")
-            viewController?.dismiss(animated: true, completion: nil)
+            presenter?.dismiss(animated: false, completion: nil)
         }
     }
 }

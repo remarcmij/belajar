@@ -1,4 +1,4 @@
-//
+ //
 //  LemmaBodyCell.swift
 //  Belajar
 //
@@ -9,17 +9,17 @@
 import UIKit
 import TTTAttributedLabel
 
-class LemmaBodyCell: LemmaBaseCell {
+class LemmaContinuationCell: LemmaCell {
 
     @IBOutlet weak var bodyLabel: TTTAttributedLabel! {
         didSet {
             bodyLabel.delegate = self
-            bodyLabel.linkAttributes = LemmaBaseCell.linkAttributes
+            bodyLabel.linkAttributes = LemmaCell.linkAttributes
         }
     }
     
-    override func setLemmaText(with lemmaHomonym: LemmaHomonym, forRow rowIndex: Int) {
-        super.setLemmaText(with: lemmaHomonym, forRow: rowIndex)
+    override func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
+        super.setLemmaGroup(with: lemmaBatch, forRow: rowIndex)
         bodyLabel.setText(bodyText!)
     }
 }

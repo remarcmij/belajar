@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class DetailViewController: UIViewController, WKScriptMessageHandler {
+class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverPresenter {
     
     private var webView: WKWebView!
     private var resolvedWord: String?
@@ -56,25 +56,7 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dictionaryPopoverDelegate = DictionaryPopoverDelegate(controller: self)
-        //
-        //        // todo: move text injection to model
-        //        if let htmlText = article?.htmlText {
-        //            let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
-        //            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
-        //        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(receiveWordLookupNotification),
-                                       name: Constants.WordLookupNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -99,18 +81,11 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func receiveWordLookupNotification(notification: Notification) {
-        if let word = notification.userInfo?["word"] as? String {
-            resolvedWord = word
-            performSegue(withIdentifier: "ShowDictionary", sender: self)
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDictionary" {
-            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionaryViewController {
+            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionarySearchViewController {
                 
-                //            let dictionaryController = segue.destinationViewController as! DictionaryViewController
+                //            let dictionaryController = segue.destinationViewController as! DictionarySearchViewController
                 dictionaryController.word = resolvedWord
                 dictionaryController.lang = Constants.ForeignLang
                 resolvedWord = nil
@@ -118,6 +93,7 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
         }
     }
     
+    // intermediate class to minimise memory leaks
     class MyMessageHandler: NSObject,  WKScriptMessageHandler {
         private weak var delegate: WKScriptMessageHandler?
         
@@ -129,6 +105,13 @@ class DetailViewController: UIViewController, WKScriptMessageHandler {
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             delegate?.userContentController(userContentController, didReceive: message)
         }
+    }
+    
+    // MARK: - DictionaryPopoverPresenter
+    
+    func lookup(word: String, lang: String) {
+        resolvedWord = word
+        performSegue(withIdentifier: "ShowDictionary", sender: self)
     }
 }
 

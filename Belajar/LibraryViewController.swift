@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.swift
+//  LibraryViewController.swift
 //  Belajar
 //
 //  Created by Jim Cramer on 15/06/16.
@@ -8,7 +8,12 @@
 
 import UIKit
 
-class CollectionController: UITableViewController {
+class LibraryViewController: UITableViewController {
+
+    private struct Storyboard {
+        static let showPublication = "showPublication"
+        static let libraryTableViewCell = "LibraryTableViewCell"
+    }
     
     private lazy var topics: [Topic] = {
         return TopicStore.sharedInstance.getCollection()
@@ -16,7 +21,7 @@ class CollectionController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 85.0
+        tableView.estimatedRowHeight = tableView.rowHeight 
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
@@ -25,19 +30,17 @@ class CollectionController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        let topic = topics[indexPath.row]
-        cell.textLabel?.text = topic.title
-        cell.detailTextLabel?.text = topic.subtitle
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.libraryTableViewCell, for: indexPath) as! LibraryTableViewCell
+        cell.topic = topics[indexPath.row]
         return cell
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowPublication" {
+        if segue.identifier == Storyboard.showPublication {
             if let row = tableView.indexPathForSelectedRow?.row {
                 let indexTopic = topics[row]
-                let masterViewViewController = segue.destinationViewController as! MasterViewController
-                masterViewViewController.indexTopic = indexTopic
+                let publicationViewController = segue.destinationViewController as! PublicationViewController
+                publicationViewController.indexTopic = indexTopic
             }
         }
     }

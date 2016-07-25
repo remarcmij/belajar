@@ -8,43 +8,9 @@
 
 import UIKit
 
-class AttributedStringHelper {
+struct AttributedStringHelper {
     
     private static let markdownRegExp = try! RegularExpression(pattern: "\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|__(.+?)__|_(.+?)_", options: [])
-    
-    private static var regularFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
-    
-    private static var boldFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
-    
-    private static var italicFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
-    
-    private static var smallRegularFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
-    
-    private static var smallBoldFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
-    
-    private static var smallItalicFont: UIFont = {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
-        return UIFont(descriptor: descriptor, size: 0.0)
-    }()
     
     static func makeAttributedText(from text: NSString, clickAction: String? = nil, useSmallFont: Bool = false) -> AttributedString {
         let startTime = Date()
@@ -55,9 +21,13 @@ class AttributedStringHelper {
         var startPos = 0
         let matches = AttributedStringHelper.markdownRegExp.matches(in: text as String, options: [], range: NSMakeRange(0, text.length))
         
-        let regularFont = useSmallFont ? smallRegularFont : self.regularFont
-        let boldFont = useSmallFont ? smallBoldFont : self.boldFont
-        let italicFont = useSmallFont ? smallItalicFont : self.italicFont
+        let regularFontType = useSmallFont ? PreferredFont.smallRegular : .bodyTextLight
+        let boldFontType = useSmallFont ? PreferredFont.smallBold : .bold
+        let italicFontType = useSmallFont ? PreferredFont.smallItalic : .italic
+        
+        let regularFont = PreferredFont.get(type: regularFontType)
+        let boldFont = PreferredFont.get(type: boldFontType)
+        let italicFont = PreferredFont.get(type: italicFontType)
         
         for match in matches {
             let outerRange = match.range
@@ -97,7 +67,7 @@ class AttributedStringHelper {
         
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
-        print("makeAttributedText took \(elapsed) ms")
+//        print("makeAttributedText took \(elapsed) ms")
         
         return attributedString
     }

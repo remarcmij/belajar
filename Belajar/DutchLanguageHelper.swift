@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class DutchLanguageHelper : LanguageHelper {
+struct DutchLanguageHelper : LanguageHelper {
     
     var substitutions: [String: String] {
         return [

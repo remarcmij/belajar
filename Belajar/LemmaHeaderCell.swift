@@ -9,25 +9,31 @@
 import UIKit
 import TTTAttributedLabel
 
-class LemmaHeaderCell: LemmaBaseCell {
+class LemmaHeaderCell: LemmaCell {
     
-    @IBOutlet weak var headerLabel: TTTAttributedLabel! {
+    @IBOutlet weak var separatorView: UIView!
+    
+    @IBOutlet weak var headerLabel: UILabel! {
         didSet {
-            headerLabel.delegate = self
-            headerLabel.linkAttributes = LemmaBaseCell.linkAttributes
+            headerLabel.font = PreferredFont.get(type: .smallCapsBold)
         }
     }
     
     @IBOutlet weak var bodyLabel: TTTAttributedLabel! {
         didSet {
             bodyLabel.delegate = self
-            bodyLabel.linkAttributes = LemmaBaseCell.linkAttributes
+            bodyLabel.linkAttributes = LemmaCell.linkAttributes
         }
     }
     
-    override func setLemmaText(with lemmaHomonym: LemmaHomonym, forRow rowIndex: Int) {
-        super.setLemmaText(with: lemmaHomonym, forRow: rowIndex)
-        headerLabel.setText(headerText!)
+    override func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
+        super.setLemmaGroup(with:lemmaBatch, forRow: rowIndex)
+        headerLabel.text = headerText!.string
         bodyLabel.setText(bodyText!)
+        separatorView.isHidden = false
+    }
+    
+    override func hideSeparator() {
+        separatorView.isHidden = true
     }
 }

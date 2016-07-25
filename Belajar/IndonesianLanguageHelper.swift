@@ -24,7 +24,7 @@ private extension RegularExpression {
     }
 }
 
-class IndonesianLanguageHelper: LanguageHelper {
+struct IndonesianLanguageHelper: LanguageHelper {
     
     var substitutions: [String: String] {
         return [
