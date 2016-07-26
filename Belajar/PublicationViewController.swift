@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PublicationViewController: UITableViewController {
+class PublicationViewController: DynamicTextTableViewController {
     
     var indexTopic: Topic! {
         didSet {
@@ -29,18 +29,10 @@ class PublicationViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        navigationItem.leftBarButtonItem = editButtonItem()
-        
-        //        if let split = splitViewController {
-        //            let controllers = split.viewControllers
-        //            articleViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ArticleViewController
-        //        }
-        
         tableView.estimatedRowHeight = tableView.rowHeight // Storyboard height
         tableView.rowHeight = UITableViewAutomaticDimension
-        
-//        definesPresentationContext = true
+
+        //        definesPresentationContext = true
         //        let libraryViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DictPopover") as! DictionaryPopoverController
         //        present(libraryViewController, animated: true, completion: nil)
     }
@@ -58,9 +50,7 @@ class PublicationViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.PublicationTableViewCell, for: indexPath) as! PublicationTableViewCell
-        let topic = topics[indexPath.row]
-        cell.titleLabel?.text = topic.title
-        cell.subtitleLabel?.text = topic.subtitle
+        cell.topic = topics[indexPath.row]
         return cell
     }
     

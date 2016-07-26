@@ -12,12 +12,7 @@ import TTTAttributedLabel
 class LemmaHeaderCell: LemmaCell {
     
     @IBOutlet weak var separatorView: UIView!
-    
-    @IBOutlet weak var headerLabel: UILabel! {
-        didSet {
-            headerLabel.font = PreferredFont.get(type: .smallCapsBold)
-        }
-    }
+    @IBOutlet weak var headerLabel: UILabel!
     
     @IBOutlet weak var bodyLabel: TTTAttributedLabel! {
         didSet {
@@ -29,6 +24,7 @@ class LemmaHeaderCell: LemmaCell {
     override func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
         super.setLemmaGroup(with:lemmaBatch, forRow: rowIndex)
         headerLabel.text = headerText!.string
+        headerLabel.font = PreferredFont.get(type: .caption1Bold)
         bodyLabel.setText(bodyText!)
         separatorView.isHidden = false
     }

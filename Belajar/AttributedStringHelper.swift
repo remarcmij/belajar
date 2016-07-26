@@ -21,9 +21,9 @@ struct AttributedStringHelper {
         var startPos = 0
         let matches = AttributedStringHelper.markdownRegExp.matches(in: text as String, options: [], range: NSMakeRange(0, text.length))
         
-        let regularFontType = useSmallFont ? PreferredFont.smallRegular : .bodyTextLight
-        let boldFontType = useSmallFont ? PreferredFont.smallBold : .bold
-        let italicFontType = useSmallFont ? PreferredFont.smallItalic : .italic
+        let regularFontType = useSmallFont ? PreferredFont.caption1 : .bodyLight
+        let boldFontType = useSmallFont ? PreferredFont.caption1Bold : .bodyBold
+        let italicFontType = useSmallFont ? PreferredFont.caption1Italic : .bodyItalic
         
         let regularFont = PreferredFont.get(type: regularFontType)
         let boldFont = PreferredFont.get(type: boldFontType)

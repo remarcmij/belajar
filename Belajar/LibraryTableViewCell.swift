@@ -10,20 +10,18 @@ import UIKit
 
 class LibraryTableViewCell: UITableViewCell {
 
-    @IBOutlet private weak var productImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel! {
-        didSet {
-            titleLabel.font = PreferredFont.get(type: .bodyTextLight)
-        }
-    }
-    @IBOutlet private weak var subtitleLabel: UILabel!
+    @IBOutlet weak private var productImageView: UIImageView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var subtitleLabel: UILabel!
     
     var topic: Topic! {
         didSet {
             productImageView?.image = UIImage(named: "\(topic.publication).index.png")
             productImageView?.sizeToFit()
             titleLabel?.text = topic.title
+            titleLabel?.font = PreferredFont.get(type: .bodyLight)
             subtitleLabel?.text = topic.subtitle
+            subtitleLabel?.font = PreferredFont.get(type: .caption1)
         }
     }
 }

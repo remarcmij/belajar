@@ -43,7 +43,7 @@ class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
     func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
         bodyText = getAttributedString(from: lemmaBatch.body, cacheIndex: rowIndex, clickAction: "synopsis")
         headerText = AttributedStringHelper.makeClickableWord(from: lemmaBatch.base.uppercased(),
-                                                              clickAction: "lookup", font: PreferredFont.get(type: .smallCapsBold))
+                                                              clickAction: "lookup", font: PreferredFont.get(type: .caption1Bold))
     }
     
     private func getAttributedString(from sourceString: String, cacheIndex: Int, clickAction: String, useSmallFont: Bool = false) -> AttributedString {

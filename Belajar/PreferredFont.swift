@@ -10,47 +10,54 @@ import UIKit
 
 enum PreferredFont {
     
-    case regular, bold, italic, smallRegular, smallBold, smallItalic, smallCapsBold, bodyTextLight
-    
-    private static var fontCache = [PreferredFont: UIFont]()
+    case title1, title2, title3, headline, body, bodyBold, bodyItalic, bodyLight, caption1, caption1Bold, caption1Italic, bodySmallCaps
     
     static func get(type: PreferredFont) -> UIFont {
-        if let font = fontCache[type] {
-            return font
-        }
-        
+       
         let font: UIFont
         
         switch type {
             
-        case .regular:
+        case .title1:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle1)
+            
+        case .title2:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle2)
+        
+        case .title3:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle3)
+            
+        case .headline:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleHeadline)
+
+        case .body:
             font = UIFont.preferredFont(forTextStyle: UIFontTextStyleBody)
             
-        case .bold:
+        case .bodyBold:
             let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
-        case .italic:
+        case .bodyItalic:
             let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
             
-        case .smallRegular:
+        case .caption1:
             font = UIFont.preferredFont(forTextStyle: UIFontTextStyleCaption1)
             
-        case .smallBold:
+        case .caption1Bold:
             let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
-        case .smallItalic:
+        case .caption1Italic:
             let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
-        case .smallCapsBold:
+        case .bodySmallCaps:
             let textStyleBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             let smallCapsBoldDescriptor = textStyleBodyDescriptor.addingAttributes([
@@ -60,17 +67,12 @@ enum PreferredFont {
                     ]]])
             font = UIFont(descriptor: smallCapsBoldDescriptor, size: 0.0)
             
-        case .bodyTextLight:
-            let bodyFont = get(type: PreferredFont.regular)
+        case .bodyLight:
+            let bodyFont = get(type: PreferredFont.body)
             font = UIFont.systemFont(ofSize: bodyFont.pointSize, weight: UIFontWeightLight)
          }
         
-        fontCache[type] = font
         return font
-    }
-    
-    static func clearCache() {
-        fontCache.removeAll()
     }
 }
 

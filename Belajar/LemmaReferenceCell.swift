@@ -11,16 +11,6 @@ import TTTAttributedLabel
 
 class LemmaReferenceCell: LemmaCell {
     
-    private lazy var headerFont: UIFont = {
-        let fontDescriptor = UIFont.preferredFont(forTextStyle: UIFontTextStyleBody).fontDescriptor()
-        let smallCapsDescriptor = fontDescriptor.addingAttributes([
-            UIFontDescriptorFeatureSettingsAttribute: [[
-                UIFontFeatureTypeIdentifierKey: kUpperCaseType,
-                UIFontFeatureSelectorIdentifierKey: kUpperCaseSmallCapsSelector
-                ]]])
-        return UIFont(descriptor: smallCapsDescriptor, size: 0.0)
-    }()
-    
     @IBOutlet private weak var baseButton: UIButton!
     
     @IBOutlet private weak var bodyLabel: TTTAttributedLabel! {

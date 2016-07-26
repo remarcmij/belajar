@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LibraryViewController: UITableViewController {
+class LibraryViewController: DynamicTextTableViewController {
 
     private struct Storyboard {
         static let showPublication = "showPublication"
@@ -24,7 +24,7 @@ class LibraryViewController: UITableViewController {
         tableView.estimatedRowHeight = tableView.rowHeight 
         tableView.rowHeight = UITableViewAutomaticDimension
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return topics.count
     }
@@ -44,5 +44,4 @@ class LibraryViewController: UITableViewController {
             }
         }
     }
-    
 }

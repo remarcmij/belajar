@@ -20,10 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(clearPreferredFontCache),
-                                               name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
-        
         return true
     }
     
@@ -61,10 +57,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return false
     }
     
-    // MARK: - helper functions
-    
-    func clearPreferredFontCache() {
-        PreferredFont.clearCache()
-    }
 }
 

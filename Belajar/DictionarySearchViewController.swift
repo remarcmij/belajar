@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class DictionarySearchViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
     
     var word: String!
@@ -69,14 +68,17 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
+
         if word != nil {
             lookup(word: word, lang: lang)
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
+                                               name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(receiveWordClickNotification),
                                                name: Constants.WordClickNotification, object: nil)
         
@@ -179,10 +181,9 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
             aggregates = Lemma.batchLemmas(word: word, lemmas: lemmas)
         }
         
-        LemmaCell.clearCache()
-        tableView.reloadData()
+        clearCacheAndReloadData()
         
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated : false)
         
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
@@ -193,6 +194,14 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
     }
     
+    func onContentSizeChanged() {
+        clearCacheAndReloadData()
+    }
+    
+    private func clearCacheAndReloadData() {
+        LemmaCell.clearCache()
+        tableView.reloadData()
+    }
 }
 
 extension DictionarySearchViewController: UISearchResultsUpdating {

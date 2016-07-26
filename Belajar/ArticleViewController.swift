@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 
+
+
 class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverPresenter {
     
     private var webView: WKWebView!
@@ -16,15 +18,16 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     private var clickedText: String?
     private var dictionaryPopoverDelegate: DictionaryPopoverDelegate?
     
+    private var styleSheet: String {
+        return "body {font-size: \(PreferredFont.get(type: .body).pointSize)px;}"
+    }
+    
     var topic: Topic? {
         didSet {
             if topic != nil {
                 navigationItem.title = topic!.title
                 article = TopicStore.sharedInstance.getArticle(withTopicId: topic!.id)
-                if let htmlText = article?.htmlText {
-                    let htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- placeholder -->", with: htmlText)
-                    webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
-                }
+                loadHTML()
             }
         }
     }
@@ -57,8 +60,15 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func viewDidLoad() {
         super.viewDidLoad()
         dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
+                                               name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
+    override func viewDidDisappear(_ animated: Bool)  {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         func handler(_ action: UIAlertAction) {
             print("user tapped \(action.title)")
@@ -112,6 +122,20 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     func lookup(word: String, lang: String) {
         resolvedWord = word
         performSegue(withIdentifier: "ShowDictionary", sender: self)
+    }
+    
+    // MARK: - helper functions
+    
+    func onContentSizeChanged() {
+        loadHTML()
+    }
+    
+    func loadHTML() {
+        if let htmlText = article?.htmlText {
+            var htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- style -->", with: styleSheet)
+            htmlDoc = htmlDoc.replacingOccurrences(of: "<!-- article -->", with: htmlText)
+            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
+        }
     }
 }
 

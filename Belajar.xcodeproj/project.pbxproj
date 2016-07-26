@@ -16,6 +16,7 @@
 		1A275EC91D1179CC00D38BC4 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A275EC81D1179CC00D38BC4 /* LibraryViewController.swift */; };
 		1A37763D1D3E3C3800FCDE4B /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A37763C1D3E3C3800FCDE4B /* SearchTableViewController.swift */; };
 		1A4547261D16F3580003BA2F /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4547251D16F3580003BA2F /* DictionarySearchViewController.swift */; };
+		1A5C5C681D479F9100175041 /* DynamicTextTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */; };
 		1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */; };
 		1A8375E91D251ED400B31980 /* LanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E81D251ED400B31980 /* LanguageHelper.swift */; };
 		1A8375EB1D2522A700B31980 /* SpeechTextLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */; };
@@ -82,6 +83,7 @@
 		1A275EC81D1179CC00D38BC4 /* LibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		1A37763C1D3E3C3800FCDE4B /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		1A4547251D16F3580003BA2F /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
+		1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTextTableViewController.swift; sourceTree = "<group>"; };
 		1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndonesianLanguageHelper.swift; sourceTree = "<group>"; };
 		1A8375E81D251ED400B31980 /* LanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageHelper.swift; sourceTree = "<group>"; };
 		1A8375EA1D2522A700B31980 /* SpeechTextLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechTextLexer.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				1A027A751D410C720033B605 /* SearchResultsController.swift */,
 				1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */,
 				1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */,
+				1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				1A275EC91D1179CC00D38BC4 /* LibraryViewController.swift in Sources */,
 				1A37763D1D3E3C3800FCDE4B /* SearchTableViewController.swift in Sources */,
 				1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */,
+				1A5C5C681D479F9100175041 /* DynamicTextTableViewController.swift in Sources */,
 				1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */,
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
 				1A027A721D40D4740033B605 /* LemmaContinuationCell.swift in Sources */,

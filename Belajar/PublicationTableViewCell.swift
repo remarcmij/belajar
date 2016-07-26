@@ -12,4 +12,13 @@ class PublicationTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    
+    var topic: Topic! {
+        didSet {
+            titleLabel?.text = topic.title
+            titleLabel?.font = PreferredFont.get(type: .bodyLight)
+            subtitleLabel?.text = topic.subtitle
+            subtitleLabel?.font = PreferredFont.get(type: .caption1)
+        }
+    }
 }
