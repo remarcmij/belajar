@@ -10,15 +10,12 @@ import UIKit
 
 class PublicationViewController: DynamicTextTableViewController {
     
-    var indexTopic: Topic! {
+    var publication: String! {
         didSet {
-            navigationItem.title = indexTopic.title
-            topics = TopicStore.sharedInstance.getPublicationTopics(for: indexTopic.publication)
+            topics = TopicStore.sharedInstance.getPublicationTopics(for: publication)
             tableView.reloadData()
         }
     }
-    
-    //    private var articleViewController: ArticleViewController?
     
     private var topics = [Topic]()
     
@@ -27,14 +24,14 @@ class PublicationViewController: DynamicTextTableViewController {
         static let ShowDetail = "ShowDetail"
     }
     
+    private struct RestorationIndentifier {
+        static let publication = "publication"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight // Storyboard height
         tableView.rowHeight = UITableViewAutomaticDimension
-
-        //        definesPresentationContext = true
-        //        let libraryViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DictPopover") as! DictionaryPopoverController
-        //        present(libraryViewController, animated: true, completion: nil)
     }
     
     // MARK: - UITableViewDataSource
@@ -57,11 +54,8 @@ class PublicationViewController: DynamicTextTableViewController {
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let detailController = splitViewController?.viewControllers.last?.contentViewController as? ArticleViewController {
-            // FIXME: use presented dic
-            detailController.topic = topics[indexPath.row]
-            detailController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
-            detailController.navigationItem.leftItemsSupplementBackButton = true
+        if let articleViewController = splitViewController?.viewControllers.last?.contentViewController as? ArticleViewController {
+            prepare(articleViewController: articleViewController, for: topics[indexPath.row])
         } else {
             performSegue(withIdentifier: Storyboard.ShowDetail, sender: tableView.cellForRow(at: indexPath))
         }
@@ -70,21 +64,35 @@ class PublicationViewController: DynamicTextTableViewController {
     // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        var contentController = segue.destinationViewController
-        if let navController = contentController as? UINavigationController {
-            contentController = navController.viewControllers[0] ?? contentController
-        }
-        
-        guard let detailController = contentController as? ArticleViewController,
+        guard let articleViewController = segue.destinationViewController.contentViewController as? ArticleViewController,
             let cell = sender as? UITableViewCell,
             let indexPath = tableView.indexPath(for: cell),
             let identifier = segue.identifier,
             identifier == Storyboard.ShowDetail
             else { return }
-        
-        detailController.topic = topics[indexPath.row]
-        detailController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
-        detailController.navigationItem.leftItemsSupplementBackButton = true
+        prepare(articleViewController: articleViewController, for: topics[indexPath.row])
+    }
+    
+    // MARK: - Restoration
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(publication, forKey: RestorationIndentifier.publication)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        if let publication = coder.decodeObject(forKey: RestorationIndentifier.publication) as? String {
+            self.publication = publication
+        }
+    }
+    
+    // MARK: - Help methods
+    func prepare(articleViewController controller: ArticleViewController, for topic: Topic) {
+        controller.topicID = topic.id
+        controller.navigationItem.title = topic.title
+        controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        controller.navigationItem.leftItemsSupplementBackButton = true
     }
 }
 

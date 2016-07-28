@@ -32,21 +32,16 @@ class DictionaryPopoverDelegate: NSObject {
             let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
             resolvedWord = variation
             let synopsis = Lemma.makeSynopsis(lemmas: lemmas)
-            
-            let title = resolvedWord! == lemmas[0].base ? resolvedWord! : resolvedWord! + " → " + lemmas[0].base
-            let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+            var title: String?
+            if resolvedWord! != lemmas[0].base {
+                title = "\(resolvedWord!) → \(lemmas[0].base)"
+            }
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
             let attributedString = AttributedStringHelper.makeAttributedText(from: synopsis, clickAction: nil, useSmallFont: true)
             
             alert.setValue(attributedString, forKey: "attributedMessage")
             alert.addAction(UIAlertAction(title: "more...", style: .default, handler: {[weak weakSelf = self] action in
                 (weakSelf!.presenter as! DictionaryPopoverPresenter).lookup(word: weakSelf!.resolvedWord!, lang: Constants.ForeignLang)
-//                    DispatchQueue.main.async() { _ in
-//                        NotificationCenter.default.post(name: Constants.WordLookupNotification,
-//                                                        object: weakSelf.presenter,
-//                                                        userInfo: ["word": weakSelf.resolvedWord!])
-//                    }
-
-//                }
                 }))
             alert.addAction(UIAlertAction(title: "say", style: .default, handler: {  _ in print("cancelled") }))
             

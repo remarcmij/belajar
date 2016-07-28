@@ -1,0 +1,24 @@
+/* Class = "UINavigationItem"; title = "Article"; ObjectID = "5Dp-ay-gab"; */
+"5Dp-ay-gab.title" = "Artikel";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "8cr-W2-dmV"; */
+"8cr-W2-dmV.normalTitle" = "Annuleer";
+
+/* Class = "UINavigationItem"; title = "Library"; ObjectID = "LTM-N8-0eI"; */
+"LTM-N8-0eI.title" = "Bibliotheek";
+
+/* Class = "UIViewController"; title = "Article"; ObjectID = "MN4-SG-tnN"; */
+"MN4-SG-tnN.title" = "Artikel";
+
+/* (No Commment) */
+"S4N-VP-cIr.title" = "Woordenboek";
+
+/* Class = "UILabel"; text = "Table of Contents"; ObjectID = "lhQ-06-jdy"; Note = "Table of Content header in popover"; */
+"lhQ-06-jdy.text" = "Inhoudsopgave";
+
+/* Class = "UINavigationItem"; title = "Publication"; ObjectID = "sf4-8B-0dC"; */
+"sf4-8B-0dC.title" = "Publicatie";
+
+/* Class = "UINavigationItem"; title = "Dictionary"; ObjectID = "x16-NA-xc2"; */
+"x16-NA-xc2.title" = "Woordenboek";
+

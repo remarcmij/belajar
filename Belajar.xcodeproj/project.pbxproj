@@ -15,7 +15,13 @@
 		1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A12C2311D0ED36D00A16796 /* CustomErrors.swift */; };
 		1A275EC91D1179CC00D38BC4 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A275EC81D1179CC00D38BC4 /* LibraryViewController.swift */; };
 		1A37763D1D3E3C3800FCDE4B /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A37763C1D3E3C3800FCDE4B /* SearchTableViewController.swift */; };
-		1A4547261D16F3580003BA2F /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4547251D16F3580003BA2F /* DictionarySearchViewController.swift */; };
+		1A400C9B1D4803B400638C00 /* harmani.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A400C991D4803B400638C00 /* harmani.index.png */; };
+		1A400C9C1D4803B400638C00 /* harmani.index@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A400C9A1D4803B400638C00 /* harmani.index@2x.png */; };
+		1A400C9E1D48C6A800638C00 /* TableOfContentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A400C9D1D48C6A800638C00 /* TableOfContentsTableViewController.swift */; };
+		1A408DB21D4A4B130094368E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A408DB41D4A4B130094368E /* InfoPlist.strings */; };
+		1A408DB71D4A4B140094368E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A408DB91D4A4B140094368E /* InfoPlist.strings */; };
+		1A408DBC1D4A4B150094368E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A408DBE1D4A4B150094368E /* InfoPlist.strings */; };
+		1A4547261D16F3580003BA2F /* DictionaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4547251D16F3580003BA2F /* DictionaryViewController.swift */; };
 		1A5C5C681D479F9100175041 /* DynamicTextTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */; };
 		1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */; };
 		1A8375E91D251ED400B31980 /* LanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8375E81D251ED400B31980 /* LanguageHelper.swift */; };
@@ -24,7 +30,6 @@
 		1A96D2051D44556A00261F66 /* PreferredFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96D2041D44556A00261F66 /* PreferredFont.swift */; };
 		1A96D20A1D45300100261F66 /* back.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A96D2061D45300100261F66 /* back.index.png */; };
 		1A96D20B1D45300100261F66 /* front.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A96D2071D45300100261F66 /* front.index.png */; };
-		1A96D20C1D45300100261F66 /* harmani.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A96D2081D45300100261F66 /* harmani.index.png */; };
 		1A96D20D1D45300100261F66 /* wat-en-hoe.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A96D2091D45300100261F66 /* wat-en-hoe.index.png */; };
 		1A96D20F1D45309D00261F66 /* PublicationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */; };
 		1A96D2111D45313400261F66 /* LibraryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */; };
@@ -82,7 +87,16 @@
 		1A12C2311D0ED36D00A16796 /* CustomErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomErrors.swift; sourceTree = "<group>"; };
 		1A275EC81D1179CC00D38BC4 /* LibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		1A37763C1D3E3C3800FCDE4B /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
-		1A4547251D16F3580003BA2F /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
+		1A400C991D4803B400638C00 /* harmani.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = harmani.index.png; sourceTree = "<group>"; };
+		1A400C9A1D4803B400638C00 /* harmani.index@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harmani.index@2x.png"; sourceTree = "<group>"; };
+		1A400C9D1D48C6A800638C00 /* TableOfContentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentsTableViewController.swift; sourceTree = "<group>"; };
+		1A408DAD1D4A21830094368E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		1A408DAE1D4A25680094368E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
+		1A408DAF1D4A25690094368E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		1A408DB31D4A4B130094368E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1A408DB81D4A4B140094368E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1A408DBD1D4A4B150094368E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1A4547251D16F3580003BA2F /* DictionaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryViewController.swift; sourceTree = "<group>"; };
 		1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTextTableViewController.swift; sourceTree = "<group>"; };
 		1A8375E61D251EAA00B31980 /* IndonesianLanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndonesianLanguageHelper.swift; sourceTree = "<group>"; };
 		1A8375E81D251ED400B31980 /* LanguageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageHelper.swift; sourceTree = "<group>"; };
@@ -91,7 +105,6 @@
 		1A96D2041D44556A00261F66 /* PreferredFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredFont.swift; sourceTree = "<group>"; };
 		1A96D2061D45300100261F66 /* back.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.index.png; sourceTree = "<group>"; };
 		1A96D2071D45300100261F66 /* front.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = front.index.png; sourceTree = "<group>"; };
-		1A96D2081D45300100261F66 /* harmani.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = harmani.index.png; sourceTree = "<group>"; };
 		1A96D2091D45300100261F66 /* wat-en-hoe.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wat-en-hoe.index.png"; sourceTree = "<group>"; };
 		1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicationTableViewCell.swift; sourceTree = "<group>"; };
 		1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTableViewCell.swift; sourceTree = "<group>"; };
@@ -169,7 +182,7 @@
 				1A275EC81D1179CC00D38BC4 /* LibraryViewController.swift */,
 				1AD397A31D11A54500365164 /* PublicationViewController.swift */,
 				1AD397A51D11B20500365164 /* ArticleViewController.swift */,
-				1A4547251D16F3580003BA2F /* DictionarySearchViewController.swift */,
+				1A4547251D16F3580003BA2F /* DictionaryViewController.swift */,
 				1AD758911D34FEC9004756C4 /* DictionaryPopoverDelegate.swift */,
 				1AD758951D353C79004756C4 /* DictionaryPopoverController.swift */,
 				1A37763C1D3E3C3800FCDE4B /* SearchTableViewController.swift */,
@@ -182,6 +195,7 @@
 				1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */,
 				1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */,
 				1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */,
+				1A400C9D1D48C6A800638C00 /* TableOfContentsTableViewController.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -211,6 +225,7 @@
 		1AB995541D0715D60039FF6E /* Belajar */ = {
 			isa = PBXGroup;
 			children = (
+				1A408DB91D4A4B140094368E /* InfoPlist.strings */,
 				1AD397A91D11E13200365164 /* www */,
 				1A275EC71D11796300D38BC4 /* UI */,
 				1AFB93E31D098723007CA509 /* Helpers */,
@@ -229,6 +244,7 @@
 		1AB995691D0715D60039FF6E /* BelajarTests */ = {
 			isa = PBXGroup;
 			children = (
+				1A408DB41D4A4B130094368E /* InfoPlist.strings */,
 				1AB9956A1D0715D60039FF6E /* BelajarTests.swift */,
 				1AB9956C1D0715D60039FF6E /* Info.plist */,
 				1ABDFB2C1D2690D600D84677 /* IndonesianLanguageHelperTests.swift */,
@@ -239,6 +255,7 @@
 		1AB995741D0715D60039FF6E /* BelajarUITests */ = {
 			isa = PBXGroup;
 			children = (
+				1A408DBE1D4A4B150094368E /* InfoPlist.strings */,
 				1AB995751D0715D60039FF6E /* BelajarUITests.swift */,
 				1AB995771D0715D60039FF6E /* Info.plist */,
 			);
@@ -248,9 +265,10 @@
 		1AB995831D0716470039FF6E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1A400C991D4803B400638C00 /* harmani.index.png */,
+				1A400C9A1D4803B400638C00 /* harmani.index@2x.png */,
 				1A96D2061D45300100261F66 /* back.index.png */,
 				1A96D2071D45300100261F66 /* front.index.png */,
-				1A96D2081D45300100261F66 /* harmani.index.png */,
 				1A96D2091D45300100261F66 /* wat-en-hoe.index.png */,
 				1AFB93EC1D0ECE0F007CA509 /* Dictionary.sqlite */,
 				1AFB93EA1D0EC583007CA509 /* Topics.sqlite */,
@@ -434,14 +452,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A400C9C1D4803B400638C00 /* harmani.index@2x.png in Resources */,
+				1A408DB71D4A4B140094368E /* InfoPlist.strings in Resources */,
 				1A96D20D1D45300100261F66 /* wat-en-hoe.index.png in Resources */,
 				1AD397AA1D11E13200365164 /* www in Resources */,
+				1A400C9B1D4803B400638C00 /* harmani.index.png in Resources */,
 				1A96D20B1D45300100261F66 /* front.index.png in Resources */,
 				1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */,
 				1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */,
 				1A96D20A1D45300100261F66 /* back.index.png in Resources */,
 				1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */,
-				1A96D20C1D45300100261F66 /* harmani.index.png in Resources */,
 				1AFB93EB1D0EC583007CA509 /* Topics.sqlite in Resources */,
 				1AFB93ED1D0ECE0F007CA509 /* Dictionary.sqlite in Resources */,
 			);
@@ -451,6 +471,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A408DB21D4A4B130094368E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +479,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A408DBC1D4A4B150094368E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,9 +634,10 @@
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
 				1A027A721D40D4740033B605 /* LemmaContinuationCell.swift in Sources */,
 				1A027A761D410C720033B605 /* SearchResultsController.swift in Sources */,
+				1A400C9E1D48C6A800638C00 /* TableOfContentsTableViewController.swift in Sources */,
 				1A8375EB1D2522A700B31980 /* SpeechTextLexer.swift in Sources */,
 				1A027A6E1D40D18D0033B605 /* LemmaCell.swift in Sources */,
-				1A4547261D16F3580003BA2F /* DictionarySearchViewController.swift in Sources */,
+				1A4547261D16F3580003BA2F /* DictionaryViewController.swift in Sources */,
 				1AFB93EF1D0ECF88007CA509 /* Lemma.swift in Sources */,
 				1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */,
 				1A96D2111D45313400261F66 /* LibraryTableViewCell.swift in Sources */,
@@ -658,10 +681,36 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1A408DB41D4A4B130094368E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A408DB31D4A4B130094368E /* nl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1A408DB91D4A4B140094368E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A408DB81D4A4B140094368E /* nl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1A408DBE1D4A4B150094368E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A408DBD1D4A4B150094368E /* nl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		1AB995591D0715D60039FF6E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				1AB9955A1D0715D60039FF6E /* Base */,
+				1A408DAD1D4A21830094368E /* en */,
+				1A408DAE1D4A25680094368E /* nl */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -670,6 +719,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AB9955F1D0715D60039FF6E /* Base */,
+				1A408DAF1D4A25690094368E /* nl */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -681,6 +731,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -728,6 +779,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

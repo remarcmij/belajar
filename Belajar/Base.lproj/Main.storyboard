@@ -3,13 +3,14 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11143.2"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Library-->
         <scene sceneID="FNp-fu-zzt">
             <objects>
-                <tableViewController title="Collection" id="tY6-37-gQQ" userLabel="Library" customClass="LibraryViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="LibraryViewController" title="Collection" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tY6-37-gQQ" userLabel="Library" customClass="LibraryViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="82" sectionHeaderHeight="28" sectionFooterHeight="28" id="boF-OC-83Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,7 +21,7 @@
                                 <frame key="frameInset" minY="92" width="375" height="82"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kqb-I2-ofF" id="ePi-Jn-C1g">
-                                    <frame key="frameInset" width="375" height="81"/>
+                                    <frame key="frameInset" width="375" height="82"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EKt-nc-NbP">
@@ -34,7 +35,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="FVb-8h-M0H">
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYO-IE-MAR">
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -68,7 +69,7 @@
                             <outlet property="delegate" destination="tY6-37-gQQ" id="5vl-vW-pqX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Belajar" id="LTM-N8-0eI">
+                    <navigationItem key="navigationItem" title="Library" id="LTM-N8-0eI">
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="vzK-fp-R3x"/>
                     </navigationItem>
                 </tableViewController>
@@ -79,7 +80,7 @@
         <!--Publication-->
         <scene sceneID="mYg-4l-9cY">
             <objects>
-                <tableViewController id="a5R-43-K3Q" customClass="PublicationViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PublicationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a5R-43-K3Q" customClass="PublicationViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="2qL-Ci-mfi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -89,13 +90,13 @@
                                 <frame key="frameInset" minY="92" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rB3-eb-rZz" id="5Mk-Hs-SFP">
-                                    <frame key="frameInset" width="375" height="59"/>
+                                    <frame key="frameInset" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VSJ-N0-GNT">
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcC-o8-ngL">
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -145,7 +146,7 @@
         <!--Dictionary-->
         <scene sceneID="keH-4Z-OAs">
             <objects>
-                <tableViewController title="Dictionary" id="S4N-VP-cIr" customClass="DictionarySearchViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="S4N-VP-cIr" customClass="DictionaryViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="28" sectionFooterHeight="28" id="K6H-88-R2V">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -281,7 +282,7 @@
                             <outlet property="delegate" destination="S4N-VP-cIr" id="xnG-9M-eaQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="x16-NA-xc2">
+                    <navigationItem key="navigationItem" title="Dictionary" id="x16-NA-xc2">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="EUb-si-FgU">
                             <connections>
                                 <action selector="dismiss:" destination="S4N-VP-cIr" id="DMC-o5-9Ea"/>
@@ -310,13 +311,13 @@
                                 <frame key="frameInset" minY="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Vd-RN-2Jc" id="JCc-Sv-C1l">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N4B-ra-s2w">
-                                            <frame key="frameInset" minX="15" width="345" height="43"/>
+                                            <frame key="frameInset" minX="15" width="345" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -350,15 +351,13 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bnF-zj-smD">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Header" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOf-25-3uz">
-                                                <frame key="frameInset" width="311" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Header" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOf-25-3uz">
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NrY-gF-VJF">
-                                                <frame key="frameInset" minY="21" width="311" height="394"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NrY-gF-VJF">
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="dismissPopover:" destination="sAA-Q8-QMC" eventType="touchUpInside" id="ZBf-rd-Gwc"/>
@@ -395,7 +394,7 @@
         <!--Article-->
         <scene sceneID="aQm-tK-8SK">
             <objects>
-                <viewController title="Article" id="MN4-SG-tnN" customClass="ArticleViewController" customModule="Belajar" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ArticleViewController" title="Article" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MN4-SG-tnN" customClass="ArticleViewController" customModule="Belajar" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MeL-YX-emS"/>
                         <viewControllerLayoutGuide type="bottom" id="BOQ-io-zEe"/>
@@ -406,12 +405,24 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Article" id="5Dp-ay-gab">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="j2h-ND-kEL">
-                            <connections>
-                                <segue destination="gez-gb-CHf" kind="presentation" identifier="ShowDictionary" modalPresentationStyle="pageSheet" id="Xj9-qz-OLk"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="bookmarks" id="z5h-To-EMe">
+                                <connections>
+                                    <segue destination="fwg-u8-8hz" kind="popoverPresentation" identifier="showTableOfContents" popoverAnchorBarButtonItem="z5h-To-EMe" id="vn2-4E-TFy">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="search" id="j2h-ND-kEL">
+                                <connections>
+                                    <segue destination="gez-gb-CHf" kind="presentation" identifier="showDictionary" modalPresentationStyle="pageSheet" id="Xj9-qz-OLk"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableOfContentsButton" destination="z5h-To-EMe" id="oHJ-DX-3f0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0v2-gd-TJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -420,7 +431,7 @@
         <!--Split View Controller-->
         <scene sceneID="0Vz-2V-zw3">
             <objects>
-                <splitViewController id="1uj-tf-EMu" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="UISplitViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1uj-tf-EMu" sceneMemberID="viewController">
                     <connections>
                         <segue destination="DhP-sm-hdP" kind="relationship" relationship="detailViewController" id="ZPs-Ve-eqA"/>
                         <segue destination="b0m-0Y-z0X" kind="relationship" relationship="masterViewController" id="z7s-Bf-2nW"/>
@@ -433,7 +444,7 @@
         <!--Navigation Controller-->
         <scene sceneID="WYb-1i-8UH">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="b0m-0Y-z0X" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MasterNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b0m-0Y-z0X" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pEl-ol-J58">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -451,7 +462,7 @@
         <!--Navigation Controller-->
         <scene sceneID="F54-V5-svd">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DhP-sm-hdP" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="DetailNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DhP-sm-hdP" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IOF-GC-ZBp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -465,6 +476,71 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H4H-Sw-UNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1834" y="-48"/>
+        </scene>
+        <!--Table Of Contents Table View Controller-->
+        <scene sceneID="hbI-eY-hL8">
+            <objects>
+                <tableViewController storyboardIdentifier="TableOfContentsViewController" id="GEJ-tw-x25" customClass="TableOfContentsTableViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="dHU-qh-D9q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table of Contents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lhQ-06-jdy">
+                            <frame key="frameInset" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                            <attributedString key="userComments">
+                                <fragment content="Table of Content header in popover">
+                                    <attributes>
+                                        <font key="NSFont" metaFont="controlContent" size="11"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                        </label>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8cr-W2-dmV">
+                            <frame key="frameInset" minY="116" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <state key="normal" title="Cancel"/>
+                            <connections>
+                                <action selector="cancelButtonTapped" destination="GEJ-tw-x25" eventType="touchUpInside" id="vAn-hw-RHc"/>
+                            </connections>
+                        </button>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableOfContentsCell" textLabel="xu2-tl-zTh" style="IBUITableViewCellStyleDefault" id="9Dy-fX-FZp">
+                                <frame key="frameInset" minY="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Dy-fX-FZp" id="JbS-Uk-2HI">
+                                    <frame key="frameInset" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xu2-tl-zTh">
+                                            <frame key="frameInset" minX="15" width="345" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="GEJ-tw-x25" id="ikW-fU-cWu"/>
+                            <outlet property="delegate" destination="GEJ-tw-x25" id="Tcq-1M-4Ar"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="3q9-og-cux"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="8cr-W2-dmV" id="2N1-P5-vzq"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cJd-ru-gRT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4488.8000000000002" y="-834.33283358320841"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zdx-g9-dBi">
@@ -484,9 +560,27 @@
             </objects>
             <point key="canvasLocation" x="3549.5999999999999" y="-48.125937031484263"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wJ2-OL-gsI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="fwg-u8-8hz" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XdJ-5y-m7d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="GEJ-tw-x25" kind="relationship" relationship="rootViewController" id="vE2-bl-dYr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YhR-Tz-kam" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3549.5999999999999" y="-834.33283358320841"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="zdU-Su-TTb"/>
-        <segue reference="IYY-5y-OYk"/>
+        <segue reference="Xj9-qz-OLk"/>
     </inferredMetricsTieBreakers>
 </document>

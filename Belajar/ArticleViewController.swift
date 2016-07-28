@@ -13,6 +13,13 @@ import WebKit
 
 class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverPresenter {
     
+    @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
+    
+    private struct Storyboard {
+        static let showDictionary = "showDictionary"
+        static let showTableOfContents = "showTableOfContents"
+    }
+    
     private var webView: WKWebView!
     private var resolvedWord: String?
     private var clickedText: String?
@@ -22,14 +29,21 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         return "body {font-size: \(PreferredFont.get(type: .body).pointSize)px;}"
     }
     
-    var topic: Topic? {
+    var topicID: Int! {
         didSet {
-            if topic != nil {
-                navigationItem.title = topic!.title
-                article = TopicStore.sharedInstance.getArticle(withTopicId: topic!.id)
+            if topicID == nil {
+                tableOfContentsButton.isEnabled = false
+            } else {
+                tableOfContentsButton.isEnabled = true
+                article = TopicStore.sharedInstance.getArticle(withTopicId: topicID)
                 loadHTML()
             }
         }
+    }
+    
+    private struct RestorationIdentifier {
+        static let webView = "webView"
+        static let topicID = "topicID"
     }
     
     private var article: Article?
@@ -46,7 +60,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func awakeFromNib() {
         webView = WKWebView()
         view.addSubview(webView)
-        
+        webView.restorationIdentifier = RestorationIdentifier.webView
         webView.configuration.userContentController.add(MyMessageHandler(delegate: self), name: "wordClick");
         
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +74,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func viewDidLoad() {
         super.viewDidLoad()
         dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
+        tableOfContentsButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
                                                name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
@@ -68,7 +83,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         func handler(_ action: UIAlertAction) {
             print("user tapped \(action.title)")
@@ -92,14 +107,27 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowDictionary" {
-            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionarySearchViewController {
-                
-                //            let dictionaryController = segue.destinationViewController as! DictionarySearchViewController
+        guard let identifier = segue.identifier else { return }
+        
+        switch identifier {
+            
+        case Storyboard.showDictionary:
+            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionaryViewController {
                 dictionaryController.word = resolvedWord
                 dictionaryController.lang = Constants.ForeignLang
                 resolvedWord = nil
             }
+            
+        case Storyboard.showTableOfContents:
+            // note: toc controller embedded in a navigation controller to prevent it being presented underneath the
+            // status bar on an iPhone
+            if let controller = segue.destinationViewController.contentViewController as? TableOfContentsTableViewController {
+                controller.popoverPresentationController?.barButtonItem = tableOfContentsButton
+                controller.delegate = self
+                controller.article = article
+            }
+            
+        default: break
         }
     }
     
@@ -121,7 +149,21 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     func lookup(word: String, lang: String) {
         resolvedWord = word
-        performSegue(withIdentifier: "ShowDictionary", sender: self)
+        performSegue(withIdentifier: Storyboard.showDictionary, sender: self)
+    }
+    
+    // MARK: - Restoration
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(topicID, forKey: RestorationIdentifier.topicID)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        if let topicID = coder.decodeObject(forKey: RestorationIdentifier.topicID) as? Int? {
+            self.topicID = topicID
+        }
     }
     
     // MARK: - helper functions
@@ -136,6 +178,14 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
             htmlDoc = htmlDoc.replacingOccurrences(of: "<!-- article -->", with: htmlText)
             webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
         }
+    }
+}
+
+extension ArticleViewController: TableOfContentDelegate {
+    
+    func scrollToAnchor(anchor: String) {
+        dismiss(animated: true, completion: nil)
+        webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
     }
 }
 

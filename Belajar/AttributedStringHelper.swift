@@ -13,7 +13,7 @@ struct AttributedStringHelper {
     private static let markdownRegExp = try! RegularExpression(pattern: "\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|__(.+?)__|_(.+?)_", options: [])
     
     static func makeAttributedText(from text: NSString, clickAction: String? = nil, useSmallFont: Bool = false) -> AttributedString {
-        let startTime = Date()
+//        let startTime = Date()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
         let attributedString = NSMutableAttributedString(string: "")
@@ -21,9 +21,9 @@ struct AttributedStringHelper {
         var startPos = 0
         let matches = AttributedStringHelper.markdownRegExp.matches(in: text as String, options: [], range: NSMakeRange(0, text.length))
         
-        let regularFontType = useSmallFont ? PreferredFont.caption1 : .bodyLight
-        let boldFontType = useSmallFont ? PreferredFont.caption1Bold : .bodyBold
-        let italicFontType = useSmallFont ? PreferredFont.caption1Italic : .bodyItalic
+        let regularFontType = useSmallFont ? PreferredFont.subhead : .body
+        let boldFontType = useSmallFont ? PreferredFont.subheadBold : .bodyBold
+        let italicFontType = useSmallFont ? PreferredFont.subheadItalic : .bodyItalic
         
         let regularFont = PreferredFont.get(type: regularFontType)
         let boldFont = PreferredFont.get(type: boldFontType)
@@ -65,8 +65,8 @@ struct AttributedStringHelper {
         
         attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
         
-        let endTime = Date()
-        let elapsed = endTime.timeIntervalSince(startTime) * 1000
+//        let endTime = Date()
+//        let elapsed = endTime.timeIntervalSince(startTime) * 1000
 //        print("makeAttributedText took \(elapsed) ms")
         
         return attributedString

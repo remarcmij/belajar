@@ -31,17 +31,19 @@ class LibraryViewController: DynamicTextTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.libraryTableViewCell, for: indexPath) as! LibraryTableViewCell
-        cell.topic = topics[indexPath.row]
+        cell.setTopic(topic: topics[indexPath.row], displayScale: traitCollection.displayScale)
         return cell
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.showPublication {
             if let row = tableView.indexPathForSelectedRow?.row {
-                let indexTopic = topics[row]
+                let topic = topics[row]
                 let publicationViewController = segue.destinationViewController as! PublicationViewController
-                publicationViewController.indexTopic = indexTopic
+                publicationViewController.navigationItem.title = topic.title
+                publicationViewController.publication = topic.publication
             }
         }
     }
 }
+

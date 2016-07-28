@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DictionarySearchViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
+class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
     
     var word: String!
     var lang: String!
@@ -20,9 +20,11 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         }
     }
     
-    private var aggregates = [LemmaBatch]()
+    private var lemmaBatches = [LemmaBatch]()
     private var dictionaryPopoverDelegate: DictionaryPopoverDelegate!
     private var searchController: UISearchController!
+    private var contentSizeChangeObserver: NSObjectProtocol?
+    private var wordClickObserver: NSObjectProtocol?
     
     private static var theSearchResultsController: SearchResultsController = {
         return UIStoryboard.init(name: "Main", bundle: nil)
@@ -56,6 +58,7 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         
         searchController = UISearchController(searchResultsController: searchResultsController)
         searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
         
         let searchBar = searchController.searchBar
         searchBar.delegate = self
@@ -64,23 +67,32 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         searchBar.autocorrectionType = .no
         searchBar.sizeToFit()
         
-        navigationItem.titleView = searchBar
-        searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
-
-        if word != nil {
+        if word == nil {
+            navigationItem.titleView = searchBar
+        } else {
             lookup(word: word, lang: lang)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        contentSizeChangeObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange,
+                                                                           object: UIApplication.shared(),
+                                                                           queue: OperationQueue.main)
+        {
+            [weak self] _ in
+            self?.clearCacheAndReloadData()
+        }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
-                                               name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveWordClickNotification),
-                                               name: Constants.WordClickNotification, object: nil)
+        wordClickObserver = NotificationCenter.default.addObserver(forName: Constants.WordClickNotification, object: nil, queue: OperationQueue.main)
+        {
+            [weak self] in
+            if let word = $0.userInfo?["word"] as? String {
+                self?.dictionaryPopoverDelegate?.wordClickPopover(word: word)
+            }
+        }
         
         if word == nil {
             // show keyboard (needs delay, otherwise becomeFirstResponder return false
@@ -92,7 +104,8 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(contentSizeChangeObserver!)
+        NotificationCenter.default.removeObserver(wordClickObserver!)
     }
     
     // MARK: - UITableViewDataSource
@@ -102,16 +115,16 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return aggregates.count
+        return lemmaBatches.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
-        let aggregate = aggregates[row]
+        let lemmaBatch = lemmaBatches[row]
         
         let identifier: String
-        if (row == 0 || aggregates[row-1].base != aggregate.base) {
-            if aggregate.base == word {
+        if (row == 0 || lemmaBatches[row-1].base != lemmaBatch.base) {
+            if lemmaBatch.base == word {
                 identifier = Storyboard.HeaderCell
             } else {
                 identifier = Storyboard.ReferenceCell
@@ -121,7 +134,7 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LemmaCell
-        cell.setLemmaGroup(with: aggregate, forRow: indexPath.row)
+        cell.setLemmaGroup(with: lemmaBatch, forRow: indexPath.row)
         
         if row == 0 {
             cell.hideSeparator()
@@ -137,20 +150,6 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
     @IBAction func baseButtonTapped(_ sender: UIButton) {
         if let word = sender.title(for: .normal) {
             lookup(word: word.lowercased(), lang: Constants.ForeignLang)
-        }
-    }
-    
-    // MARK: - notification receivers
-    
-    /// Registered to receive a notification when a lemma body word is clicked.
-    /// Invokes a popover with a dictionary synopsis of the clicked word
-    ///
-    /// - parameters:
-    ///     - notification: The received notification
-    ///
-    func receiveWordClickNotification(notification: Notification) {
-        if let word = notification.userInfo?["word"] as? String {
-            dictionaryPopoverDelegate?.wordClickPopover(word: word)
         }
     }
     
@@ -178,7 +177,7 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         
         if let (_, word) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord, lang: lang) {
             let lemmas = DictionaryStore.sharedInstance.search(word: word, lang: lang)
-            aggregates = Lemma.batchLemmas(word: word, lemmas: lemmas)
+            lemmaBatches = Lemma.batchLemmas(word: word, lemmas: lemmas)
         }
         
         clearCacheAndReloadData()
@@ -194,17 +193,13 @@ class DictionarySearchViewController : UITableViewController, SearchResultsContr
         tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
     }
     
-    func onContentSizeChanged() {
-        clearCacheAndReloadData()
-    }
-    
     private func clearCacheAndReloadData() {
         LemmaCell.clearCache()
         tableView.reloadData()
     }
 }
 
-extension DictionarySearchViewController: UISearchResultsUpdating {
+extension DictionaryViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
@@ -217,7 +212,7 @@ extension DictionarySearchViewController: UISearchResultsUpdating {
     }
 }
 
-extension DictionarySearchViewController: UISearchBarDelegate {
+extension DictionaryViewController: UISearchBarDelegate {
     func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
         print("resultslistbutton clicked")
     }

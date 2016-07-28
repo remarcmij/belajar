@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SearchResultsControllerDelegate {
+protocol SearchResultsControllerDelegate: class {
     func lookup(word: String, lang: String)
 }
 
@@ -40,6 +40,7 @@ class SearchResultsController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.AutoCompleteCell, for: indexPath)
         let item = autoCompleteItems[indexPath.row]
         cell.textLabel?.text = "\(item.word) [\(item.lang)]"
+        cell.textLabel?.font = PreferredFont.get(type: .body)
         return cell
     }
     

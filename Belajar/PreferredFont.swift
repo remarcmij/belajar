@@ -10,7 +10,7 @@ import UIKit
 
 enum PreferredFont {
     
-    case title1, title2, title3, headline, body, bodyBold, bodyItalic, bodyLight, caption1, caption1Bold, caption1Italic, bodySmallCaps
+    case title1, title2, title3, headline, body, bodyBold, bodyItalic, bodyLight, callout, subhead, subheadBold, subheadItalic, caption1, caption1Bold, caption1Italic, bodySmallCaps
     
     static func get(type: PreferredFont) -> UIFont {
        
@@ -43,6 +43,21 @@ enum PreferredFont {
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
+        case .callout:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleCallout)
+            
+        case .subhead:
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleSubheadline)
+            
+        case .subheadBold:
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleSubheadline)
+                .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
+            font = UIFont(descriptor: descriptor, size: 0.0)
+            
+        case .subheadItalic:
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleSubheadline)
+                .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
+            font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .caption1:
             font = UIFont.preferredFont(forTextStyle: UIFontTextStyleCaption1)

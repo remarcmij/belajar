@@ -1,0 +1,63 @@
+
+/* Class = "UINavigationItem"; title = "Article"; ObjectID = "5Dp-ay-gab"; */
+"5Dp-ay-gab.title" = "Article";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "8cr-W2-dmV"; */
+"8cr-W2-dmV.normalTitle" = "Cancel";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "9RY-jv-CuQ"; */
+"9RY-jv-CuQ.text" = "Label";
+
+/* Class = "UILabel"; text = " footer"; ObjectID = "FP8-VG-1BO"; */
+"FP8-VG-1BO.text" = " footer";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "FTn-mG-kg8"; */
+"FTn-mG-kg8.text" = "Label";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "Fod-bc-SQK"; */
+"Fod-bc-SQK.text" = "Subtitle";
+
+/* Class = "UINavigationItem"; title = "Belajar"; ObjectID = "LTM-N8-0eI"; */
+"LTM-N8-0eI.title" = "Library";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "M7e-b3-iNe"; */
+"M7e-b3-iNe.text" = "Label";
+
+/* Class = "UIViewController"; title = "Article"; ObjectID = "MN4-SG-tnN"; */
+"MN4-SG-tnN.title" = "Article";
+
+/* Class = "UIButton"; normalTitle = "BASE"; ObjectID = "Mbl-3t-hyW"; */
+"Mbl-3t-hyW.normalTitle" = "BASE";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "N4B-ra-s2w"; */
+"N4B-ra-s2w.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "NrY-gF-VJF"; */
+"NrY-gF-VJF.normalTitle" = "Button";
+
+/* Class = "UITableViewController"; title = "Dictionary"; ObjectID = "S4N-VP-cIr"; */
+"S4N-VP-cIr.title" = "Dictionary";
+
+/* Class = "UILabel"; text = "Header"; ObjectID = "bOf-25-3uz"; */
+"bOf-25-3uz.text" = "Header";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "jYO-IE-MAR"; */
+"jYO-IE-MAR.text" = "Title";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "lY0-jJ-psj"; */
+"lY0-jJ-psj.text" = "Label";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "qcC-o8-ngL"; */
+"qcC-o8-ngL.text" = "Title";
+
+/* Class = "UINavigationItem"; title = "Publication"; ObjectID = "sf4-8B-0dC"; */
+"sf4-8B-0dC.title" = "Publication";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "tTZ-y2-mCb"; */
+"tTZ-y2-mCb.text" = "Subtitle";
+
+/* Class = "UITableViewController"; title = "Collection"; ObjectID = "tY6-37-gQQ"; */
+"tY6-37-gQQ.title" = "Collection";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "xu2-tl-zTh"; */
+"xu2-tl-zTh.text" = "Title";
