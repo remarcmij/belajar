@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TTTAttributedLabel
 
 class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
     
@@ -42,7 +43,6 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     deinit {
         // ref: http://stackoverflow.com/questions/32282401/attempting-to-load-the-view-of-a-view-controller-while-it-is-deallocating-uis
         searchController.view.removeFromSuperview()
-        
         LemmaCell.clearCache()
     }
     
@@ -88,9 +88,11 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         
         wordClickObserver = NotificationCenter.default.addObserver(forName: Constants.WordClickNotification, object: nil, queue: OperationQueue.main)
         {
-            [weak self] in
-            if let word = $0.userInfo?["word"] as? String {
-                self?.dictionaryPopoverDelegate?.wordClickPopover(word: word)
+            [unowned self] notification in
+            if let userInfo = notification.userInfo,
+                let word = userInfo["word"] as? String,
+                let attributedLabel = notification.object as? TTTAttributedLabel {
+                self.dictionaryPopoverDelegate?.wordClickPopover(word: word, sourceView: self.view!)
             }
         }
         

@@ -10,10 +10,13 @@ import UIKit
 
 class PublicationViewController: DynamicTextTableViewController {
     
-    var publication: String! {
+    var topic: Topic! {
         didSet {
-            topics = TopicStore.sharedInstance.getPublicationTopics(for: publication)
-            tableView.reloadData()
+            if topic != nil {
+                navigationItem.title = topic.title
+                topics = TopicStore.sharedInstance.getPublicationTopics(for: topic.publication)
+                tableView.reloadData()
+            }
         }
     }
     
@@ -25,7 +28,7 @@ class PublicationViewController: DynamicTextTableViewController {
     }
     
     private struct RestorationIndentifier {
-        static let publication = "publication"
+        static let topic = "topic"
     }
     
     override func viewDidLoad() {
@@ -77,20 +80,17 @@ class PublicationViewController: DynamicTextTableViewController {
     
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
-        coder.encode(publication, forKey: RestorationIndentifier.publication)
+        coder.encode(topic, forKey: RestorationIndentifier.topic)
     }
     
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
-        if let publication = coder.decodeObject(forKey: RestorationIndentifier.publication) as? String {
-            self.publication = publication
-        }
+        topic = coder.decodeObject(forKey: RestorationIndentifier.topic) as? Topic
     }
     
     // MARK: - Help methods
     func prepare(articleViewController controller: ArticleViewController, for topic: Topic) {
-        controller.topicID = topic.id
-        controller.navigationItem.title = topic.title
+        controller.topic = topic
         controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
         controller.navigationItem.leftItemsSupplementBackButton = true
     }

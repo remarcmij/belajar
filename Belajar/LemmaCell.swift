@@ -75,6 +75,6 @@ class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
             else { return }
         
         let notificationName = action == "synopsis" ? Constants.WordClickNotification : Constants.WordLookupNotification
-        NotificationCenter.default.post(name: notificationName, object: nil, userInfo: ["word": word])
+        NotificationCenter.default.post(name: notificationName, object: label, userInfo: ["word": word])
     }
 }

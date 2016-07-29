@@ -33,6 +33,7 @@
 		1A96D20D1D45300100261F66 /* wat-en-hoe.index.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A96D2091D45300100261F66 /* wat-en-hoe.index.png */; };
 		1A96D20F1D45309D00261F66 /* PublicationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */; };
 		1A96D2111D45313400261F66 /* LibraryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */; };
+		1AAC66A21D4B4BD7000A268B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AAC66A41D4B4BD7000A268B /* Localizable.strings */; };
 		1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB995551D0715D60039FF6E /* AppDelegate.swift */; };
 		1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB995591D0715D60039FF6E /* Main.storyboard */; };
 		1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AB9955C1D0715D60039FF6E /* Assets.xcassets */; };
@@ -108,6 +109,7 @@
 		1A96D2091D45300100261F66 /* wat-en-hoe.index.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wat-en-hoe.index.png"; sourceTree = "<group>"; };
 		1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicationTableViewCell.swift; sourceTree = "<group>"; };
 		1A96D2101D45313400261F66 /* LibraryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTableViewCell.swift; sourceTree = "<group>"; };
+		1AAC66A31D4B4BD7000A268B /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1AB995521D0715D60039FF6E /* Belajar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Belajar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB995551D0715D60039FF6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AB9955A1D0715D60039FF6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		1AB995541D0715D60039FF6E /* Belajar */ = {
 			isa = PBXGroup;
 			children = (
+				1AAC66A41D4B4BD7000A268B /* Localizable.strings */,
 				1A408DB91D4A4B140094368E /* InfoPlist.strings */,
 				1AD397A91D11E13200365164 /* www */,
 				1A275EC71D11796300D38BC4 /* UI */,
@@ -461,6 +464,7 @@
 				1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */,
 				1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */,
 				1A96D20A1D45300100261F66 /* back.index.png in Resources */,
+				1AAC66A21D4B4BD7000A268B /* Localizable.strings in Resources */,
 				1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */,
 				1AFB93EB1D0EC583007CA509 /* Topics.sqlite in Resources */,
 				1AFB93ED1D0ECE0F007CA509 /* Dictionary.sqlite in Resources */,
@@ -703,6 +707,14 @@
 				1A408DBD1D4A4B150094368E /* nl */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1AAC66A41D4B4BD7000A268B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AAC66A31D4B4BD7000A268B /* nl */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		1AB995591D0715D60039FF6E /* Main.storyboard */ = {

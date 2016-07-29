@@ -38,10 +38,8 @@ class LibraryViewController: DynamicTextTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.showPublication {
             if let row = tableView.indexPathForSelectedRow?.row {
-                let topic = topics[row]
                 let publicationViewController = segue.destinationViewController as! PublicationViewController
-                publicationViewController.navigationItem.title = topic.title
-                publicationViewController.publication = topic.publication
+                publicationViewController.topic = topics[row]
             }
         }
     }

@@ -29,21 +29,21 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         return "body {font-size: \(PreferredFont.get(type: .body).pointSize)px;}"
     }
     
-    var topicID: Int! {
+    var topic: Topic! {
         didSet {
-            if topicID == nil {
+            if topic == nil {
                 tableOfContentsButton.isEnabled = false
             } else {
                 tableOfContentsButton.isEnabled = true
-                article = TopicStore.sharedInstance.getArticle(withTopicId: topicID)
+                navigationItem.title = topic.title
+                article = TopicStore.sharedInstance.getArticle(withTopicId: topic.id)
                 loadHTML()
             }
         }
     }
     
     private struct RestorationIdentifier {
-        static let webView = "webView"
-        static let topicID = "topicID"
+        static let topic = "topic"
     }
     
     private var article: Article?
@@ -60,7 +60,6 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func awakeFromNib() {
         webView = WKWebView()
         view.addSubview(webView)
-        webView.restorationIdentifier = RestorationIdentifier.webView
         webView.configuration.userContentController.add(MyMessageHandler(delegate: self), name: "wordClick");
         
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,7 +94,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
             clickedText = components[1]
             print("Javascript clickedWord: \(clickedWord) clickedText: \(clickedText)")
             
-            dictionaryPopoverDelegate?.wordClickPopover(word: clickedWord)
+            dictionaryPopoverDelegate?.wordClickPopover(word: clickedWord, sourceView: webView)
         } else {
             print("something else called")
         }
@@ -156,14 +155,12 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
-        coder.encode(topicID, forKey: RestorationIdentifier.topicID)
+        coder.encode(topic, forKey: RestorationIdentifier.topic)
     }
     
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
-        if let topicID = coder.decodeObject(forKey: RestorationIdentifier.topicID) as? Int? {
-            self.topicID = topicID
-        }
+        topic = coder.decodeObject(forKey: RestorationIdentifier.topic) as? Topic
     }
     
     // MARK: - helper functions
@@ -182,7 +179,6 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
 }
 
 extension ArticleViewController: TableOfContentDelegate {
-    
     func scrollToAnchor(anchor: String) {
         dismiss(animated: true, completion: nil)
         webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
