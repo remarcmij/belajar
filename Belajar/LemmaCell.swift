@@ -25,11 +25,11 @@ extension UIColor {
 
 class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
 
-    private static var attributedStringCache = [Int: AttributedString]()
+    private static var attributedStringCache = [Int: NSAttributedString]()
     private static let linkColor = UIColor(netHex: 0x303F9F)
 
-    var bodyText: AttributedString?
-    var headerText: AttributedString?
+    var bodyText: NSAttributedString?
+    var headerText: NSAttributedString?
     
     static var linkAttributes = {[
         NSUnderlineStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleNone.rawValue),
@@ -46,7 +46,7 @@ class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
                                                               clickAction: "lookup", font: PreferredFont.get(type: .caption1Bold))
     }
     
-    private func getAttributedString(from sourceString: String, cacheIndex: Int, clickAction: String, useSmallFont: Bool = false) -> AttributedString {
+    private func getAttributedString(from sourceString: String, cacheIndex: Int, clickAction: String, useSmallFont: Bool = false) -> NSAttributedString {
         if let attributedString = self.dynamicType.attributedStringCache[cacheIndex] {
             return attributedString
         }

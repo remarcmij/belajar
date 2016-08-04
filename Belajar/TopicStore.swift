@@ -16,7 +16,7 @@ final class TopicStore {
     static let sharedInstance = TopicStore()
     
     init() {
-        let databasePath = Bundle.main.pathForResource("Topics", ofType: "sqlite")
+        let databasePath = Bundle.main.path(forResource: "Topics", ofType: "sqlite")
         database = FMDatabase(path: databasePath)
         if !database.open() {
             fatalError("could not open Topics database")

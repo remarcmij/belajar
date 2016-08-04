@@ -7,20 +7,22 @@
 //
 
 import UIKit
+import AVFoundation
 
-protocol DictionaryPopoverPresenter {
+protocol DictionaryPopoverDelegate {
     func lookup(word: String, lang: String)
 }
 
-class DictionaryPopoverDelegate: NSObject {
-    private weak var presenter: UIViewController?
+class DictionaryPopoverService: NSObject {
+    private weak var viewController: UIViewController?
     private var resolvedWord: String?
+    private let talker = AVSpeechSynthesizer()
     
-    init(presenter: UIViewController) {
-        assert((presenter as? DictionaryPopoverPresenter) != nil,
+    init(controller: UIViewController) {
+        assert((controller as? DictionaryPopoverDelegate) != nil,
                "presenter should conform to DictionaryPopoverPresenter protocol")
-        self.presenter = presenter;
-        presenter.definesPresentationContext = true
+        self.viewController = controller;
+        controller.definesPresentationContext = true
         super.init()
     }
     
@@ -28,7 +30,7 @@ class DictionaryPopoverDelegate: NSObject {
         let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current)
             .lowercased()
         
-        if let controller = presenter,
+        if let controller = viewController,
             let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
             resolvedWord = variation
             
@@ -47,24 +49,33 @@ class DictionaryPopoverDelegate: NSObject {
             alert.setValue(attributedLemmaText, forKey: "attributedMessage")
             
             let pronounceActionTitle = NSLocalizedString("Pronounce", comment: "Word-click popover")
-            let pronounceAction = UIAlertAction(title: "\(pronounceActionTitle) '\(word)'", style: .default) {_ in
-                print("cancelled")
+            let pronounceAction = UIAlertAction(title: "\(pronounceActionTitle): \(word)", style: .default) { [weak self] _ in
+                self?.speak(word: word)
             }
             alert.addAction(pronounceAction)
             
             let dictionaryActionTitle = NSLocalizedString("Find in Dictionary", comment: "Word-click popover")
             let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
-                (self!.presenter as! DictionaryPopoverPresenter).lookup(word: self!.resolvedWord!, lang: Constants.ForeignLang)
+                (self!.viewController as! DictionaryPopoverDelegate).lookup(word: self!.resolvedWord!, lang: Constants.ForeignLang)
             }
             alert.addAction(dictionaryAction)
             
-            let cancelActionTitle = NSLocalizedString("Cancel", comment: "Word-click popover")
-            let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { _ in
-                print("cancelled")
-            }
+            let cancelActionTitle = NSLocalizedString("Done", comment: "Word-click popover")
+            let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
             alert.addAction(cancelAction)
             
             controller.present(alert, animated: true, completion: nil)
         }
     }
+    
+    private func speak(word: String) {
+        let utterance = AVSpeechUtterance(string: word)
+        utterance.voice = AVSpeechSynthesisVoice(language: "id-ID")
+        talker.delegate = self
+        talker.speak(utterance)
+    }
+}
+
+extension DictionaryPopoverService: AVSpeechSynthesizerDelegate {
+    
 }

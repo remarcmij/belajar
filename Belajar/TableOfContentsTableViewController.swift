@@ -8,8 +8,8 @@
 
 import UIKit
 
-private let anchorRegExp = try! RegularExpression(pattern: "<(h\\d) id=\"(.+?)\">(.+?)</h\\d>", options: [])
-private let htmlTagRegExp = try! RegularExpression(pattern: "<.+?>", options: [])
+private let anchorRegExp = try! NSRegularExpression(pattern: "<(h\\d) id=\"(.+?)\">(.+?)</h\\d>", options: [])
+private let htmlTagRegExp = try! NSRegularExpression(pattern: "<.+?>", options: [])
 
 protocol TableOfContentDelegate: class {
     func scrollToAnchor(anchor: String)
@@ -40,9 +40,9 @@ class TableOfContentsTableViewController: UITableViewController {
                 let matches = anchorRegExp.matches(in: text as String, options: [], range: NSMakeRange(0, text.length))
                 anchors.removeAll()
                 for match in matches {
-                    anchors.append(AnchorInfo(tag: text.substring(with: match.range(at: 1)),
-                                              anchor: text.substring(with: match.range(at: 2)),
-                                              title: text.substring(with: match.range(at: 3))))
+                    anchors.append(AnchorInfo(tag: text.substring(with: match.rangeAt(1)),
+                                              anchor: text.substring(with: match.rangeAt(2)),
+                                              title: text.substring(with: match.rangeAt(3))))
                 }
             }
         }

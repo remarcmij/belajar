@@ -18,8 +18,8 @@ private extension String {
     }
 }
 
-private extension RegularExpression {
-    func firstMatch(in text: String) -> TextCheckingResult? {
+private extension NSRegularExpression {
+    func firstMatch(in text: String) -> NSTextCheckingResult? {
         return self.firstMatch(in: text, options: [], range: NSMakeRange(0, text.utf16.count))
     }
 }
@@ -45,23 +45,23 @@ struct IndonesianLanguageHelper: LanguageHelper {
         "sekali"
         ])
     
-    private let simpleSuffix = try! RegularExpression(pattern: "^(.{2,})(?:nya|ku|kau|mu|[klt]ah|pun)$", options: [])
-    private let kuMuKauPrefix = try! RegularExpression(pattern: "^(?:ku|mu|kau)(.{2,})$", options: [])
-    private let diPrefix = try! RegularExpression(pattern: "^(?:di)(.{2,})$", options: [])
-    private let terPrefix = try! RegularExpression(pattern: "^(?:ter)(.{2,})$", options: [])
-    private let kanISuffix = try! RegularExpression(pattern: "^[^m].{2,}(kan|i)$", options: [])
-    private let sePrefix = try! RegularExpression(pattern: "^(?:se)(.{2,})$", options: [])
-    private let perPrefix = try! RegularExpression(pattern: "^per|pelajar", options: [])
-    private let duplication = try! RegularExpression(pattern: "^(.{2,})(?:-.{2,})$", options: [])
-    private let beginVowels = try! RegularExpression(pattern: "^[aeiou]", options: [])
-    private let beginBF = try! RegularExpression(pattern: "^[bf]", options: [])
-    private let beginP = try! RegularExpression(pattern: "^p", options: [])
-    private let beginDTCJSyZ = try! RegularExpression(pattern: "^(?:d|t|c|j|sy|z)", options: [])
-    private let beginT = try! RegularExpression(pattern: "^t", options: [])
-    private let beginS = try! RegularExpression(pattern: "^s", options: [])
-    private let beginGHKKh = try! RegularExpression(pattern: "^(?:g|h|k|kh)", options: [])
-    private let beginK = try! RegularExpression(pattern: "^k[^h]", options: [])
-    private let beginLRMNNyNgWY = try! RegularExpression(pattern: "^(?:l|r|m|n|ny|ng|w|y)", options: [])
+    private let simpleSuffix = try! NSRegularExpression(pattern: "^(.{2,})(?:nya|ku|kau|mu|[klt]ah|pun)$", options: [])
+    private let kuMuKauPrefix = try! NSRegularExpression(pattern: "^(?:ku|mu|kau)(.{2,})$", options: [])
+    private let diPrefix = try! NSRegularExpression(pattern: "^(?:di)(.{2,})$", options: [])
+    private let terPrefix = try! NSRegularExpression(pattern: "^(?:ter)(.{2,})$", options: [])
+    private let kanISuffix = try! NSRegularExpression(pattern: "^[^m].{2,}(kan|i)$", options: [])
+    private let sePrefix = try! NSRegularExpression(pattern: "^(?:se)(.{2,})$", options: [])
+    private let perPrefix = try! NSRegularExpression(pattern: "^per|pelajar", options: [])
+    private let duplication = try! NSRegularExpression(pattern: "^(.{2,})(?:-.{2,})$", options: [])
+    private let beginVowels = try! NSRegularExpression(pattern: "^[aeiou]", options: [])
+    private let beginBF = try! NSRegularExpression(pattern: "^[bf]", options: [])
+    private let beginP = try! NSRegularExpression(pattern: "^p", options: [])
+    private let beginDTCJSyZ = try! NSRegularExpression(pattern: "^(?:d|t|c|j|sy|z)", options: [])
+    private let beginT = try! NSRegularExpression(pattern: "^t", options: [])
+    private let beginS = try! NSRegularExpression(pattern: "^s", options: [])
+    private let beginGHKKh = try! NSRegularExpression(pattern: "^(?:g|h|k|kh)", options: [])
+    private let beginK = try! NSRegularExpression(pattern: "^k[^h]", options: [])
+    private let beginLRMNNyNgWY = try! NSRegularExpression(pattern: "^(?:l|r|m|n|ny|ng|w|y)", options: [])
     
     func getWordVariations(for word: String) -> [String] {
         var variations = [String]()
@@ -82,22 +82,22 @@ struct IndonesianLanguageHelper: LanguageHelper {
         }
         
         if let match = simpleSuffix.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = kuMuKauPrefix.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = duplication.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
         if let match = diPrefix.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             if !isMeNPrefixed {
                 let meNWord = prefixWithMeN(variation)
                 isMeNPrefixed = true
@@ -111,7 +111,7 @@ struct IndonesianLanguageHelper: LanguageHelper {
         }
         
         if let match = terPrefix.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         
@@ -124,7 +124,7 @@ struct IndonesianLanguageHelper: LanguageHelper {
         }
         
         if let match = sePrefix.firstMatch(in: word) {
-            let variation = word.substring(with: match.range(at: 1))
+            let variation = word.substring(with: match.rangeAt(1))
             getVariations(for: variation, variations: &variations, isMeNPrefixApplied: isMeNPrefixed)
         }
         

@@ -23,18 +23,18 @@ enum TokenType {
 }
 
 class SpeechTextLexer {
-    private static let wordRegExp = try! RegularExpression(pattern: "^([-'\\p{L}]{2,})", options: [])
-    private static let abbreviationRegExp = try! RegularExpression(pattern: "^(\\p{L}[.\\p{L}]*\\.)(?!\\s+\\p{Lu}|$)", options: [])
-    private static let numberRegExp = try! RegularExpression(pattern: "^(\\.?\\d[.\\d]*)", options: [])
-    private static let ellipsisRegExp = try! RegularExpression(pattern: "^(\\.{3})", options: [])
-    private static let commaRegExp = try! RegularExpression(pattern: "^(,)", options: [])
-    private static let semicolonRegExp = try! RegularExpression(pattern: "^(;)", options: [])
-    private static let colonRegExp = try! RegularExpression(pattern: "^(:)", options: [])
-    private static let whiteSpaceRegExp = try! RegularExpression(pattern: "^(\\s+)", options: [])
-    private static let endOfSentenceRegExp = try! RegularExpression(pattern: "^([.?!])(?=\\s+\\p{Lu}|$)", options: [])
-    private static let otherRegExp = try! RegularExpression(pattern: "^(.)", options: [])
+    private static let wordRegExp = try! NSRegularExpression(pattern: "^([-'\\p{L}]{2,})", options: [])
+    private static let abbreviationRegExp = try! NSRegularExpression(pattern: "^(\\p{L}[.\\p{L}]*\\.)(?!\\s+\\p{Lu}|$)", options: [])
+    private static let numberRegExp = try! NSRegularExpression(pattern: "^(\\.?\\d[.\\d]*)", options: [])
+    private static let ellipsisRegExp = try! NSRegularExpression(pattern: "^(\\.{3})", options: [])
+    private static let commaRegExp = try! NSRegularExpression(pattern: "^(,)", options: [])
+    private static let semicolonRegExp = try! NSRegularExpression(pattern: "^(;)", options: [])
+    private static let colonRegExp = try! NSRegularExpression(pattern: "^(:)", options: [])
+    private static let whiteSpaceRegExp = try! NSRegularExpression(pattern: "^(\\s+)", options: [])
+    private static let endOfSentenceRegExp = try! NSRegularExpression(pattern: "^([.?!])(?=\\s+\\p{Lu}|$)", options: [])
+    private static let otherRegExp = try! NSRegularExpression(pattern: "^(.)", options: [])
 
-    private static let tokenMatchers: [(TokenType, RegularExpression)] = [
+    private static let tokenMatchers: [(TokenType, NSRegularExpression)] = [
         (.word, SpeechTextLexer.wordRegExp),
         (.abbreviation, SpeechTextLexer.abbreviationRegExp),
         (.number, SpeechTextLexer.numberRegExp),
@@ -60,7 +60,7 @@ class SpeechTextLexer {
         
         for (tokenType, regExp) in self.dynamicType.tokenMatchers {
             if  let checkingResult = regExp.firstMatch(in: targetText as String, options: [], range: NSMakeRange(0, targetText.length)) {
-                let range = checkingResult.range(at: 1)
+                let range = checkingResult.rangeAt(1)
                 let tokenText = targetText.substring(with: range) as String
                 targetText = targetText.substring(from: range.location)
                 return (tokenType, tokenText)

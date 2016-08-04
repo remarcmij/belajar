@@ -10,24 +10,33 @@ import UIKit
 
 class PublicationViewController: DynamicTextTableViewController {
     
-    var topic: Topic! {
+    var topic: Topic? {
         didSet {
             if topic != nil {
-                navigationItem.title = topic.title
-                topics = TopicStore.sharedInstance.getPublicationTopics(for: topic.publication)
+                topics = TopicStore.sharedInstance.getPublicationTopics(for: topic!.publication)
+                navigationItem.title = topic?.title
                 tableView.reloadData()
             }
         }
     }
     
+    private var lastSelectedKey: String {
+        return "\(topic!.publication).lastSelected"
+    }
+    
+    private var searchButton: UIBarButtonItem?
+    
     private var topics = [Topic]()
     
     private struct Storyboard {
         static let PublicationTableViewCell = "PublicationTableViewCell"
+        static let PresentMenu = "PresentMenu"
         static let ShowDetail = "ShowDetail"
+        static let ShowLibrary = "ShowLibrary"
+        static let ShowDictionary = "ShowDictionary"
     }
     
-    private struct RestorationIndentifier {
+    private struct RestorationIdentifier {
         static let topic = "topic"
     }
     
@@ -35,6 +44,26 @@ class PublicationViewController: DynamicTextTableViewController {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight // Storyboard height
         tableView.rowHeight = UITableViewAutomaticDimension
+
+        if traitCollection.userInterfaceIdiom == .phone {
+            searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(performDictionarySegue))
+            navigationItem.rightBarButtonItem = searchButton
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if topic == nil {
+            performSegue(withIdentifier: Storyboard.ShowLibrary, sender: self)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let row = tableView.indexPathForSelectedRow?.row {
+            UserDefaults.standard.set(row, forKey: lastSelectedKey)
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -57,6 +86,45 @@ class PublicationViewController: DynamicTextTableViewController {
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showArticle(at: indexPath)
+    }
+    
+    // MARK: - Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == Storyboard.ShowDetail {
+            guard let articleViewController = segue.destination.contentViewController as? ArticleViewController,
+                let cell = sender as? UITableViewCell,
+                let indexPath = tableView.indexPath(for: cell)
+                else { return }
+            prepare(articleViewController: articleViewController, for: topics[indexPath.row])
+        } else if segue.identifier == Storyboard.ShowLibrary {
+            guard let libraryViewController = segue.destination.contentViewController as? LibraryCollectionViewController
+                else { return }
+            libraryViewController.delegate = self
+        } else if segue.identifier == Storyboard.PresentMenu {
+            guard let menuViewController = segue.destination.contentViewController as? MainMenuTableViewController
+                else { return }
+            menuViewController.delegate = self
+        }
+    }
+        
+    // MARK: - Restoration
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(topic, forKey: RestorationIdentifier.topic)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)  
+        topic = coder.decodeObject(forKey: RestorationIdentifier.topic) as? Topic
+    }
+    
+    // MARK: - Help methods
+    
+    func showArticle(at indexPath: IndexPath) {
         if let articleViewController = splitViewController?.viewControllers.last?.contentViewController as? ArticleViewController {
             prepare(articleViewController: articleViewController, for: topics[indexPath.row])
         } else {
@@ -64,35 +132,29 @@ class PublicationViewController: DynamicTextTableViewController {
         }
     }
     
-    // MARK: - Segue
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let articleViewController = segue.destinationViewController.contentViewController as? ArticleViewController,
-            let cell = sender as? UITableViewCell,
-            let indexPath = tableView.indexPath(for: cell),
-            let identifier = segue.identifier,
-            identifier == Storyboard.ShowDetail
-            else { return }
-        prepare(articleViewController: articleViewController, for: topics[indexPath.row])
-    }
-    
-    // MARK: - Restoration
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        coder.encode(topic, forKey: RestorationIndentifier.topic)
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-        super.decodeRestorableState(with: coder)
-        topic = coder.decodeObject(forKey: RestorationIndentifier.topic) as? Topic
-    }
-    
-    // MARK: - Help methods
     func prepare(articleViewController controller: ArticleViewController, for topic: Topic) {
         controller.topic = topic
-        controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         controller.navigationItem.leftItemsSupplementBackButton = true
     }
+    
+    func performDictionarySegue() {
+        performSegue(withIdentifier: Storyboard.ShowDictionary, sender: searchButton)
+    }
 }
+
+extension PublicationViewController: MainMenuTableViewControllerDelegate {
+    func showLibrary() {
+        performSegue(withIdentifier: Storyboard.ShowLibrary, sender: self)
+    }
+}
+
+extension PublicationViewController: LibraryCollectionViewControllerDelegate {
+    func setTopic(topic: Topic) {
+        self.topic = topic
+        let lastSelectedRow = UserDefaults.standard.integer(forKey: lastSelectedKey)
+        showArticle(at: IndexPath(row: lastSelectedRow, section: 0))
+    }
+}
+
 

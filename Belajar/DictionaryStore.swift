@@ -20,7 +20,7 @@ final class DictionaryStore {
     static let sharedInstance = DictionaryStore()
     
     init() {
-        let databasePath = Bundle.main.pathForResource("Dictionary", ofType: "sqlite")
+        let databasePath = Bundle.main.path(forResource: "Dictionary", ofType: "sqlite")
         database = FMDatabase(path: databasePath)
         if !database.open() {
             fatalError("could not open Dictionary database")

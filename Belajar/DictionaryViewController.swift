@@ -9,7 +9,7 @@
 import UIKit
 import TTTAttributedLabel
 
-class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverPresenter {
+class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverDelegate {
     
     var word: String!
     var lang: String!
@@ -22,7 +22,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     }
     
     private var lemmaBatches = [LemmaBatch]()
-    private var dictionaryPopoverDelegate: DictionaryPopoverDelegate!
+    private var dictionaryPopoverService: DictionaryPopoverService!
     private var searchController: UISearchController!
     private var contentSizeChangeObserver: NSObjectProtocol?
     private var wordClickObserver: NSObjectProtocol?
@@ -51,7 +51,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
+        dictionaryPopoverService = DictionaryPopoverService(controller: self)
         
         let searchResultsController = self.dynamicType.theSearchResultsController
         searchResultsController.delegate = self
@@ -79,7 +79,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         contentSizeChangeObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange,
-                                                                           object: UIApplication.shared(),
+                                                                           object: UIApplication.shared,
                                                                            queue: OperationQueue.main)
         {
             [weak self] _ in
@@ -90,15 +90,14 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         {
             [unowned self] notification in
             if let userInfo = notification.userInfo,
-                let word = userInfo["word"] as? String,
-                let attributedLabel = notification.object as? TTTAttributedLabel {
-                self.dictionaryPopoverDelegate?.wordClickPopover(word: word, sourceView: self.view!)
+                let word = userInfo["word"] as? String {
+                self.dictionaryPopoverService?.wordClickPopover(word: word, sourceView: self.view!)
             }
         }
         
         if word == nil {
             // show keyboard (needs delay, otherwise becomeFirstResponder return false
-            DispatchQueue.main.after(when: .now() + 0.5) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.searchController.searchBar.becomeFirstResponder()
             }
         }

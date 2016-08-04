@@ -22,6 +22,10 @@ class Topic: NSObject, NSCoding {
     let pubDate: String?
     let lastModified: String
     
+    var imageName: String {
+        return "\(publication).png"
+    }
+    
     init(id: Int, fileName: String, publication: String, chapter: String, groupName: String,
          sortIndex: Int, title: String, subtitle: String?, author: String?, publisher: String?,
          pubDate: String?, lastModified: String) {

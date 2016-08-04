@@ -30,7 +30,7 @@ class DictionaryPopoverController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let layer = contentView.layer
-        layer.borderColor = UIColor.black().cgColor
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 2
         layer.cornerRadius = 5
         layer.masksToBounds = true

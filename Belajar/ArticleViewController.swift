@@ -11,7 +11,7 @@ import WebKit
 
 
 
-class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverPresenter {
+class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverDelegate {
     
     @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
     
@@ -23,7 +23,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     private var webView: WKWebView!
     private var resolvedWord: String?
     private var clickedText: String?
-    private var dictionaryPopoverDelegate: DictionaryPopoverDelegate?
+    private var dictionaryPopoverService: DictionaryPopoverService?
     
     private var styleSheet: String {
         return "body {font-size: \(PreferredFont.get(type: .body).pointSize)px;}"
@@ -49,12 +49,12 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     private var article: Article?
     
     private static let htmlTemplate: String = {
-        let indexURL = Bundle.main.urlForResource("index", withExtension: "html", subdirectory: "www")!
+        let indexURL = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "www")!
         return try! String(contentsOf: indexURL, encoding: String.Encoding.utf8)
     }()
     
     private static let folderURL: URL = {
-        return Bundle.main.urlForResource("www", withExtension: nil)!
+        return Bundle.main.url(forResource: "www", withExtension: nil)!
     }()
     
     override func awakeFromNib() {
@@ -72,7 +72,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dictionaryPopoverDelegate = DictionaryPopoverDelegate(presenter: self)
+        dictionaryPopoverService = DictionaryPopoverService(controller: self)
         tableOfContentsButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
                                                name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
@@ -94,7 +94,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
             clickedText = components[1]
             print("Javascript clickedWord: \(clickedWord) clickedText: \(clickedText)")
             
-            dictionaryPopoverDelegate?.wordClickPopover(word: clickedWord, sourceView: webView)
+            dictionaryPopoverService?.wordClickPopover(word: clickedWord, sourceView: webView)
         } else {
             print("something else called")
         }
@@ -111,7 +111,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         switch identifier {
             
         case Storyboard.showDictionary:
-            if let dictionaryController = segue.destinationViewController.contentViewController as? DictionaryViewController {
+            if let dictionaryController = segue.destination.contentViewController as? DictionaryViewController {
                 dictionaryController.word = resolvedWord
                 dictionaryController.lang = Constants.ForeignLang
                 resolvedWord = nil
@@ -120,7 +120,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         case Storyboard.showTableOfContents:
             // note: toc controller embedded in a navigation controller to prevent it being presented underneath the
             // status bar on an iPhone
-            if let controller = segue.destinationViewController.contentViewController as? TableOfContentsTableViewController {
+            if let controller = segue.destination.contentViewController as? TableOfContentsTableViewController {
                 controller.popoverPresentationController?.barButtonItem = tableOfContentsButton
                 controller.delegate = self
                 controller.article = article

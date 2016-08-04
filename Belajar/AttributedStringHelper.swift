@@ -10,10 +10,10 @@ import UIKit
 
 struct AttributedStringHelper {
     
-    private static let markdownRegExp = try! RegularExpression(pattern: "\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|__(.+?)__|_(.+?)_", options: [])
+    private static let markdownRegExp = try! NSRegularExpression(pattern: "\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|__(.+?)__|_(.+?)_", options: [])
     
-    static func makeAttributedText(from text: NSString, clickAction: String? = nil, useSmallFont: Bool = false) -> AttributedString {
-//        let startTime = Date()
+    static func makeAttributedText(from text: NSString, clickAction: String? = nil, useSmallFont: Bool = false) -> NSAttributedString {
+        //        let startTime = Date()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
         let attributedString = NSMutableAttributedString(string: "")
@@ -34,25 +34,25 @@ struct AttributedStringHelper {
             
             if outerRange.location > startPos {
                 let snippet = text.substring(with: NSMakeRange(startPos, outerRange.location - startPos))
-                attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
+                attributedString.append(NSAttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
             }
             
-            if match.range(at: 1).location != NSNotFound {
-                let snippet = text.substring(with: match.range(at: 1))
+            if match.rangeAt(1).location != NSNotFound {
+                let snippet = text.substring(with: match.rangeAt(1))
                 attributedString.append(clickAction != nil
                     ? makeClickableWord(from: snippet, clickAction: clickAction!, font: boldFont)
-                    : AttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
-            } else if match.range(at: 2).location != NSNotFound {
-                let snippet = text.substring(with: match.range(at: 2))
+                    : NSAttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
+            } else if match.rangeAt(2).location != NSNotFound {
+                let snippet = text.substring(with: match.rangeAt(2))
                 attributedString.append(clickAction != nil
                     ? makeClickableWord(from: snippet, clickAction: clickAction!, font: italicFont)
-                    : AttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
-            } else if match.range(at: 3).location != NSNotFound {
-                let snippet = text.substring(with: match.range(at: 3))
-                attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
-            } else if match.range(at: 4).location != NSNotFound {
-                let snippet = text.substring(with: match.range(at: 4))
-                attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
+                    : NSAttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
+            } else if match.rangeAt(3).location != NSNotFound {
+                let snippet = text.substring(with: match.rangeAt(3))
+                attributedString.append(NSAttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
+            } else if match.rangeAt(4).location != NSNotFound {
+                let snippet = text.substring(with: match.rangeAt(4))
+                attributedString.append(NSAttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
             }
             
             startPos = outerRange.location + outerRange.length
@@ -60,24 +60,24 @@ struct AttributedStringHelper {
         
         if (startPos < text.length) {
             let snippet = text.substring(from: startPos)
-            attributedString.append(AttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
+            attributedString.append(NSAttributedString(string: snippet, attributes: [NSFontAttributeName: regularFont]))
         }
         
         attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
         
-//        let endTime = Date()
-//        let elapsed = endTime.timeIntervalSince(startTime) * 1000
-//        print("makeAttributedText took \(elapsed) ms")
+        //        let endTime = Date()
+        //        let elapsed = endTime.timeIntervalSince(startTime) * 1000
+        //        print("makeAttributedText took \(elapsed) ms")
         
         return attributedString
     }
     
-    static func makeClickableWord(from word: NSString, clickAction: String, font: UIFont) -> AttributedString {
+    static func makeClickableWord(from word: NSString, clickAction: String, font: UIFont) -> NSAttributedString {
         let urlEncoded = word.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         let url = URL(string: "http://belajar.nl/q?word=\(urlEncoded)&action=\(clickAction)")!
         let attributes = [NSFontAttributeName: font,
                           NSLinkAttributeName: url]
-        return AttributedString(string: word as String, attributes: attributes)
+        return NSAttributedString(string: word as String, attributes: attributes)
     }
     
 }

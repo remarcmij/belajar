@@ -15,7 +15,7 @@ class DynamicTextTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange,
-                                               object: UIApplication.shared(),
+                                               object: UIApplication.shared,
                                                queue: OperationQueue.main)
         {
             [weak self] _ in

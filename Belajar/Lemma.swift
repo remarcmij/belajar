@@ -58,7 +58,7 @@ class Lemma {
                      baseLang: rs.string(forColumnIndex: 4))
     }
 
-    private static let finalSemicolonRegex = try! RegularExpression(pattern: ";$", options: [])
+    private static let finalSemicolonRegex = try! NSRegularExpression(pattern: ";$", options: [])
     
     static func makeSynopsis(lemmas: [Lemma]) -> String {
         var homonymGroups = [[Lemma]?]()
@@ -91,7 +91,7 @@ class Lemma {
                 if buffer.length == 0 {
                     buffer.append(text)
                 } else {
-                    let lemmaWordRegex = try! RegularExpression(
+                    let lemmaWordRegex = try! NSRegularExpression(
                         pattern: "\\*\\*\(lemma.word)\\*\\*. *(\\d+)", options: [])
                     text = lemmaWordRegex.stringByReplacingMatches(
                         in: text, options: [],

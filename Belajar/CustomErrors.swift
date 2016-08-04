@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum CurstomError: ErrorProtocol {
+enum CurstomError: Error {
     case openError(String)
 }
