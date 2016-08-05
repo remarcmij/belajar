@@ -8,25 +8,26 @@
 
 import UIKit
 
-protocol LibraryCollectionViewCellDelegate: class {
-    func infoButtonTapped(for: Topic)
-}
-
 class LibraryCollectionViewCell: UICollectionViewCell {
     
-    weak var delegate: LibraryCollectionViewCellDelegate?
+    @IBOutlet weak private var imageView: UIImageView!   
+    @IBOutlet weak var blankCoverView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak var infoButton: UIButton!
     
     weak var topic: Topic? {
         didSet {
             if let topic = topic {
-                imageView.image = UIImage(named: topic.imageName)
+                infoButton.tag = topic.id
+                if let image = UIImage(named: topic.imageName) {
+                    imageView.image = image
+                    blankCoverView.isHidden = true
+                } else  {
+                    titleLabel.text = topic.title
+                    imageView.isHidden = true
+                }
             }
         }
-    }
-    
-    @IBAction func infoButtonTapped() {
-        delegate?.infoButtonTapped(for: topic!)
     }
 }

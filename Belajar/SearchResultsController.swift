@@ -26,6 +26,11 @@ class SearchResultsController: UITableViewController {
         static let AutoCompleteCell = "AutoCompleteCell"
     }
     
+    private struct AssetCatalog {
+        static let globeSmall = "Globe Small"
+        static let homeSmall = "Home Small"
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -39,7 +44,9 @@ class SearchResultsController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.AutoCompleteCell, for: indexPath)
         let item = autoCompleteItems[indexPath.row]
-        cell.textLabel?.text = "\(item.word) [\(item.lang)]"
+        let imageName = item.lang == Constants.ForeignLang ? AssetCatalog.globeSmall : AssetCatalog.homeSmall
+        cell.imageView?.image = UIImage(named: imageName)
+        cell.textLabel?.text = "\(item.word)"
         cell.textLabel?.font = PreferredFont.get(type: .body)
         return cell
     }

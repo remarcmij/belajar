@@ -48,8 +48,8 @@ class DictionaryPopoverService: NSObject {
             }
             alert.setValue(attributedLemmaText, forKey: "attributedMessage")
             
-            let pronounceActionTitle = NSLocalizedString("Pronounce", comment: "Word-click popover")
-            let pronounceAction = UIAlertAction(title: "\(pronounceActionTitle): \(word)", style: .default) { [weak self] _ in
+//            let pronounceActionTitle = NSLocalizedString("Pronounce", comment: "Word-click popover")
+            let pronounceAction = UIAlertAction(title: "🗣 \(word)", style: .default) { [weak self] _ in
                 self?.speak(word: word)
             }
             alert.addAction(pronounceAction)

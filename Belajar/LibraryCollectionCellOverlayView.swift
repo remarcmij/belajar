@@ -22,7 +22,7 @@ class LibraryCollectionCellOverlayView: UIView {
         path.addLine(to: CGPoint(x: lowerRightCorner.x - CGFloat(dogEarWidth), y: lowerRightCorner.y))
         path.addLine(to: CGPoint(x: lowerRightCorner.x, y: lowerRightCorner.y - CGFloat(dogEarWidth)))
         path.close()
-        UIColor.black.setFill()
+        UIColor.white.setFill()
         path.fill(with: .normal, alpha: CGFloat(alphaForFill))
     }
 }
