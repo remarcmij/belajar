@@ -20,6 +20,7 @@ class Topic: NSObject, NSCoding {
     let author: String?
     let publisher: String?
     let pubDate: String?
+    let isbn: String?
     let lastModified: String
     
     var imageName: String {
@@ -28,7 +29,7 @@ class Topic: NSObject, NSCoding {
     
     init(id: Int, fileName: String, publication: String, chapter: String, groupName: String,
          sortIndex: Int, title: String, subtitle: String?, author: String?, publisher: String?,
-         pubDate: String?, lastModified: String) {
+         pubDate: String?, isbn: String?, lastModified: String) {
         self.id = id
         self.fileName = fileName
         self.publication = publication
@@ -40,6 +41,7 @@ class Topic: NSObject, NSCoding {
         self.author = author
         self.publisher = publisher
         self.pubDate = pubDate
+        self.isbn = isbn
         self.lastModified = lastModified
     }
     
@@ -55,6 +57,7 @@ class Topic: NSObject, NSCoding {
         author = coder.decodeObject(forKey: ColumnName.author.rawValue) as? String
         publisher = coder.decodeObject(forKey: ColumnName.publisher.rawValue) as? String
         pubDate = coder.decodeObject(forKey: ColumnName.pubDate.rawValue) as? String
+        isbn = coder.decodeObject(forKey: ColumnName.isbn.rawValue) as? String
         lastModified = coder.decodeObject(forKey: ColumnName.lastModified.rawValue) as! String
     }
     
@@ -69,12 +72,13 @@ class Topic: NSObject, NSCoding {
         coder.encode(author, forKey: ColumnName.author.rawValue)
         coder.encode(publisher, forKey: ColumnName.publisher.rawValue)
         coder.encode(pubDate, forKey: ColumnName.pubDate.rawValue)
+        coder.encode(isbn, forKey: ColumnName.isbn.rawValue)
         coder.encode(lastModified, forKey: ColumnName.lastModified.rawValue)
     }
     
     enum ColumnName: String {
         case id, fileName, publication, chapter, groupName, sortIndex,
-        title, subtitle, author, publisher, pubDate, icon, lastModified
+        title, subtitle, author, publisher, pubDate, isbn, lastModified
     }
     
     static let fieldNames = [
@@ -89,6 +93,7 @@ class Topic: NSObject, NSCoding {
         ColumnName.author.rawValue,
         ColumnName.publisher.rawValue,
         ColumnName.pubDate.rawValue,
+        ColumnName.isbn.rawValue,
         ColumnName.lastModified.rawValue
     ]
 }

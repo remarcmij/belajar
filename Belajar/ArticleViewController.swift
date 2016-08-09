@@ -9,11 +9,12 @@
 import UIKit
 import WebKit
 
-
+private var sharedSpeakOnTapIsOn = false
 
 class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverDelegate {
     
     @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
+    @IBOutlet weak private var speechButton: UIBarButtonItem!
     
     private struct Storyboard {
         static let showDictionary = "showDictionary"
@@ -22,8 +23,15 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     private var webView: WKWebView!
     private var resolvedWord: String?
-    private var clickedText: String?
     private var dictionaryPopoverService: DictionaryPopoverService?
+    
+    var speakOnTapIsOn = sharedSpeakOnTapIsOn {
+        didSet {
+            if !speakOnTapIsOn {
+                SpeechService.sharedInstance.stopSpeaking()
+            }
+        }
+    }
     
     private var styleSheet: String {
         return "body {font-size: \(PreferredFont.get(type: .body).pointSize)px;}"
@@ -31,6 +39,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     var topic: Topic! {
         didSet {
+            _ = navigationController?.popToRootViewController(animated: true)
             if topic == nil {
                 tableOfContentsButton.isEnabled = false
             } else {
@@ -72,14 +81,22 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        speakOnTapIsOn = sharedSpeakOnTapIsOn
+        
         dictionaryPopoverService = DictionaryPopoverService(controller: self)
         tableOfContentsButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(onContentSizeChanged),
                                                name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SpeechService.sharedInstance.stopSpeaking()
+    }
+
     override func viewDidDisappear(_ animated: Bool)  {
         super.viewDidDisappear(animated)
+        sharedSpeakOnTapIsOn = speakOnTapIsOn
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -91,10 +108,14 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         if message.name == "wordClick" {
             let components = (message.body as! String).components(separatedBy: "|")
             let clickedWord = components[0]
-            clickedText = components[1]
+            let clickedText = components[1]
             print("Javascript clickedWord: \(clickedWord) clickedText: \(clickedText)")
             
-            dictionaryPopoverService?.wordClickPopover(word: clickedWord, sourceView: webView)
+            if speakOnTapIsOn {
+                SpeechService.sharedInstance.speak(text: clickedText)
+            } else {
+                dictionaryPopoverService?.wordClickPopover(word: clickedWord, sourceView: webView)
+            }
         } else {
             print("something else called")
         }
@@ -108,6 +129,8 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         guard let identifier = segue.identifier else { return }
         
+        SpeechService.sharedInstance.stopSpeaking()
+        
         switch identifier {
             
         case Storyboard.showDictionary:
@@ -120,16 +143,16 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         case Storyboard.showTableOfContents:
             // note: toc controller embedded in a navigation controller to prevent it being presented underneath the
             // status bar on an iPhone
-            if let controller = segue.destination.contentViewController as? TableOfContentsTableViewController {
-                controller.popoverPresentationController?.barButtonItem = tableOfContentsButton
-                controller.delegate = self
-                controller.article = article
+            if let menuController = segue.destination.contentViewController as? ArticleMenuViewController {
+                segue.destination.popoverPresentationController?.barButtonItem = tableOfContentsButton
+                menuController.delegate = self
+                menuController.article = article
             }
             
         default: break
         }
     }
-    
+     
     // intermediate class to minimise memory leaks
     class MyMessageHandler: NSObject,  WKScriptMessageHandler {
         private weak var delegate: WKScriptMessageHandler?
@@ -170,6 +193,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     }
     
     func loadHTML() {
+        SpeechService.sharedInstance.stopSpeaking()
         if let htmlText = article?.htmlText {
             var htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- style -->", with: styleSheet)
             htmlDoc = htmlDoc.replacingOccurrences(of: "<!-- article -->", with: htmlText)
@@ -178,10 +202,9 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     }
 }
 
-extension ArticleViewController: TableOfContentDelegate {
+extension ArticleViewController: ArticleMenuDelegate {
     func scrollToAnchor(anchor: String) {
         dismiss(animated: true, completion: nil)
         webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
     }
 }
-

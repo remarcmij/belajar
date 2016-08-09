@@ -76,7 +76,8 @@ final class TopicStore {
             author: rs.string(forColumnIndex: 8),
             publisher: rs.string(forColumnIndex: 9),
             pubDate: rs.string(forColumnIndex: 10),
-            lastModified: rs.string(forColumnIndex: 11))
+            isbn: rs.string(forColumnIndex: 11),
+            lastModified: rs.string(forColumnIndex: 12))
     }
     
     private func makeArticle(from rs: FMResultSet) -> Article {

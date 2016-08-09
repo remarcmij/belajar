@@ -120,6 +120,10 @@ class LibraryCollectionViewController: UICollectionViewController {
                 }
             }
             
+            if let isbn = topic.isbn {
+                message.append("\nISBN: \(isbn)")
+            }
+            
             let alert = UIAlertController(title: topic.title, message: message as String, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)

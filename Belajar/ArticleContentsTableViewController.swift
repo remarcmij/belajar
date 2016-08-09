@@ -11,11 +11,11 @@ import UIKit
 private let anchorRegExp = try! NSRegularExpression(pattern: "<(h\\d) id=\"(.+?)\">(.+?)</h\\d>", options: [])
 private let htmlTagRegExp = try! NSRegularExpression(pattern: "<.+?>", options: [])
 
-protocol TableOfContentDelegate: class {
+protocol ArticleContentsDelegate: class {
     func scrollToAnchor(anchor: String)
 }
 
-class TableOfContentsTableViewController: UITableViewController {
+class ArticleContentsTableViewController: UITableViewController {
 
     private struct Storyboard {
         static let tableOfContentCell = "TableOfContentsCell"
@@ -28,11 +28,11 @@ class TableOfContentsTableViewController: UITableViewController {
         let title: String;
     }
     
-    @IBOutlet weak private var cancelButton: UIButton!
-
+    @IBOutlet weak private var doneButton: UIBarButtonItem!
+    
     private var anchors = [AnchorInfo]()
     
-    weak var delegate: TableOfContentDelegate?
+    weak var delegate: ArticleContentsDelegate?
     
     var article: Article? {
         didSet {
@@ -74,7 +74,7 @@ class TableOfContentsTableViewController: UITableViewController {
     
     // MARK: - @IBAction handlers
     
-    @IBAction func cancelButtonTapped() {
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
 }

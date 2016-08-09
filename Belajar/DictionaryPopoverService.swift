@@ -7,16 +7,16 @@
 //
 
 import UIKit
-import AVFoundation
 
 protocol DictionaryPopoverDelegate {
     func lookup(word: String, lang: String)
 }
 
+private let parenthesizedSnippetRegExp = try! NSRegularExpression(pattern: "\\((.*?)\\)", options: [])
+private let anyParensRegExp = try! NSRegularExpression(pattern: "[()]", options: [])
+
 class DictionaryPopoverService: NSObject {
     private weak var viewController: UIViewController?
-    private var resolvedWord: String?
-    private let talker = AVSpeechSynthesizer()
     
     init(controller: UIViewController) {
         assert((controller as? DictionaryPopoverDelegate) != nil,
@@ -27,55 +27,56 @@ class DictionaryPopoverService: NSObject {
     }
     
     func wordClickPopover(word: String, sourceView: UIView) {
-        let normalisedWord = word.folding(options: .diacriticInsensitive, locale: Locale.current)
+        var normalisedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: word, options: [], range: NSMakeRange(0, word.utf16.count), withTemplate: "")
+        normalisedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: normalisedWord, options: [], range: NSMakeRange(0, normalisedWord.utf16.count), withTemplate: "")
+        normalisedWord = normalisedWord.folding(options: .diacriticInsensitive, locale: Locale.current)
             .lowercased()
         
-        if let controller = viewController,
-            let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
-            resolvedWord = variation
-            
-            let lemmaText = Lemma.makeSynopsis(lemmas: lemmas) + "\n→ **\(lemmas[0].base)**"
-            let useSmallFont =  controller.traitCollection.userInterfaceIdiom == .phone
-            let attributedLemmaText = AttributedStringHelper.makeAttributedText(from: lemmaText, clickAction: nil, useSmallFont: useSmallFont)
-            
+        var resolvedWord: String?
+        
+        if let controller = viewController {
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.modalPresentationStyle = .popover
+            
             if let ppc = alert.popoverPresentationController {
                 ppc.permittedArrowDirections = []
                 ppc.sourceView = sourceView
                 ppc.sourceRect = sourceView.bounds
-                print(controller.view.bounds)
             }
+            
+            let message: String
+            if let (lemmas, variation) = DictionaryStore.sharedInstance.lookupWord(word: normalisedWord) {
+                resolvedWord = variation
+                message = Lemma.makeSynopsis(lemmas: lemmas) + "\n→ **\(lemmas[0].base)**"
+            } else {
+                message = NSLocalizedString("Nothing found in dictionary", comment: "wordClick popover")
+            }
+            let useSmallFont =  controller.traitCollection.userInterfaceIdiom == .phone
+            let attributedLemmaText = AttributedStringHelper.makeAttributedText(from: message, clickAction: nil, useSmallFont: useSmallFont)
             alert.setValue(attributedLemmaText, forKey: "attributedMessage")
             
-//            let pronounceActionTitle = NSLocalizedString("Pronounce", comment: "Word-click popover")
-            let pronounceAction = UIAlertAction(title: "🗣 \(word)", style: .default) { [weak self] _ in
-                self?.speak(word: word)
+            let pronounceAction = UIAlertAction(title: "🗣 \(word)", style: .default) { _ in
+                let cleansedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: word, options: [], range: NSMakeRange(0, word.utf16.count), withTemplate: "$1")
+                SpeechService.sharedInstance.speak(text: cleansedWord)
             }
             alert.addAction(pronounceAction)
             
-            let dictionaryActionTitle = NSLocalizedString("Find in Dictionary", comment: "Word-click popover")
-            let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
-                (self!.viewController as! DictionaryPopoverDelegate).lookup(word: self!.resolvedWord!, lang: Constants.ForeignLang)
+            if resolvedWord != nil {
+                let dictionaryActionTitle = NSLocalizedString("Find in Dictionary", comment: "Word-click popover")
+                let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
+                    (self!.viewController as! DictionaryPopoverDelegate).lookup(word: resolvedWord!, lang: Constants.ForeignLang)
+                }
+                alert.addAction(dictionaryAction)
             }
-            alert.addAction(dictionaryAction)
             
             let cancelActionTitle = NSLocalizedString("Done", comment: "Word-click popover")
             let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
             alert.addAction(cancelAction)
             
             controller.present(alert, animated: true, completion: nil)
+            alert.view.layoutIfNeeded() //avoid Snapshotting error
         }
     }
-    
-    private func speak(word: String) {
-        let utterance = AVSpeechUtterance(string: word)
-        utterance.voice = AVSpeechSynthesisVoice(language: "id-ID")
-        talker.delegate = self
-        talker.speak(utterance)
-    }
+   
 }
 
-extension DictionaryPopoverService: AVSpeechSynthesizerDelegate {
-    
-}

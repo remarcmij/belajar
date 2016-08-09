@@ -35,6 +35,21 @@ final class DictionaryStore {
     }
     
     func autoCompleteSearch(term: String, lang: String?) -> [AutoCompleteItem] {
+        let languageHelper = getLanguageHelper(for: Constants.ForeignLang)
+        let wordVariations = languageHelper.getWordVariations(for: term)
+        
+        for variation in wordVariations {
+            let results = autoCompleteSearchTerm(term: variation, lang: lang)
+            if results.count > 0 {
+                return results
+            }
+        }
+        
+        return [AutoCompleteItem]()
+    }
+    
+    private func autoCompleteSearchTerm(term: String, lang: String?) -> [AutoCompleteItem] {
+        
         var values: [AnyObject] = [term]
         values.append(makeStopTerm(term: term))
         
@@ -55,6 +70,7 @@ final class DictionaryStore {
         rs.close()
         return results
     }
+    
     
     private func makeStopTerm(term: String) -> String {
         let utf16Chars = term.utf16

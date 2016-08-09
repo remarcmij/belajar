@@ -13,4 +13,6 @@ struct Constants {
     static let WordLookupNotification = Notification.Name("wordLookupNotification")
     static let ForeignLang = "id"
     static let NativeLang = "nl"
+    static let foreignBCP47 = "id-ID"
+    static let nativeBCP47 = "nl-NL"
 }
