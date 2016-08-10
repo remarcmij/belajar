@@ -8,22 +8,32 @@
 
 import Foundation
 import AVFoundation
+private var rate: Float = 0.5
 
 private let endOfSentenceRegExp = try! NSRegularExpression(pattern: "([.?!])(?=\\s+(:?\\p{Lu}|['\"‘“]))", options: [])
 
-class SpeechService: NSObject, AVSpeechSynthesizerDelegate {
+class SpeechService: NSObject {
     
     static let sharedInstance = SpeechService()
     
-    var speechRate: Float = 0.5
+    var speechRate: Float = 0.5 {
+        didSet {
+            if speechRate != oldValue {
+                speechSynthesizer.stopSpeaking(at: .immediate)
+            }
+        }
+    }
     
-    private let speechSynthesizer = AVSpeechSynthesizer()
+    private lazy var speechSynthesizer = AVSpeechSynthesizer()
 
     func stopSpeaking() {
-        speechSynthesizer.stopSpeaking(at: .immediate)
+        speechSynthesizer.stopSpeaking(at: .word)
     }
     
     func speak(text: String) {
+        if speechSynthesizer.isSpeaking {
+            stopSpeaking()
+        }
         let partionedText = endOfSentenceRegExp.stringByReplacingMatches(in: text, options: [], range: NSMakeRange(0, text.utf16.count), withTemplate: "$1|")
         let sentences = partionedText.components(separatedBy: "|")
         
@@ -42,4 +52,7 @@ class SpeechService: NSObject, AVSpeechSynthesizerDelegate {
         speechSynthesizer.delegate = self
         speechSynthesizer.speak(utterance)
     }
+}
+
+extension SpeechService: AVSpeechSynthesizerDelegate {
 }

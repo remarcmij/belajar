@@ -16,9 +16,9 @@ class PublicationTableViewCell: UITableViewCell {
     var topic: Topic! {
         didSet {
             titleLabel?.text = topic.title
-            titleLabel?.font = PreferredFont.get(type: .subhead)
+            titleLabel?.font = PreferredFont.get(type: .body)
             subtitleLabel?.text = topic.subtitle
-            subtitleLabel?.font = PreferredFont.get(type: .caption1)
+            subtitleLabel?.font = PreferredFont.get(type: .subhead)
         }
     }
 }

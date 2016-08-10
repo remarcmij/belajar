@@ -9,7 +9,7 @@
 import UIKit
 import TTTAttributedLabel
 
-class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverDelegate {
+class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverServiceDelegate {
     
     var word: String!
     var lang: String!

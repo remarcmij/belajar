@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol DictionaryPopoverDelegate {
+protocol DictionaryPopoverServiceDelegate {
     func lookup(word: String, lang: String)
 }
 
@@ -19,7 +19,7 @@ class DictionaryPopoverService: NSObject {
     private weak var viewController: UIViewController?
     
     init(controller: UIViewController) {
-        assert((controller as? DictionaryPopoverDelegate) != nil,
+        assert((controller as? DictionaryPopoverServiceDelegate) != nil,
                "presenter should conform to DictionaryPopoverPresenter protocol")
         self.viewController = controller;
         controller.definesPresentationContext = true
@@ -64,7 +64,7 @@ class DictionaryPopoverService: NSObject {
             if resolvedWord != nil {
                 let dictionaryActionTitle = NSLocalizedString("Find in Dictionary", comment: "Word-click popover")
                 let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
-                    (self!.viewController as! DictionaryPopoverDelegate).lookup(word: resolvedWord!, lang: Constants.ForeignLang)
+                    (self!.viewController as! DictionaryPopoverServiceDelegate).lookup(word: resolvedWord!, lang: Constants.ForeignLang)
                 }
                 alert.addAction(dictionaryAction)
             }

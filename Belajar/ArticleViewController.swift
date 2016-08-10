@@ -11,14 +11,15 @@ import WebKit
 
 private var sharedSpeakOnTapIsOn = false
 
-class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverDelegate {
+class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverServiceDelegate {
     
     @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
-    @IBOutlet weak private var speechButton: UIBarButtonItem!
-    
+    @IBOutlet var speechRateSliderView: UIView!
+    @IBOutlet weak var speechRateSlider: UISlider!
+ 
     private struct Storyboard {
         static let showDictionary = "showDictionary"
-        static let showTableOfContents = "showTableOfContents"
+        static let showMenu = "showMenu"
     }
     
     private var webView: WKWebView!
@@ -30,6 +31,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
             if !speakOnTapIsOn {
                 SpeechService.sharedInstance.stopSpeaking()
             }
+            navigationController?.setToolbarHidden(!speakOnTapIsOn, animated: false)
         }
     }
     
@@ -82,6 +84,10 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     override func viewDidLoad() {
         super.viewDidLoad()
         speakOnTapIsOn = sharedSpeakOnTapIsOn
+        navigationController?.setToolbarHidden(!speakOnTapIsOn, animated: false)
+        let sliderAsToolbarItem = UIBarButtonItem(customView: speechRateSliderView)
+        toolbarItems?.insert(sliderAsToolbarItem, at: 0)
+        speechRateSlider.value = SpeechService.sharedInstance.speechRate
         
         dictionaryPopoverService = DictionaryPopoverService(controller: self)
         tableOfContentsButton.isEnabled = false
@@ -140,12 +146,12 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
                 resolvedWord = nil
             }
             
-        case Storyboard.showTableOfContents:
-            // note: toc controller embedded in a navigation controller to prevent it being presented underneath the
+        case Storyboard.showMenu:
+            // note: menu controller embedded in a navigation controller to prevent it being presented underneath the
             // status bar on an iPhone
-            if let menuController = segue.destination.contentViewController as? ArticleMenuViewController {
+            if let menuController = segue.destination.contentViewController as? ArticleMenuPageViewController {
                 segue.destination.popoverPresentationController?.barButtonItem = tableOfContentsButton
-                menuController.delegate = self
+                menuController.menuDelegate = self
                 menuController.article = article
             }
             
@@ -165,6 +171,15 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             delegate?.userContentController(userContentController, didReceive: message)
         }
+    }
+    
+    @IBAction func closeButtonTapped(_ sender: UIBarButtonItem) {
+        speakOnTapIsOn = false
+//        navigationController?.setToolbarHidden(true, animated: true)
+    }
+    
+    @IBAction func speechRateSliderValueChanged(_ sender: UISlider) {
+        SpeechService.sharedInstance.speechRate = sender.value
     }
     
     // MARK: - DictionaryPopoverPresenter
@@ -202,9 +217,14 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     }
 }
 
-extension ArticleViewController: ArticleMenuDelegate {
+extension ArticleViewController: ArticleMenuPageViewControllerDelegate {
     func scrollToAnchor(anchor: String) {
         dismiss(animated: true, completion: nil)
         webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
+    }
+    
+    func setSpeechRate(value: Float) {
+        SpeechService.sharedInstance.speechRate = value
+        speechRateSlider.value = value
     }
 }
