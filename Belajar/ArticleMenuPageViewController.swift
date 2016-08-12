@@ -8,6 +8,11 @@
 
 import UIKit
 
+private struct Storyboard {
+    static let articleOptionsTableViewController = "ArticleOptionsTableViewController"
+    static let articleContentsTableViewController = "ArticleContentsTableViewController"
+    
+}
 protocol ArticleMenuPageViewControllerDelegate: ArticleContentsDelegate, ArticleOptionsDelegate {
 }
 
@@ -23,11 +28,11 @@ class ArticleMenuPageViewController: UIPageViewController {
         super.viewDidLoad()
         
         optionsViewController = UIStoryboard.init(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "ArticleOptionsTableViewController") as? ArticleOptionsTableViewController
+            .instantiateViewController(withIdentifier: Storyboard.articleOptionsTableViewController) as? ArticleOptionsTableViewController
         optionsViewController?.delegate = menuDelegate
         
         contentsViewController = UIStoryboard.init(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "ArticleContentsTableViewController") as? ArticleContentsTableViewController
+            .instantiateViewController(withIdentifier: Storyboard.articleContentsTableViewController) as? ArticleContentsTableViewController
         contentsViewController?.delegate = menuDelegate
         contentsViewController?.article = article
         
@@ -35,7 +40,7 @@ class ArticleMenuPageViewController: UIPageViewController {
     }
 
     func setViewController(forIndex index: Int) {
-        setViewControllers([index == 0 ? optionsViewController! : contentsViewController!],
+        setViewControllers([index == 0 ? contentsViewController! : optionsViewController!],
                            direction: .forward, animated: false, completion: nil)
     }
     
@@ -51,13 +56,17 @@ class ArticleMenuPageViewController: UIPageViewController {
 extension ArticleMenuPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if viewController == contentsViewController { return optionsViewController }
+        if viewController == contentsViewController {
+            return optionsViewController
+        }
         
         return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if viewController == optionsViewController { return contentsViewController }
+        if viewController == optionsViewController {
+            return contentsViewController
+        }
         
         return nil
     }

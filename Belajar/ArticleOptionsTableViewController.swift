@@ -10,7 +10,6 @@ import UIKit
 
 protocol ArticleOptionsDelegate: class {
     var speakOnTapIsOn: Bool {get set }
-    func setSpeechRate(value: Float)
 }
 
 class ArticleOptionsTableViewController: UITableViewController {
@@ -36,7 +35,7 @@ class ArticleOptionsTableViewController: UITableViewController {
     }
     
     @IBAction func speechRateChanged(_ sender: UISlider) {
-        delegate?.setSpeechRate(value: sender.value)
+        SpeechService.sharedInstance.speechRate = sender.value
     }
     /*
      // MARK: - Navigation

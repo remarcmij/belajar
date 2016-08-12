@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rB3-eb-rZz" id="5Mk-Hs-SFP">
-                                    <frame key="frameInset" width="375" height="60"/>
+                                    <frame key="frameInset" width="375" height="59"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VSJ-N0-GNT">
@@ -331,8 +331,15 @@
             <objects>
                 <viewController storyboardIdentifier="ArticleViewController" title="Article" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MN4-SG-tnN" customClass="ArticleViewController" customModule="Belajar" sceneMemberID="viewController">
                     <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="NGu-Yn-EvO"/>
-                        <barButtonItem systemItem="stop" id="Z6j-W9-efK">
+                        <barButtonItem title="Change Speech Rate" id="Twh-Of-hCP">
+                            <connections>
+                                <segue destination="rXn-PJ-hFP" kind="popoverPresentation" identifier="showSpeechRatePopover" popoverAnchorBarButtonItem="Twh-Of-hCP" id="c0C-Px-7Y5">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="dZE-Ct-Vyz"/>
+                        <barButtonItem systemItem="cancel" id="Z6j-W9-efK">
                             <connections>
                                 <action selector="closeButtonTapped:" destination="MN4-SG-tnN" id="BUp-oG-iWD"/>
                             </connections>
@@ -356,38 +363,11 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="speechRateSlider" destination="zkk-LL-Mn0" id="RAZ-Ei-PHv"/>
-                        <outlet property="speechRateSliderView" destination="mKG-sK-54O" id="Sp3-PR-mFV"/>
                         <outlet property="tableOfContentsButton" destination="z5h-To-EMe" id="jH9-2r-T4W"/>
+                        <outlet property="toolbarCloseButton" destination="Z6j-W9-efK" id="1af-nC-lar"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0v2-gd-TJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view opaque="NO" contentMode="scaleToFill" id="mKG-sK-54O">
-                    <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="66B-aR-iZt">
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Speech" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JXm-fa-yat">
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.25" maxValue="0.5" minimumValueImage="Turtle" maximumValueImage="Rabbit" translatesAutoresizingMaskIntoConstraints="NO" id="zkk-LL-Mn0">
-                                    <connections>
-                                        <action selector="speechRateSliderValueChanged:" destination="MN4-SG-tnN" eventType="valueChanged" id="KDq-Iq-ich"/>
-                                    </connections>
-                                </slider>
-                            </subviews>
-                        </stackView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="66B-aR-iZt" secondAttribute="bottom" id="DF7-QQ-VSS"/>
-                        <constraint firstItem="66B-aR-iZt" firstAttribute="top" secondItem="mKG-sK-54O" secondAttribute="top" id="QWt-jy-2qO"/>
-                        <constraint firstItem="66B-aR-iZt" firstAttribute="leading" secondItem="mKG-sK-54O" secondAttribute="leading" id="mN5-UM-vaO"/>
-                        <constraint firstAttribute="trailing" secondItem="66B-aR-iZt" secondAttribute="trailing" id="q4t-CY-3R9"/>
-                    </constraints>
-                </view>
             </objects>
             <point key="canvasLocation" x="2718" y="-48"/>
         </scene>
@@ -596,8 +576,8 @@
                             <rect key="frame" x="113" y="7" width="150" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Options"/>
                                 <segment title="Contents"/>
+                                <segment title="Options"/>
                             </segments>
                             <connections>
                                 <action selector="segmentedControlValueChanged:" destination="tvu-H6-ZL0" eventType="valueChanged" id="Vs1-uD-JLR"/>
@@ -627,10 +607,10 @@
             </objects>
             <point key="canvasLocation" x="3549.5999999999999" y="-48.125937031484263"/>
         </scene>
-        <!--Publications-->
+        <!--Collection View Controller-->
         <scene sceneID="Kdl-pn-YLG">
             <objects>
-                <collectionViewController id="QIA-lT-kgf" customClass="LibraryCollectionViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController title="Collection View Controller" id="QIA-lT-kgf" customClass="LibraryCollectionViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="kV7-tI-mFc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -717,7 +697,85 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cs0-6B-uK7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4798" y="-1577"/>
+            <point key="canvasLocation" x="4041" y="-965"/>
+        </scene>
+        <!--Speech Rate Popover View Controller-->
+        <scene sceneID="xbd-OD-dN5">
+            <objects>
+                <viewController storyboardIdentifier="SpeechRatePopover" id="rXn-PJ-hFP" customClass="SpeechRatePopoverViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HZs-yI-f8U"/>
+                        <viewControllerLayoutGuide type="bottom" id="1j6-8M-28N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Exj-U5-x1V">
+                        <rect key="frame" x="0.0" y="0.0" width="280" height="63"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" minimumValueImage="Turtle" maximumValueImage="Rabbit" translatesAutoresizingMaskIntoConstraints="NO" id="Ovi-u4-qkI">
+                                <connections>
+                                    <action selector="speechRateSliderValueChanged:" destination="rXn-PJ-hFP" eventType="valueChanged" id="2hV-79-Uha"/>
+                                </connections>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ovi-u4-qkI" firstAttribute="top" secondItem="HZs-yI-f8U" secondAttribute="bottom" constant="16" id="VbO-ki-yKU"/>
+                            <constraint firstItem="Ovi-u4-qkI" firstAttribute="leading" secondItem="Exj-U5-x1V" secondAttribute="leadingMargin" id="ie0-K1-Rt8"/>
+                            <constraint firstItem="Ovi-u4-qkI" firstAttribute="trailing" secondItem="Exj-U5-x1V" secondAttribute="trailingMargin" id="pGi-qD-D5f"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="280" height="63"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="280" height="63"/>
+                    <connections>
+                        <outlet property="speechRateSlider" destination="Ovi-u4-qkI" id="aa3-zt-Cey"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VGc-rJ-A1h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3410" y="-594"/>
+        </scene>
+        <!--Word Click Presented View Controller-->
+        <scene sceneID="WlV-14-63G">
+            <objects>
+                <viewController storyboardIdentifier="WordClickPresentedViewController" id="Rpp-03-UBk" customClass="WordClickPresentedViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ScP-DJ-xUU"/>
+                        <viewControllerLayoutGuide type="bottom" id="pye-YW-eTC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mlh-2s-86h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Header" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvh-IB-g5R">
+                                <frame key="frameInset" minX="10" minY="9" width="56" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Body" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCJ-k2-Tdt">
+                                <frame key="frameInset" minX="10" minY="38" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="200"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0qd-92-SiO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2806" y="-1766"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pst-qT-Gvx">
@@ -735,7 +793,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="he2-tp-KgK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3550" y="-1577"/>
+            <point key="canvasLocation" x="2793" y="-965"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4kX-4E-Kkx">
@@ -764,7 +822,7 @@
         <image name="Turtle" width="28" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zdU-Su-TTb"/>
+        <segue reference="ZPs-Ve-eqA"/>
         <segue reference="Xj9-qz-OLk"/>
     </inferredMetricsTieBreakers>
 </document>

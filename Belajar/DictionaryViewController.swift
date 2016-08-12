@@ -9,7 +9,7 @@
 import UIKit
 import TTTAttributedLabel
 
-class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate, DictionaryPopoverServiceDelegate {
+class DictionaryViewController : UITableViewController, SearchResultsControllerDelegate {
     
     var word: String!
     var lang: String!
@@ -168,6 +168,18 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         return cell
     }
     
+    private func hideSearchBar() {
+        tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
+    }
+    
+    private func clearCacheAndReloadData() {
+        LemmaCell.clearCache()
+        tableView.reloadData()
+    }
+}
+
+extension DictionaryViewController: DictionaryPopoverServiceDelegate {
+
     func lookup(word: String, lang: String) {
         
         let startTime = Date()
@@ -188,15 +200,6 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         let endTime = Date()
         let elapsed = endTime.timeIntervalSince(startTime) * 1000
         print("lookup \(word) took \(elapsed) ms")
-    }
-    
-    private func hideSearchBar() {
-        tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
-    }
-    
-    private func clearCacheAndReloadData() {
-        LemmaCell.clearCache()
-        tableView.reloadData()
     }
 }
 

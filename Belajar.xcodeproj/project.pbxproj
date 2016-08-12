@@ -38,6 +38,13 @@
 		1ABDFB2F1D27B87700D84677 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABDFB2E1D27B87700D84677 /* Constants.swift */; };
 		1ABE36391D5253B600B2BF4C /* LibraryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABE36381D5253B600B2BF4C /* LibraryCollectionViewController.swift */; };
 		1ABE363B1D52774D00B2BF4C /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABE363A1D52774D00B2BF4C /* LibraryCollectionViewCell.swift */; };
+		1AC555341D5D083300F82FB5 /* WordClickPresentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC555331D5D083300F82FB5 /* WordClickPresentedViewController.swift */; };
+		1AC555361D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC555351D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift */; };
+		1AC5553A1D5E2E9C00F82FB5 /* harmani.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC555371D5E2E9C00F82FB5 /* harmani.jpg */; };
+		1AC5553B1D5E2E9C00F82FB5 /* vandale-nl-id.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */; };
+		1AC5553C1D5E2E9C00F82FB5 /* wat-en-hoe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC555391D5E2E9C00F82FB5 /* wat-en-hoe.jpg */; };
+		1AC5553E1D5E2F6700F82FB5 /* sneddon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */; };
+		1AC555401D5E42FE00F82FB5 /* Topics.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */; };
 		1AC8F9151D4CBB2800CB9F76 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC8F9141D4CBB2800CB9F76 /* MainMenuTableViewController.swift */; };
 		1ACA705C1D417989004536E0 /* AttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */; };
 		1ACA705E1D437DC4004536E0 /* LemmaReferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA705D1D437DC4004536E0 /* LemmaReferenceCell.swift */; };
@@ -45,10 +52,6 @@
 		1AD397A61D11B20500365164 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD397A51D11B20500365164 /* ArticleViewController.swift */; };
 		1AD397AA1D11E13200365164 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 1AD397A91D11E13200365164 /* www */; };
 		1AD758921D34FEC9004756C4 /* DictionaryPopoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD758911D34FEC9004756C4 /* DictionaryPopoverService.swift */; };
-		1AD9C4561D5362A200E871AE /* harmani.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD9C4551D5362A200E871AE /* harmani.png */; };
-		1AD9C4581D5367AB00E871AE /* wat-en-hoe.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD9C4571D5367AB00E871AE /* wat-en-hoe.png */; };
-		1AD9C45A1D53699600E871AE /* vandale-nl-id.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD9C4591D53699600E871AE /* vandale-nl-id.png */; };
-		1AD9C45C1D536B7500E871AE /* sneddon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD9C45B1D536B7500E871AE /* sneddon.png */; };
 		1AFB93DD1D096E75007CA509 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93DC1D096E75007CA509 /* Topic.swift */; };
 		1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E11D0986BF007CA509 /* TopicStore.swift */; };
 		1AFB93E51D098763007CA509 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93E41D098763007CA509 /* Util.swift */; };
@@ -57,7 +60,6 @@
 		1AFB93EF1D0ECF88007CA509 /* Lemma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93EE1D0ECF88007CA509 /* Lemma.swift */; };
 		1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB93F01D0ED1BB007CA509 /* DictionaryStore.swift */; };
 		1AFECAD01D538CE1002540CA /* LibraryCollectionCellOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFECACF1D538CE1002540CA /* LibraryCollectionCellOverlayView.swift */; };
-		1AFECAE71D553A51002540CA /* Topics.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1AFECAE61D553A51002540CA /* Topics.sqlite */; };
 		62F13112ACE304BE099DB8E5 /* Pods_BelajarUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98584B3ED30467C096589DE5 /* Pods_BelajarUITests.framework */; };
 		7C77FA738E3F821D1300686C /* Pods_BelajarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE46797365B15BA68EEA1CC /* Pods_BelajarTests.framework */; };
 		8B3F5AFF3D2E3DEF217EBA55 /* Pods_Belajar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362C6F5CE5E4F590D90066FB /* Pods_Belajar.framework */; };
@@ -121,6 +123,13 @@
 		1ABDFB2E1D27B87700D84677 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1ABE36381D5253B600B2BF4C /* LibraryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewController.swift; sourceTree = "<group>"; };
 		1ABE363A1D52774D00B2BF4C /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
+		1AC555331D5D083300F82FB5 /* WordClickPresentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordClickPresentedViewController.swift; sourceTree = "<group>"; };
+		1AC555351D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRatePopoverViewController.swift; sourceTree = "<group>"; };
+		1AC555371D5E2E9C00F82FB5 /* harmani.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = harmani.jpg; sourceTree = "<group>"; };
+		1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "vandale-nl-id.jpg"; sourceTree = "<group>"; };
+		1AC555391D5E2E9C00F82FB5 /* wat-en-hoe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wat-en-hoe.jpg"; sourceTree = "<group>"; };
+		1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sneddon.jpg; sourceTree = "<group>"; };
+		1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Topics.sqlite; sourceTree = "<group>"; };
 		1AC8F9141D4CBB2800CB9F76 /* MainMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuTableViewController.swift; sourceTree = "<group>"; };
 		1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringHelper.swift; sourceTree = "<group>"; };
 		1ACA705D1D437DC4004536E0 /* LemmaReferenceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LemmaReferenceCell.swift; sourceTree = "<group>"; };
@@ -128,10 +137,6 @@
 		1AD397A51D11B20500365164 /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		1AD397A91D11E13200365164 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		1AD758911D34FEC9004756C4 /* DictionaryPopoverService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryPopoverService.swift; sourceTree = "<group>"; };
-		1AD9C4551D5362A200E871AE /* harmani.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = harmani.png; sourceTree = "<group>"; };
-		1AD9C4571D5367AB00E871AE /* wat-en-hoe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wat-en-hoe.png"; sourceTree = "<group>"; };
-		1AD9C4591D53699600E871AE /* vandale-nl-id.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vandale-nl-id.png"; sourceTree = "<group>"; };
-		1AD9C45B1D536B7500E871AE /* sneddon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sneddon.png; sourceTree = "<group>"; };
 		1AFB93DC1D096E75007CA509 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		1AFB93E11D0986BF007CA509 /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
 		1AFB93E41D098763007CA509 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -140,7 +145,6 @@
 		1AFB93EE1D0ECF88007CA509 /* Lemma.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lemma.swift; sourceTree = "<group>"; };
 		1AFB93F01D0ED1BB007CA509 /* DictionaryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryStore.swift; sourceTree = "<group>"; };
 		1AFECACF1D538CE1002540CA /* LibraryCollectionCellOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCollectionCellOverlayView.swift; sourceTree = "<group>"; };
-		1AFECAE61D553A51002540CA /* Topics.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Topics.sqlite; sourceTree = "<group>"; };
 		362C6F5CE5E4F590D90066FB /* Pods_Belajar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Belajar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		395A131BB762C9A8ACC92FA4 /* Pods-Belajar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Belajar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Belajar/Pods-Belajar.release.xcconfig"; sourceTree = "<group>"; };
 		4D72DC61688F70171D12936A /* Pods-BelajarUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelajarUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelajarUITests/Pods-BelajarUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -203,6 +207,8 @@
 				1A1DEA641D59F3FF00822CF5 /* ArticleOptionsTableViewController.swift */,
 				1A1DEA661D5A269900822CF5 /* SpeechService.swift */,
 				1A5604291D5B1FEA00CCE125 /* ArticleMenuPageViewController.swift */,
+				1AC555331D5D083300F82FB5 /* WordClickPresentedViewController.swift */,
+				1AC555351D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -273,11 +279,11 @@
 		1AB995831D0716470039FF6E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1AFECAE61D553A51002540CA /* Topics.sqlite */,
-				1AD9C45B1D536B7500E871AE /* sneddon.png */,
-				1AD9C4591D53699600E871AE /* vandale-nl-id.png */,
-				1AD9C4571D5367AB00E871AE /* wat-en-hoe.png */,
-				1AD9C4551D5362A200E871AE /* harmani.png */,
+				1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */,
+				1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */,
+				1AC555371D5E2E9C00F82FB5 /* harmani.jpg */,
+				1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */,
+				1AC555391D5E2E9C00F82FB5 /* wat-en-hoe.jpg */,
 				1AFB93EC1D0ECE0F007CA509 /* Dictionary.sqlite */,
 			);
 			name = "Supporting Files";
@@ -458,17 +464,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AC5553B1D5E2E9C00F82FB5 /* vandale-nl-id.jpg in Resources */,
 				1A408DB71D4A4B140094368E /* InfoPlist.strings in Resources */,
 				1AD397AA1D11E13200365164 /* www in Resources */,
-				1AD9C45A1D53699600E871AE /* vandale-nl-id.png in Resources */,
-				1AD9C4581D5367AB00E871AE /* wat-en-hoe.png in Resources */,
-				1AD9C4561D5362A200E871AE /* harmani.png in Resources */,
-				1AD9C45C1D536B7500E871AE /* sneddon.png in Resources */,
+				1AC5553E1D5E2F6700F82FB5 /* sneddon.jpg in Resources */,
 				1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */,
-				1AFECAE71D553A51002540CA /* Topics.sqlite in Resources */,
 				1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */,
 				1AAC66A21D4B4BD7000A268B /* Localizable.strings in Resources */,
+				1AC555401D5E42FE00F82FB5 /* Topics.sqlite in Resources */,
+				1AC5553A1D5E2E9C00F82FB5 /* harmani.jpg in Resources */,
 				1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */,
+				1AC5553C1D5E2E9C00F82FB5 /* wat-en-hoe.jpg in Resources */,
 				1AFB93ED1D0ECE0F007CA509 /* Dictionary.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,6 +631,7 @@
 				1A56042A1D5B1FEA00CCE125 /* ArticleMenuPageViewController.swift in Sources */,
 				1A96D20F1D45309D00261F66 /* PublicationTableViewCell.swift in Sources */,
 				1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */,
+				1AC555361D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift in Sources */,
 				1A1DEA651D59F3FF00822CF5 /* ArticleOptionsTableViewController.swift in Sources */,
 				1AFB93E71D09C0CD007CA509 /* Article.swift in Sources */,
 				1A027A741D40EE950033B605 /* UIKitExtensions.swift in Sources */,
@@ -640,6 +647,7 @@
 				1A5C5C681D479F9100175041 /* DynamicTextTableViewController.swift in Sources */,
 				1A8375E71D251EAA00B31980 /* IndonesianLanguageHelper.swift in Sources */,
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
+				1AC555341D5D083300F82FB5 /* WordClickPresentedViewController.swift in Sources */,
 				1AC8F9151D4CBB2800CB9F76 /* MainMenuTableViewController.swift in Sources */,
 				1A027A721D40D4740033B605 /* LemmaContinuationCell.swift in Sources */,
 				1A1DEA671D5A269900822CF5 /* SpeechService.swift in Sources */,

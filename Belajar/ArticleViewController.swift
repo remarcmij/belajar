@@ -9,27 +9,31 @@
 import UIKit
 import WebKit
 
+private let smallestScreenWidth: CGFloat = 320
 private var sharedSpeakOnTapIsOn = false
 
-class ArticleViewController: UIViewController, WKScriptMessageHandler, DictionaryPopoverServiceDelegate {
+class ArticleViewController: UIViewController, WKScriptMessageHandler {
     
     @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
-    @IBOutlet var speechRateSliderView: UIView!
-    @IBOutlet weak var speechRateSlider: UISlider!
- 
+    @IBOutlet weak var toolbarCloseButton: UIBarButtonItem!
+    
     private struct Storyboard {
         static let showDictionary = "showDictionary"
         static let showMenu = "showMenu"
+        static let showSpeechRatePopover = "showSpeechRatePopover"
     }
     
     private var webView: WKWebView!
     private var resolvedWord: String?
     private var dictionaryPopoverService: DictionaryPopoverService?
+    private var clickedText: String?
     
     var speakOnTapIsOn = sharedSpeakOnTapIsOn {
         didSet {
             if !speakOnTapIsOn {
                 SpeechService.sharedInstance.stopSpeaking()
+            } else if clickedText != nil {
+                SpeechService.sharedInstance.speak(text: clickedText!)
             }
             navigationController?.setToolbarHidden(!speakOnTapIsOn, animated: false)
         }
@@ -85,9 +89,6 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         super.viewDidLoad()
         speakOnTapIsOn = sharedSpeakOnTapIsOn
         navigationController?.setToolbarHidden(!speakOnTapIsOn, animated: false)
-        let sliderAsToolbarItem = UIBarButtonItem(customView: speechRateSliderView)
-        toolbarItems?.insert(sliderAsToolbarItem, at: 0)
-        speechRateSlider.value = SpeechService.sharedInstance.speechRate
         
         dictionaryPopoverService = DictionaryPopoverService(controller: self)
         tableOfContentsButton.isEnabled = false
@@ -99,7 +100,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         super.viewWillDisappear(animated)
         SpeechService.sharedInstance.stopSpeaking()
     }
-
+    
     override func viewDidDisappear(_ animated: Bool)  {
         super.viewDidDisappear(animated)
         sharedSpeakOnTapIsOn = speakOnTapIsOn
@@ -114,11 +115,11 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
         if message.name == "wordClick" {
             let components = (message.body as! String).components(separatedBy: "|")
             let clickedWord = components[0]
-            let clickedText = components[1]
+            clickedText = components[1]
             print("Javascript clickedWord: \(clickedWord) clickedText: \(clickedText)")
             
             if speakOnTapIsOn {
-                SpeechService.sharedInstance.speak(text: clickedText)
+                SpeechService.sharedInstance.speak(text: clickedText!)
             } else {
                 dictionaryPopoverService?.wordClickPopover(word: clickedWord, sourceView: webView)
             }
@@ -155,10 +156,17 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
                 menuController.article = article
             }
             
+        case Storyboard.showSpeechRatePopover:
+            // see Programming iOS 9, p519             
+            let popoverViewController = segue.destination
+            popoverViewController.modalPresentationStyle = .popover
+            popoverViewController.popoverPresentationController!.delegate = self
+            
         default: break
         }
     }
-     
+    
+    
     // intermediate class to minimise memory leaks
     class MyMessageHandler: NSObject,  WKScriptMessageHandler {
         private weak var delegate: WKScriptMessageHandler?
@@ -175,18 +183,11 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     
     @IBAction func closeButtonTapped(_ sender: UIBarButtonItem) {
         speakOnTapIsOn = false
-//        navigationController?.setToolbarHidden(true, animated: true)
+        //        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     @IBAction func speechRateSliderValueChanged(_ sender: UISlider) {
         SpeechService.sharedInstance.speechRate = sender.value
-    }
-    
-    // MARK: - DictionaryPopoverPresenter
-    
-    func lookup(word: String, lang: String) {
-        resolvedWord = word
-        performSegue(withIdentifier: Storyboard.showDictionary, sender: self)
     }
     
     // MARK: - Restoration
@@ -217,14 +218,29 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler, Dictionar
     }
 }
 
+extension ArticleViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension ArticleViewController: DictionaryPopoverServiceDelegate {
+    
+    func lookup(word: String, lang: String) {
+        resolvedWord = word
+        performSegue(withIdentifier: Storyboard.showDictionary, sender: self)
+    }
+    
+    func enableSpeakOnTap() {
+        speakOnTapIsOn = true
+    }
+    
+    var showSpeakOnTapOption: Bool { return true }
+}
+
 extension ArticleViewController: ArticleMenuPageViewControllerDelegate {
     func scrollToAnchor(anchor: String) {
         dismiss(animated: true, completion: nil)
         webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
-    }
-    
-    func setSpeechRate(value: Float) {
-        SpeechService.sharedInstance.speechRate = value
-        speechRateSlider.value = value
     }
 }

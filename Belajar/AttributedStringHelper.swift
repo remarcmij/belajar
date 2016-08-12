@@ -16,6 +16,7 @@ struct AttributedStringHelper {
         //        let startTime = Date()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
+        paragraphStyle.paragraphSpacing = 4.0
         let attributedString = NSMutableAttributedString(string: "")
         
         var startPos = 0

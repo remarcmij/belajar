@@ -24,7 +24,7 @@ class Topic: NSObject, NSCoding {
     let lastModified: String
     
     var imageName: String {
-        return "\(publication).png"
+        return "\(publication).jpg"
     }
     
     init(id: Int, fileName: String, publication: String, chapter: String, groupName: String,

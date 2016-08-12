@@ -36,11 +36,6 @@ class LibraryCollectionViewController: UICollectionViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     /*
      // MARK: - Navigation
      
@@ -73,8 +68,14 @@ class LibraryCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCell = collectionView.cellForItem(at: indexPath) as! LibraryCollectionViewCell
+        selectedCell.showSelectedState()
+        
         delegate?.setTopic(topic: topics[indexPath.row])
-        dismiss(animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [unowned self] in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     /*
      // Uncomment this method to specify if the specified item should be highlighted during tracking

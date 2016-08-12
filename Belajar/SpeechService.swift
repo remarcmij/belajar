@@ -15,8 +15,10 @@ private let endOfSentenceRegExp = try! NSRegularExpression(pattern: "([.?!])(?=\
 class SpeechService: NSObject {
     
     static let sharedInstance = SpeechService()
+    static let minimumValue: Float = 0.25
+    static let maximumValue: Float = 0.5
     
-    var speechRate: Float = 0.5 {
+    var speechRate: Float = SpeechService.maximumValue {
         didSet {
             if speechRate != oldValue {
                 speechSynthesizer.stopSpeaking(at: .immediate)
