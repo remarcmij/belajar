@@ -9,20 +9,6 @@
 import UIKit
 import TTTAttributedLabel
 
-extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-    
-    convenience init(netHex: Int) {
-        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
-    }
-}
-
 class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
 
     private static var attributedStringCache = [Int: NSAttributedString]()
@@ -42,16 +28,16 @@ class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
     
     func setLemmaGroup(with lemmaBatch: LemmaBatch, forRow rowIndex: Int) {
         bodyText = getAttributedString(from: lemmaBatch.body, cacheIndex: rowIndex, clickAction: "synopsis")
-        headerText = AttributedStringHelper.makeClickableWord(from: lemmaBatch.base.uppercased(),
+        headerText = AttributedStringHelper.makeClickableWord(from: lemmaBatch.base.uppercased() as NSString,
                                                               clickAction: "lookup", font: PreferredFont.get(type: .caption1Bold))
     }
     
     private func getAttributedString(from sourceString: String, cacheIndex: Int, clickAction: String, useSmallFont: Bool = false) -> NSAttributedString {
-        if let attributedString = self.dynamicType.attributedStringCache[cacheIndex] {
+        if let attributedString = type(of: self).attributedStringCache[cacheIndex] {
             return attributedString
         }
-        let attributedString = AttributedStringHelper.makeAttributedText(from: sourceString, clickAction: clickAction, useSmallFont: useSmallFont)
-        self.dynamicType.attributedStringCache[cacheIndex] = attributedString
+        let attributedString = AttributedStringHelper.makeAttributedText(from: sourceString as NSString, clickAction: clickAction, useSmallFont: useSmallFont)
+        type(of: self).attributedStringCache[cacheIndex] = attributedString
         return attributedString
     }
    

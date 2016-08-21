@@ -17,14 +17,16 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
     @IBOutlet weak private var tableOfContentsButton: UIBarButtonItem!
     @IBOutlet weak var toolbarCloseButton: UIBarButtonItem!
     
-    private struct Storyboard {
+    struct Storyboard {
         static let showDictionary = "showDictionary"
-        static let showMenu = "showMenu"
+        static let showTableOfContents = "showTableOfContents"
         static let showSpeechRatePopover = "showSpeechRatePopover"
+        static let flashCardNavigationController = "FlashCardNavigationController"
+        static let showFlashCards = "showFlashCards"
     }
     
-    private var webView: WKWebView!
-    private var resolvedWord: String?
+    var webView: WKWebView!
+    var resolvedWord: String?
     private var dictionaryPopoverService: DictionaryPopoverService?
     private var clickedText: String?
     
@@ -45,7 +47,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
     
     var topic: Topic! {
         didSet {
-            _ = navigationController?.popToRootViewController(animated: true)
+            _ = navigationController?.popToRootViewController(animated: false)
             if topic == nil {
                 tableOfContentsButton.isEnabled = false
             } else {
@@ -133,7 +135,7 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
         self.dismiss(animated: true, completion: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else { return }
         
         SpeechService.sharedInstance.stopSpeaking()
@@ -147,17 +149,23 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
                 resolvedWord = nil
             }
             
-        case Storyboard.showMenu:
+        case Storyboard.showTableOfContents:
             // note: menu controller embedded in a navigation controller to prevent it being presented underneath the
             // status bar on an iPhone
-            if let menuController = segue.destination.contentViewController as? ArticleMenuPageViewController {
+            if let tocController = segue.destination.contentViewController as? ArticleContentsTableViewController {
                 segue.destination.popoverPresentationController?.barButtonItem = tableOfContentsButton
-                menuController.menuDelegate = self
-                menuController.article = article
+                tocController.delegate = self
+                tocController.article = article
+            }
+            
+        case Storyboard.showFlashCards:
+            if let flashCardContainerViewController = segue.destination.contentViewController as? FlashCardContainerViewController {
+                flashCardContainerViewController.fileName = topic.fileName
+                flashCardContainerViewController.flashCards = article?.getFlashCards()
             }
             
         case Storyboard.showSpeechRatePopover:
-            // see Programming iOS 9, p519             
+            // see Programming iOS 9, p519
             let popoverViewController = segue.destination
             popoverViewController.modalPresentationStyle = .popover
             popoverViewController.popoverPresentationController!.delegate = self
@@ -178,6 +186,33 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
         
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             delegate?.userContentController(userContentController, didReceive: message)
+        }
+    }
+    
+    @IBAction func moreButtonTapped(_ sender: UIBarButtonItem) {
+//        let actionSheetTitle = NSLocalizedString("Article options", comment: "Article view action sheet")
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        let searchActionTitle = NSLocalizedString("Search Dictionary", comment: "Article view action sheet")
+        let searchAction = UIAlertAction(title: searchActionTitle, style: .default) { [weak self] _ in
+            self?.resolvedWord = nil
+            self?.performSegue(withIdentifier: Storyboard.showDictionary, sender: self)
+        }
+        actionSheet.addAction(searchAction)
+        
+        if article!.hasFlashCards {
+            let flashCardActionTitle = NSLocalizedString("Show Flashcards", comment: "Article view action sheet")
+            let flashCardAction = UIAlertAction(title: flashCardActionTitle, style: .default) { [weak self] _ in
+                self?.performSegue(withIdentifier: Storyboard.showFlashCards, sender: self)
+            }
+            actionSheet.addAction(flashCardAction)
+        }
+        
+        present(actionSheet, animated: true, completion: nil)
+        
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.barButtonItem = sender
         }
     }
     
@@ -211,9 +246,9 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
     func loadHTML() {
         SpeechService.sharedInstance.stopSpeaking()
         if let htmlText = article?.htmlText {
-            var htmlDoc = self.dynamicType.htmlTemplate.replacingOccurrences(of: "<!-- style -->", with: styleSheet)
+            var htmlDoc = type(of: self).htmlTemplate.replacingOccurrences(of: "<!-- style -->", with: styleSheet)
             htmlDoc = htmlDoc.replacingOccurrences(of: "<!-- article -->", with: htmlText)
-            webView.loadHTMLString(htmlDoc, baseURL: self.dynamicType.folderURL)
+            webView.loadHTMLString(htmlDoc, baseURL: type(of: self).folderURL)
         }
     }
 }
@@ -238,9 +273,22 @@ extension ArticleViewController: DictionaryPopoverServiceDelegate {
     var showSpeakOnTapOption: Bool { return true }
 }
 
-extension ArticleViewController: ArticleMenuPageViewControllerDelegate {
+extension ArticleViewController: ArticleContentsTableViewControllerDelegate {
     func scrollToAnchor(anchor: String) {
         dismiss(animated: true, completion: nil)
         webView.evaluateJavaScript("scrollToAnchor('\(anchor)')", completionHandler: nil)
     }
+    
+    //    func startFlashCardExercise() {
+    //        dismiss(animated: true, completion: nil)
+    //
+    //        let flashCardNavigationController = UIStoryboard.init(name: "FlashCard", bundle: nil)
+    //            .instantiateViewController(withIdentifier: Storyboard.flashCardNavigationController)
+    //
+    //        if let flashCardContainerViewController = flashCardNavigationController.contentViewController as? FlashCardContainerViewController {
+    //            flashCardContainerViewController.flashCards = article?.getFlashCards()
+    //        }
+    //
+    //        present(flashCardNavigationController, animated: true, completion: nil)
+    //    }
 }

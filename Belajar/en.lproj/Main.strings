@@ -1,63 +1,84 @@
 
+/* Class = "UINavigationItem"; title = "Table of Contents"; ObjectID = "3q9-og-cux"; */
+"3q9-og-cux.title" = "Table of Contents";
+
 /* Class = "UINavigationItem"; title = "Article"; ObjectID = "5Dp-ay-gab"; */
 "5Dp-ay-gab.title" = "Article";
 
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "8cr-W2-dmV"; */
-"8cr-W2-dmV.normalTitle" = "Cancel";
+/* Class = "UILabel"; text = "Speech Mode"; ObjectID = "6hv-iQ-aNW"; */
+"6hv-iQ-aNW.text" = "Speech Mode";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "9RY-jv-CuQ"; */
-"9RY-jv-CuQ.text" = "Label";
+/* Class = "UILabel"; text = "Speech Rate"; ObjectID = "7DW-JU-1VL"; */
+"7DW-JU-1VL.text" = "Speech Rate";
 
-/* Class = "UILabel"; text = " footer"; ObjectID = "FP8-VG-1BO"; */
-"FP8-VG-1BO.text" = " footer";
+/* Class = "UILabel"; text = "_Lemma Header"; ObjectID = "9RY-jv-CuQ"; */
+"9RY-jv-CuQ.text" = "_Lemma Header";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "FTn-mG-kg8"; */
-"FTn-mG-kg8.text" = "Label";
+/* Class = "UITableViewSection"; headerTitle = "Speech"; ObjectID = "EFW-Vb-VD1"; */
+"EFW-Vb-VD1.headerTitle" = "Speech";
 
-/* Class = "UILabel"; text = "Subtitle"; ObjectID = "Fod-bc-SQK"; */
-"Fod-bc-SQK.text" = "Subtitle";
+/* Class = "UILabel"; text = "_footer placeholder"; ObjectID = "FP8-VG-1BO"; */
+"FP8-VG-1BO.text" = "_footer placeholder";
 
-/* Class = "UINavigationItem"; title = "Belajar"; ObjectID = "LTM-N8-0eI"; */
-"LTM-N8-0eI.title" = "Library";
+/* Class = "UILabel"; text = "_Lemma Body"; ObjectID = "FTn-mG-kg8"; */
+"FTn-mG-kg8.text" = "_Lemma Body";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "M7e-b3-iNe"; */
-"M7e-b3-iNe.text" = "Label";
+/* Class = "UILabel"; text = "_Publication Subtitle"; ObjectID = "Fod-bc-SQK"; */
+"Fod-bc-SQK.text" = "_Publication Subtitle";
+
+/* Class = "UILabel"; text = "_Lemma Header"; ObjectID = "Gvh-IB-g5R"; */
+"Gvh-IB-g5R.text" = "_Lemma Header";
+
+/* Class = "UILabel"; text = "_Lemma Body"; ObjectID = "HCJ-k2-Tdt"; */
+"HCJ-k2-Tdt.text" = "_Lemma Body";
+
+/* Class = "UILabel"; text = "_Lemma Body"; ObjectID = "M7e-b3-iNe"; */
+"M7e-b3-iNe.text" = "_Lemma Body";
 
 /* Class = "UIViewController"; title = "Article"; ObjectID = "MN4-SG-tnN"; */
 "MN4-SG-tnN.title" = "Article";
 
-/* Class = "UIButton"; normalTitle = "BASE"; ObjectID = "Mbl-3t-hyW"; */
-"Mbl-3t-hyW.normalTitle" = "BASE";
+/* Class = "UIButton"; normalTitle = "_Lemma Base"; ObjectID = "Mbl-3t-hyW"; */
+"Mbl-3t-hyW.normalTitle" = "_Lemma Base";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "N4B-ra-s2w"; */
-"N4B-ra-s2w.text" = "Title";
+/* Class = "UILabel"; text = "_Auto-complete suggestion"; ObjectID = "N4B-ra-s2w"; */
+"N4B-ra-s2w.text" = "_Auto-complete suggestion";
 
-/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "NrY-gF-VJF"; */
-"NrY-gF-VJF.normalTitle" = "Button";
+/* Class = "UILabel"; text = "TItle"; ObjectID = "P0X-An-oeo"; */
+"P0X-An-oeo.text" = "TItle";
 
-/* Class = "UITableViewController"; title = "Dictionary"; ObjectID = "S4N-VP-cIr"; */
-"S4N-VP-cIr.title" = "Dictionary";
+/* Class = "UIBarButtonItem"; title = "Library"; ObjectID = "PEf-QN-NNn"; */
+"PEf-QN-NNn.title" = "Library";
 
-/* Class = "UILabel"; text = "Header"; ObjectID = "bOf-25-3uz"; */
-"bOf-25-3uz.text" = "Header";
+/* Class = "UISegmentedControl"; PIn-X3-sxe.segmentTitles[0] = "Contents"; ObjectID = "PIn-X3-sxe"; */
+"PIn-X3-sxe.segmentTitles[0]" = "Contents";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "jYO-IE-MAR"; */
-"jYO-IE-MAR.text" = "Title";
+/* Class = "UISegmentedControl"; PIn-X3-sxe.segmentTitles[1] = "Options"; ObjectID = "PIn-X3-sxe"; */
+"PIn-X3-sxe.segmentTitles[1]" = "Options";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "lY0-jJ-psj"; */
-"lY0-jJ-psj.text" = "Label";
+/* Class = "UICollectionViewController"; title = "Collection View Controller"; ObjectID = "QIA-lT-kgf"; */
+"QIA-lT-kgf.title" = "Collection View Controller";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "qcC-o8-ngL"; */
-"qcC-o8-ngL.text" = "Title";
+/* Class = "UIBarButtonItem"; title = "Change Speech Rate"; ObjectID = "Twh-Of-hCP"; */
+"Twh-Of-hCP.title" = "Change Speech Rate";
+
+/* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "YXY-DD-Mby"; */
+"YXY-DD-Mby.title" = "Done";
+
+/* Class = "UILabel"; text = "_Lemma Body"; ObjectID = "lY0-jJ-psj"; */
+"lY0-jJ-psj.text" = "_Lemma Body";
+
+/* Class = "UILabel"; text = "_Publication Title"; ObjectID = "qcC-o8-ngL"; */
+"qcC-o8-ngL.text" = "_Publication Title";
 
 /* Class = "UINavigationItem"; title = "Publication"; ObjectID = "sf4-8B-0dC"; */
 "sf4-8B-0dC.title" = "Publication";
 
-/* Class = "UILabel"; text = "Subtitle"; ObjectID = "tTZ-y2-mCb"; */
-"tTZ-y2-mCb.text" = "Subtitle";
+/* Class = "UINavigationItem"; title = "Library"; ObjectID = "uor-Xo-sAv"; Note = "Navigation Item"; */
+"uor-Xo-sAv.title" = "Library";
 
-/* Class = "UITableViewController"; title = "Collection"; ObjectID = "tY6-37-gQQ"; */
-"tY6-37-gQQ.title" = "Collection";
+/* Class = "UINavigationItem"; title = "Dictionary"; ObjectID = "x16-NA-xc2"; */
+"x16-NA-xc2.title" = "Dictionary";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "xu2-tl-zTh"; */
-"xu2-tl-zTh.text" = "Title";
+/* Class = "UILabel"; text = "_Table of Contents entry"; ObjectID = "xu2-tl-zTh"; */
+"xu2-tl-zTh.text" = "_Table of Contents entry";

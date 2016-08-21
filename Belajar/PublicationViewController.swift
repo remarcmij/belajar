@@ -20,7 +20,7 @@ class PublicationViewController: DynamicTextTableViewController {
         }
     }
     
-    private var lastSelectedKey: String {
+    var lastSelectedKey: String {
         return "\(topic!.publication).lastSelected"
     }
     
@@ -28,7 +28,7 @@ class PublicationViewController: DynamicTextTableViewController {
     
     private var topics = [Topic]()
     
-    private struct Storyboard {
+    struct Storyboard {
         static let PublicationTableViewCell = "PublicationTableViewCell"
         static let PresentMenu = "PresentMenu"
         static let ShowDetail = "ShowDetail"
@@ -91,7 +91,7 @@ class PublicationViewController: DynamicTextTableViewController {
     
     // MARK: - Segue
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == Storyboard.ShowDetail {
             guard let articleViewController = segue.destination.contentViewController as? ArticleViewController,

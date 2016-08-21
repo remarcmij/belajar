@@ -42,7 +42,7 @@ final class TopicStore {
     ///   to be returned
     func getPublicationTopics(for publication: String) -> [Topic] {
         let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter!='index' AND publication=?"
-        return executeTopicQuery(sql, values: [publication])
+        return executeTopicQuery(sql, values: [publication as AnyObject])
     }
     
     func getArticle(withTopicId topicId: Int) -> Article? {

@@ -25,7 +25,6 @@ private let anyParensRegExp = try! NSRegularExpression(pattern: "[()]", options:
 class DictionaryPopoverService: NSObject {
     
     private weak var viewController: UIViewController?
-    private static let comment = "word-click popover"
     
     init(controller: UIViewController) {
         assert((controller as? DictionaryPopoverServiceDelegate) != nil,
@@ -57,20 +56,20 @@ class DictionaryPopoverService: NSObject {
                 resolvedWord = variation
                 message = "**\(lemmas[0].base.uppercased())**\n" + Lemma.makeSynopsis(lemmas: lemmas)
             } else {
-                message = NSLocalizedString("Nothing found in dictionary", comment: DictionaryPopoverService.comment)
+                message = NSLocalizedString("Nothing found in dictionary", comment: "Feedback to user in word-click popover if nothing found")
             }
-            let attributedLemmaText = AttributedStringHelper.makeAttributedText(from: message, clickAction: nil, useSmallFont: true)
+            let attributedLemmaText = AttributedStringHelper.makeAttributedText(from: message as NSString, clickAction: nil, useSmallFont: true)
             alert.setValue(attributedLemmaText, forKey: "attributedMessage")
             
-            let sayActionTitle = String(format: NSLocalizedString("Say: %@", comment: DictionaryPopoverService.comment), word)
+            let sayActionTitle = String(format: NSLocalizedString("Say: %@", comment: "Alert action title in word-click popover"), word.lowercased())
             let sayAction = UIAlertAction(title: sayActionTitle, style: .default) { _ in
                 let cleansedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: word, options: [], range: NSMakeRange(0, word.utf16.count), withTemplate: "$1")
-                SpeechService.sharedInstance.speak(text: cleansedWord)
+                SpeechService.sharedInstance.speak(phrase: cleansedWord)
             }
             alert.addAction(sayAction)
             
             if resolvedWord != nil {
-                let dictionaryActionTitle = String(format: NSLocalizedString("Lookup: %@", comment: DictionaryPopoverService.comment), resolvedWord!)
+                let dictionaryActionTitle = String(format: NSLocalizedString("Lookup: %@", comment: "Alert action title in word-click popover"), resolvedWord!)
                 let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
                     (self!.viewController as! DictionaryPopoverServiceDelegate).lookup(word: resolvedWord!, lang: Constants.ForeignLang)
                 }
@@ -78,14 +77,14 @@ class DictionaryPopoverService: NSObject {
             }
             
             if (viewController as! DictionaryPopoverServiceDelegate).showSpeakOnTapOption {
-                let speakOnTapActionTitle = NSLocalizedString("Enable Speak-On-Tap", comment: DictionaryPopoverService.comment)
+                let speakOnTapActionTitle = NSLocalizedString("Enable Speech Mode", comment: "Alert action title in word-click popover")
                 let speakOnTapAction = UIAlertAction(title: speakOnTapActionTitle, style: .default) {[weak self] action in
                     (self!.viewController as! DictionaryPopoverServiceDelegate).enableSpeakOnTap()
                 }
                 alert.addAction(speakOnTapAction)
             }
             
-            let cancelActionTitle = NSLocalizedString("Cancel", comment: DictionaryPopoverService.comment)
+            let cancelActionTitle = NSLocalizedString("Cancel", comment: "Alert action title in word-click popover")
             let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
             alert.addAction(cancelAction)
             

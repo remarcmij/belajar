@@ -41,12 +41,12 @@ struct AttributedStringHelper {
             if match.rangeAt(1).location != NSNotFound {
                 let snippet = text.substring(with: match.rangeAt(1))
                 attributedString.append(clickAction != nil
-                    ? makeClickableWord(from: snippet, clickAction: clickAction!, font: boldFont)
+                    ? makeClickableWord(from: snippet as NSString, clickAction: clickAction!, font: boldFont)
                     : NSAttributedString(string: snippet, attributes: [NSFontAttributeName: boldFont]))
             } else if match.rangeAt(2).location != NSNotFound {
                 let snippet = text.substring(with: match.rangeAt(2))
                 attributedString.append(clickAction != nil
-                    ? makeClickableWord(from: snippet, clickAction: clickAction!, font: italicFont)
+                    ? makeClickableWord(from: snippet as NSString, clickAction: clickAction!, font: italicFont)
                     : NSAttributedString(string: snippet, attributes: [NSFontAttributeName: italicFont]))
             } else if match.rangeAt(3).location != NSNotFound {
                 let snippet = text.substring(with: match.rangeAt(3))
@@ -77,7 +77,7 @@ struct AttributedStringHelper {
         let urlEncoded = word.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         let url = URL(string: "http://belajar.nl/q?word=\(urlEncoded)&action=\(clickAction)")!
         let attributes = [NSFontAttributeName: font,
-                          NSLinkAttributeName: url]
+                          NSLinkAttributeName: url] as [String : Any]
         return NSAttributedString(string: word as String, attributes: attributes)
     }
     

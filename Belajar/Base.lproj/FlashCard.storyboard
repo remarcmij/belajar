@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11198.2" systemVersion="16A294a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="n28-AU-Tp0">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Flashcards-->
+        <scene sceneID="3hZ-q0-jf0">
+            <objects>
+                <viewController storyboardIdentifier="FlashCardContainerViewController" id="n28-AU-Tp0" customClass="FlashCardContainerViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NLt-F9-Zmf"/>
+                        <viewControllerLayoutGuide type="bottom" id="6Yo-ck-izW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Cz2-KI-5Zg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JUt-CV-FOk">
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_Section Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkA-oe-Gwy">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_FlashCardCountLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaO-Ir-1sk">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="G0R-Mr-5wR">
+                                        <connections>
+                                            <action selector="flashCardSliderValueChanged:" destination="n28-AU-Tp0" eventType="valueChanged" id="cNF-Oy-2oN"/>
+                                        </connections>
+                                    </slider>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="G0R-Mr-5wR" firstAttribute="leading" secondItem="JUt-CV-FOk" secondAttribute="leadingMargin" constant="8" id="MGH-EC-MhK"/>
+                                    <constraint firstItem="bkA-oe-Gwy" firstAttribute="top" secondItem="JUt-CV-FOk" secondAttribute="topMargin" id="Wi1-4I-zC1"/>
+                                    <constraint firstItem="DaO-Ir-1sk" firstAttribute="top" secondItem="G0R-Mr-5wR" secondAttribute="bottom" constant="8" id="crd-fQ-O8L"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="DaO-Ir-1sk" secondAttribute="trailing" constant="8" id="etu-iB-i0n"/>
+                                    <constraint firstItem="bkA-oe-Gwy" firstAttribute="leading" secondItem="JUt-CV-FOk" secondAttribute="leadingMargin" constant="8" id="gN1-Ul-qwV"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="G0R-Mr-5wR" secondAttribute="trailing" constant="8" id="iir-G2-ZUF"/>
+                                    <constraint firstItem="G0R-Mr-5wR" firstAttribute="top" secondItem="bkA-oe-Gwy" secondAttribute="bottom" constant="8" id="jXE-tP-zPo"/>
+                                    <constraint firstAttribute="bottom" secondItem="DaO-Ir-1sk" secondAttribute="bottom" constant="13" id="zMi-H9-t0Z"/>
+                                </constraints>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P5q-pz-1MG">
+                                <connections>
+                                    <segue destination="7YC-hM-meN" kind="embed" identifier="embedFlashCardPageViewController" id="37A-u3-lQ7"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93333333730697632" green="0.93333333730697632" blue="0.93333333730697632" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="leading" secondItem="P5q-pz-1MG" secondAttribute="leading" id="EwL-EI-oN1"/>
+                            <constraint firstAttribute="trailing" secondItem="JUt-CV-FOk" secondAttribute="trailing" constant="16" id="M46-8j-zMc"/>
+                            <constraint firstItem="JUt-CV-FOk" firstAttribute="leading" secondItem="Cz2-KI-5Zg" secondAttribute="leading" constant="16" id="P84-Pu-Egh"/>
+                            <constraint firstItem="P5q-pz-1MG" firstAttribute="top" secondItem="JUt-CV-FOk" secondAttribute="bottom" constant="16" id="Qae-LQ-1nD"/>
+                            <constraint firstItem="JUt-CV-FOk" firstAttribute="top" secondItem="NLt-F9-Zmf" secondAttribute="bottom" constant="16" id="TuC-Wv-JBA"/>
+                            <constraint firstAttribute="trailing" secondItem="P5q-pz-1MG" secondAttribute="trailing" id="bIn-Jg-TsY"/>
+                            <constraint firstItem="6Yo-ck-izW" firstAttribute="top" secondItem="P5q-pz-1MG" secondAttribute="bottom" constant="8" id="bJG-uM-waM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Flashcards" id="Uhb-3C-O4Y">
+                        <barButtonItem key="rightBarButtonItem" image="Mute" id="aGd-4n-8zV">
+                            <connections>
+                                <action selector="muteButtonTapped:" destination="n28-AU-Tp0" id="7lg-a6-ZIa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="containerView" destination="P5q-pz-1MG" id="I7k-yg-rAt"/>
+                        <outlet property="dashboardView" destination="JUt-CV-FOk" id="dXX-q4-88v"/>
+                        <outlet property="flashCardCountLabel" destination="DaO-Ir-1sk" id="x2J-DW-ZQr"/>
+                        <outlet property="flashCardSlider" destination="G0R-Mr-5wR" id="IDR-FD-ypF"/>
+                        <outlet property="muteButton" destination="aGd-4n-8zV" id="TqS-dR-KE1"/>
+                        <outlet property="sectionTitleLabel" destination="bkA-oe-Gwy" id="GSu-pQ-CmY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a0U-jV-Xny" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2757.5999999999999" y="899.10044977511257"/>
+        </scene>
+        <!--Flash Card Page View Controller-->
+        <scene sceneID="Lz5-JN-QxE">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="7YC-hM-meN" customClass="FlashCardPageViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Y3-Bh-FnT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3490.4000000000001" y="898.65067466266873"/>
+        </scene>
+        <!--Flash Card View Controller-->
+        <scene sceneID="FjJ-Xf-qrb">
+            <objects>
+                <viewController storyboardIdentifier="FlashCardViewController" id="J2Y-UT-tSk" customClass="FlashCardViewController" customModule="Belajar" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aGh-eV-6sn"/>
+                        <viewControllerLayoutGuide type="bottom" id="UBW-st-gew"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zxm-f7-kbX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhS-8p-Ldq">
+                                <subviews>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_Flash card text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6M3-XI-8NO">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Card Front Indicator" translatesAutoresizingMaskIntoConstraints="NO" id="X9L-q7-0zA">
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="ROf-LS-N6Y"/>
+                                            <constraint firstAttribute="height" constant="22" id="UdG-Ht-ZrQ"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="6M3-XI-8NO" firstAttribute="leading" secondItem="fhS-8p-Ldq" secondAttribute="leadingMargin" constant="16" id="OXv-Rc-gjK"/>
+                                    <constraint firstItem="6M3-XI-8NO" firstAttribute="centerY" secondItem="fhS-8p-Ldq" secondAttribute="centerY" id="RJR-Xr-eoK"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="6M3-XI-8NO" secondAttribute="trailing" constant="16" id="hkz-yX-6c2"/>
+                                    <constraint firstAttribute="bottom" secondItem="X9L-q7-0zA" secondAttribute="bottom" constant="24" id="uHa-oe-0KL"/>
+                                    <constraint firstItem="X9L-q7-0zA" firstAttribute="centerX" secondItem="fhS-8p-Ldq" secondAttribute="centerX" id="vcv-rm-fgT"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="dogEarWidth">
+                                        <real key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93333333730697632" green="0.93333333730697632" blue="0.93333333730697632" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fhS-8p-Ldq" secondAttribute="trailing" constant="16" id="8yD-ZC-gFI"/>
+                            <constraint firstItem="fhS-8p-Ldq" firstAttribute="leading" secondItem="Zxm-f7-kbX" secondAttribute="leading" constant="16" id="BZn-62-fQu"/>
+                            <constraint firstItem="fhS-8p-Ldq" firstAttribute="top" secondItem="aGh-eV-6sn" secondAttribute="bottom" id="J8C-il-ZCM"/>
+                            <constraint firstItem="UBW-st-gew" firstAttribute="top" secondItem="fhS-8p-Ldq" secondAttribute="bottom" constant="8" id="SuX-8H-P5t"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="455"/>
+                    <connections>
+                        <outlet property="cardBorderView" destination="fhS-8p-Ldq" id="kbD-Lw-Cw5"/>
+                        <outlet property="indicatorView" destination="X9L-q7-0zA" id="y4u-Hg-9Fs"/>
+                        <outlet property="textLabel" destination="6M3-XI-8NO" id="BG5-Ap-XFO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BJb-5Y-AFg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4196" y="894.15292353823099"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Card Front Indicator" width="16" height="14"/>
+        <image name="Mute" width="22" height="21"/>
+    </resources>
+</document>

@@ -50,7 +50,7 @@ final class DictionaryStore {
     
     private func autoCompleteSearchTerm(term: String, lang: String?) -> [AutoCompleteItem] {
         
-        var values: [AnyObject] = [term]
+        var values: [Any] = [term]
         values.append(makeStopTerm(term: term))
         
         let sql = NSMutableString()
@@ -72,16 +72,23 @@ final class DictionaryStore {
     }
     
     
+//    private func makeStopTerm(term: String) -> String {
+//        let text = NSMutableString()
+//        text.setString(term)
+//        let lastIndex = text.length - 1
+//        
+//        let lastCharPlusOne = text.character(at: lastIndex) + 1
+//        return text.substring(to: lastIndex).append(lastCharPlusOne)
+//    }
+    
     private func makeStopTerm(term: String) -> String {
         let utf16Chars = term.utf16
-        let lastChar = utf16Chars.last! + 1
-        let startIndex = term.utf16.startIndex
-        let endIndex = term.utf16.endIndex.advanced(by: -1)
-        return String(utf16Chars[startIndex..<endIndex]) + String(UnicodeScalar(lastChar))
+        let lastChar = Character(UnicodeScalar(utf16Chars.last! + 1)!)
+        return String(describing: utf16Chars.dropLast()) + String(lastChar)
     }
-    
+
     func search(word: String, lang: String? = nil, attr: String? = nil) -> [Lemma] {
-        var values: [AnyObject] = [word]
+        var values: [Any] = [word]
         
         var sql = "SELECT \(Util.joinWithComma(Lemma.fieldNames)) FROM DictView WHERE word=?"
         if let lang = lang {

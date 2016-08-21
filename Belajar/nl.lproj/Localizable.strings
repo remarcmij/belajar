@@ -1,9 +1,21 @@
-/* Word-click popover */
+/* Alert action title in word-click popover */
 "Cancel" = "Annuleer";
 
-/* Word-click popover */
-"Find in Dictionary" = "Zoek op in woordenboek";
+/* Alert action title in word-click popover */
+"Enable Speech Mode" = "Schakel spraakmodus in";
 
-/* Word-click popover */
-"Pronounce" = "Spreek uit";
+/* Alert action title in word-click popover */
+"Lookup: %@" = "Zoek op: %@";
+
+/* Feedback to user in word-click popover if nothing found */
+"Nothing found in dictionary" = "Niets gevonden in woordenboek";
+
+/* Alert action title in word-click popover */
+"Say: %@" = "Zeg: %@";
+
+/* Article view action sheet */
+"Search Dictionary" = "Zoek in woordenboek";
+
+/* Article view action sheet */
+"Show Flashcards" = "Toon flashcards";
 

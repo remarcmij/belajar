@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let publicationOrder = "publicationOrder"
+
 protocol LibraryCollectionViewControllerDelegate: class {
     func setTopic(topic: Topic)
 }
@@ -20,8 +22,21 @@ class LibraryCollectionViewController: UICollectionViewController {
         static let libraryCollectionViewCell = "LibraryCollectionViewCell"
     }
     
-    private lazy var topics: [Topic] = {
-        return TopicStore.sharedInstance.getCollection()
+    lazy var collectionTopics: [Topic] = {
+        var topics = TopicStore.sharedInstance.getCollection()
+        var publicationNames = topics.map() { $0.publication }
+        UserDefaults.standard.register(defaults: [publicationOrder: publicationNames])
+        publicationNames = UserDefaults.standard.object(forKey: publicationOrder) as! [String]
+        
+        var orderedTopics = [Topic]()
+        for publicationName in publicationNames {
+            if let topic = topics.first(where: {$0.publication == publicationName}) {
+                orderedTopics.append(topic)
+            }
+        }
+        topics = topics.filter() {!orderedTopics.contains($0)}
+        orderedTopics.append(contentsOf: topics)
+        return orderedTopics
     }()
     
     override func viewDidLoad() {
@@ -34,6 +49,12 @@ class LibraryCollectionViewController: UICollectionViewController {
         //        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let publicationNames = collectionTopics.map() { $0.publication }
+        UserDefaults.standard.set(publicationNames, forKey: publicationOrder)
     }
     
     /*
@@ -56,12 +77,12 @@ class LibraryCollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return topics.count
+        return collectionTopics.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.libraryCollectionViewCell, for: indexPath) as! LibraryCollectionViewCell
-        cell.topic = topics[indexPath.row]
+        cell.topic = collectionTopics[indexPath.row]
         return cell
     }
     
@@ -71,7 +92,11 @@ class LibraryCollectionViewController: UICollectionViewController {
         let selectedCell = collectionView.cellForItem(at: indexPath) as! LibraryCollectionViewCell
         selectedCell.showSelectedState()
         
-        delegate?.setTopic(topic: topics[indexPath.row])
+        let topic = collectionTopics[indexPath.row]
+        collectionTopics.remove(at: indexPath.row)
+        collectionTopics.insert(topic, at: 0)
+        
+        delegate?.setTopic(topic: topic)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [unowned self] in
             self.dismiss(animated: true, completion: nil)
@@ -107,7 +132,7 @@ class LibraryCollectionViewController: UICollectionViewController {
      */
     
     @IBAction func infoButtonTapped(_ sender: UIButton) {
-        if let topic = topics.first(where: {$0.id == sender.tag}) {
+        if let topic = collectionTopics.first(where: {$0.id == sender.tag}) {
             let message = NSMutableString()
             
             if let author = topic.author {
@@ -136,7 +161,7 @@ extension LibraryCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if let image = UIImage(named: topics[indexPath.row].imageName) {
+        if let image = UIImage(named: collectionTopics[indexPath.row].imageName) {
             let height = 125.0 / image.size.width * image.size.height
             return CGSize(width: 125, height: height)
         } else {

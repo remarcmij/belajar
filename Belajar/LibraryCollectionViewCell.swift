@@ -32,7 +32,9 @@ class LibraryCollectionViewCell: UICollectionViewCell {
     }
     
     func showSelectedState() {
-        imageView.alpha = 0.5
-        blankCoverView.alpha = 0.5
+        let overlayView = UIView(frame: bounds)
+        overlayView.backgroundColor = UIColor.black
+        overlayView.alpha = 0.5
+        addSubview(overlayView)
     }
 }

@@ -19,61 +19,61 @@ enum PreferredFont {
         switch type {
             
         case .title1:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle1)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
             
         case .title2:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle2)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
         
         case .title3:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle3)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
             
         case .headline:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleHeadline)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
 
         case .body:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleBody)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
             
         case .bodyBold:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .bodyItalic:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .callout:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleCallout)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.callout)
             
         case .subhead:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleSubheadline)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
             
         case .subheadBold:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleSubheadline)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.subheadline)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .subheadItalic:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleSubheadline)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.subheadline)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .caption1:
-            font = UIFont.preferredFont(forTextStyle: UIFontTextStyleCaption1)
+            font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
             
         case .caption1Bold:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.caption1)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .caption1Italic:
-            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleCaption1)
+            let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.caption1)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitItalic)!
             font = UIFont(descriptor: descriptor, size: 0.0)
             
         case .bodySmallCaps:
-            let textStyleBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleBody)
+            let textStyleBodyDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
                 .withSymbolicTraits(UIFontDescriptorSymbolicTraits.traitBold)!
             let smallCapsBoldDescriptor = textStyleBodyDescriptor.addingAttributes([
                 UIFontDescriptorFeatureSettingsAttribute: [[

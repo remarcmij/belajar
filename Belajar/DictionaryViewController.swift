@@ -21,7 +21,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         }
     }
     
-    private var lemmaBatches = [LemmaBatch]()
+    var lemmaBatches = [LemmaBatch]()
     private var dictionaryPopoverService: DictionaryPopoverService!
     private var searchController: UISearchController!
     private var contentSizeChangeObserver: NSObjectProtocol?
@@ -53,7 +53,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         
         dictionaryPopoverService = DictionaryPopoverService(controller: self)
         
-        let searchResultsController = self.dynamicType.theSearchResultsController
+        let searchResultsController = type(of: self).theSearchResultsController
         searchResultsController.delegate = self
         
         searchController = UISearchController(searchResultsController: searchResultsController)
@@ -172,7 +172,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         tableView.setContentOffset(CGPoint(x: 0, y: searchController.searchBar.frame.size.height), animated: false)
     }
     
-    private func clearCacheAndReloadData() {
+    func clearCacheAndReloadData() {
         LemmaCell.clearCache()
         tableView.reloadData()
     }

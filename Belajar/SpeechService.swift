@@ -12,49 +12,76 @@ private var rate: Float = 0.5
 
 private let endOfSentenceRegExp = try! NSRegularExpression(pattern: "([.?!])(?=\\s+(:?\\p{Lu}|['\"‘“]))", options: [])
 
+enum SpeechVoiceLanguage {
+    case foreign, native
+}
+
 class SpeechService: NSObject {
     
     static let sharedInstance = SpeechService()
     static let minimumValue: Float = 0.25
     static let maximumValue: Float = 0.5
+
+    private let speechSynthesizer: AVSpeechSynthesizer
+
+    override init() {
+        speechSynthesizer = AVSpeechSynthesizer()
+        super.init()
+        speechSynthesizer.delegate = self
+    }
     
     var speechRate: Float = SpeechService.maximumValue {
         didSet {
             if speechRate != oldValue {
-                speechSynthesizer.stopSpeaking(at: .immediate)
+                stopSpeaking()
             }
         }
     }
     
-    private lazy var speechSynthesizer = AVSpeechSynthesizer()
-
     func stopSpeaking() {
-        speechSynthesizer.stopSpeaking(at: .word)
+        if speechSynthesizer.isSpeaking {
+            speechSynthesizer.stopSpeaking(at: .immediate)
+        }
     }
     
-    func speak(text: String) {
-        if speechSynthesizer.isSpeaking {
-            stopSpeaking()
-        }
+    func speak(text: String, voice: SpeechVoiceLanguage = .foreign) {
+        stopSpeaking()
+        
         let partionedText = endOfSentenceRegExp.stringByReplacingMatches(in: text, options: [], range: NSMakeRange(0, text.utf16.count), withTemplate: "$1|")
         let sentences = partionedText.components(separatedBy: "|")
         
-        var first = true
         for sentence in sentences {
-            speakSentence(text: sentence, preUtteranceDelay: first ? 0.0 : 0.3)
-            first = false
+            speak(phrase: sentence, voice: voice, rate: speechRate)
         }
     }
     
-    private func speakSentence(text: String, preUtteranceDelay: Double) {
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: Constants.foreignBCP47)
-        utterance.rate = speechRate
-        utterance.preUtteranceDelay = preUtteranceDelay
-        speechSynthesizer.delegate = self
+    func speak(phrase: String,  voice: SpeechVoiceLanguage = .foreign, rate: Float = maximumValue) {
+        let utterance = AVSpeechUtterance(string: phrase)
+        utterance.voice = AVSpeechSynthesisVoice(language: voice == .foreign ? Constants.foreignBCP47 : Constants.nativeBCP47)
+        utterance.rate = rate
         speechSynthesizer.speak(utterance)
     }
 }
 
 extension SpeechService: AVSpeechSynthesizerDelegate {
+    
+//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+//        print("finished \(utterance.speechString)")
+//    }
+//    
+//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+//        print("cancelled \(utterance.speechString)")
+//    }
+//    
+//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+//        print("willSpeak \((utterance.speechString as NSString).substring(with: characterRange))")
+//    }
+//    
+//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+//        print("didStart \(utterance.speechString)")
+//    }
+//    
+//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
+//        print("didPause")
+//    }
 }
