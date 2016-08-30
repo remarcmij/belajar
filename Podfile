@@ -7,7 +7,8 @@ target 'Belajar' do
 
   # Pods for Belajar
   pod 'FMDB'
-  pod 'TTTAttributedLabel'   
+  pod 'TTTAttributedLabel'
+  pod 'Google/SignIn'
   
   target 'BelajarTests' do
     inherit! :search_paths

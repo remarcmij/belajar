@@ -60,7 +60,7 @@ class LemmaCell: UITableViewCell, TTTAttributedLabelDelegate {
             let word = percentEncodedWord.removingPercentEncoding
             else { return }
         
-        let notificationName = action == "synopsis" ? Constants.WordClickNotification : Constants.WordLookupNotification
+        let notificationName = action == "synopsis" ? Constants.wordClickNotification : Constants.wordLookupNotification
         NotificationCenter.default.post(name: notificationName, object: label, userInfo: ["word": word])
     }
 }

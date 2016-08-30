@@ -9,6 +9,10 @@
 import UIKit
 import FMDB
 
+//private let signInEndPoint = "https://www.belajar.nl/auth/google/idtoken/"
+private let signInEndPoint = "http://192.168.178.39:9000/auth/google/idtoken/"
+private let silentSignIn = "silentSignIn"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
     
@@ -21,6 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
         splitViewController.delegate = self
         window?.makeKeyAndVisible()
+        return true
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        // Initialize Google sign-in
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        
+        GIDSignIn.sharedInstance().delegate = self
+        
+        UserDefaults.standard.register(defaults: [silentSignIn: false])
+        
+        if UserDefaults.standard.bool(forKey: silentSignIn) {
+            GIDSignIn.sharedInstance().signInSilently()
+        }
+        
         return true
     }
     
@@ -55,18 +76,80 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // opt-in to state restoration
         return true
     }
-
+    
     // MARK: - Split view
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
-//        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-//        guard let topAsDetailController = secondaryAsNavController.topViewController as? ArticleViewController else { return false }
-//        if topAsDetailController.topic == nil {
-//            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-//            return true
-//        }
-//        return false
+        //        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
+        //        guard let topAsDetailController = secondaryAsNavController.topViewController as? ArticleViewController else { return false }
+        //        if topAsDetailController.topic == nil {
+        //            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
+        //            return true
+        //        }
+        //        return false
         return true
     }
+    
+    // called on initial Google authentication, not on subsequent sign-ins
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                 annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+    }
+}
 
+extension AppDelegate: GIDSignInDelegate {
+    
+    public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if (error == nil) {
+            
+            NotificationCenter.default.post(name: Constants.didSignInNotification,
+                                            object: self,
+                                            userInfo: nil)
+
+            // next time, signin silently
+            UserDefaults.standard.set(true, forKey: silentSignIn)
+            
+            BackendService.shared.signin(user: user) { success in
+                if success {
+                    TopicManager.shared.syncTopics(isUserInitiated: false)
+                }
+            }
+            
+            // Perform any operations on signed in user here.
+//            let userId = user.userID                  // For client-side use only!
+//            let idToken = user.authentication.idToken // Safe to send to the server
+//            let fullName = user.profile.name
+//            let givenName = user.profile.givenName
+//            let familyName = user.profile.familyName
+//            let email = user.profile.email
+//            let serverAuthCode = user.serverAuthCode
+            
+//            BackendService.shared.idToken = idToken
+            
+            //            let request = NSMutableURLRequest(url: URL(string: signinEndPoint)!)
+            //            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            //            request.httpMethod = "POST"
+            //            request.httpBody = "id_token=\(idToken!)".data(using: .utf8)
+            //            let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+            //                if data != nil {
+            //                    let userid = String(data: data!, encoding: .utf8)!
+            //                    print(userid)
+            //                }
+            //                if let description = error?.localizedDescription {
+            //                    print(description)
+            //                }
+            //            }
+            //            task.resume()
+            // ...
+        } else {
+            print("\(error.localizedDescription)")
+        }
+    }
+    
+    public func sign(_ signIn: GIDSignIn!, didDisconnectWith user:GIDGoogleUser!, withError error: Error!) {
+        
+        // Perform any operations when the user disconnects from app here.
+    }
+    
 }

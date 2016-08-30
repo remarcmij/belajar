@@ -9,8 +9,10 @@
 import Foundation
 
 struct Constants {
-    static let WordClickNotification = Notification.Name("wordClickNotification")
-    static let WordLookupNotification = Notification.Name("wordLookupNotification")
+    static let wordClickNotification = Notification.Name("wordClick")
+    static let wordLookupNotification = Notification.Name("wordLookup")
+    static let didSignInNotification = Notification.Name("didSignIn")
+
     static let ForeignLang = "id"
     static let NativeLang = "nl"
     static let foreignBCP47 = "id-ID"

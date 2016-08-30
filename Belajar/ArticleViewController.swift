@@ -53,7 +53,8 @@ class ArticleViewController: UIViewController, WKScriptMessageHandler {
             } else {
                 tableOfContentsButton.isEnabled = true
                 navigationItem.title = topic.title
-                article = TopicStore.sharedInstance.getArticle(withTopicId: topic.id)
+                article = TopicManager.shared.getArticle(withTopicId: topic.id,
+                                                         preloaded: topic.lastModified == nil)
                 loadHTML()
             }
         }

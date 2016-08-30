@@ -9,24 +9,28 @@
 import Foundation
 import FMDB
 
-final class TopicStore {
+class TopicStore {
     
-    private let database: FMDatabase
+    let database: FMDatabase
     
-    static let sharedInstance = TopicStore()
-    
-    init() {
-        let databasePath = Bundle.main.path(forResource: "Topics", ofType: "sqlite")
-        database = FMDatabase(path: databasePath)
+    init(path: String) {
+        database = FMDatabase(path: path)
         if !database.open() {
-            fatalError("could not open Topics database")
+            fatalError("could not open database at path: \(path)")
         }
-        print("Topics database opened")
+        
+        #if DEBUG
+            print("succesfully opened database at path: \(path)")
+        #endif
     }
     
     deinit {
         database.close()
-        print("Topics database closed")
+    }
+    
+    var allTopics: [Topic] {
+        let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics"
+        return executeTopicQuery(sql, values: nil)
     }
     
     /// Returns an array for Topics representing "publications", i.e.
@@ -42,19 +46,19 @@ final class TopicStore {
     ///   to be returned
     func getPublicationTopics(for publication: String) -> [Topic] {
         let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics WHERE chapter!='index' AND publication=?"
-        return executeTopicQuery(sql, values: [publication as AnyObject])
+        return executeTopicQuery(sql, values: [NSString(string: publication)])
     }
     
     func getArticle(withTopicId topicId: Int) -> Article? {
         let sql = "SELECT \(Util.joinWithComma(Article.fieldNames)) FROM Articles WHERE topicId=?"
-        let rs = try! database.executeQuery(sql, values: [topicId])
+        let rs = try! database.executeQuery(sql, values: [NSNumber(value:topicId)])
         if !rs.next() {
             return nil
         }
         return makeArticle(from: rs)
     }
     
-    private func executeTopicQuery(_ sql: String, values: [AnyObject]!) -> [Topic] {
+    func executeTopicQuery(_ sql: String, values: [Any]!) -> [Topic] {
         var topics = [Topic]()
         let rs = try! database.executeQuery(sql + " ORDER BY sortIndex", values: values)
         while rs.next() == true {
@@ -63,21 +67,22 @@ final class TopicStore {
         return topics
     }
     
-    private func makeTopic(from rs: FMResultSet) -> Topic {
+    func makeTopic(from rs: FMResultSet) -> Topic {
         return Topic(
             id: Int(rs.int(forColumnIndex: 0)),
             fileName: rs.string(forColumnIndex: 1),
             publication: rs.string(forColumnIndex: 2),
-            chapter: rs.string(forColumnIndex: 3),
-            groupName: rs.string(forColumnIndex: 4),
-            sortIndex: Int(rs.int(forColumnIndex: 5)),
-            title: rs.string(forColumnIndex: 6),
-            subtitle: rs.string(forColumnIndex: 7),
-            author: rs.string(forColumnIndex: 8),
-            publisher: rs.string(forColumnIndex: 9),
-            pubDate: rs.string(forColumnIndex: 10),
-            isbn: rs.string(forColumnIndex: 11),
-            lastModified: rs.string(forColumnIndex: 12))
+            part: rs.string(forColumnIndex: 3),
+            chapter: rs.string(forColumnIndex: 4),
+            groupName: rs.string(forColumnIndex: 5),
+            sortIndex: Int(rs.int(forColumnIndex: 6)),
+            title: rs.string(forColumnIndex: 7),
+            subtitle: rs.string(forColumnIndex: 8),
+            author: rs.string(forColumnIndex: 9),
+            publisher: rs.string(forColumnIndex: 10),
+            pubDate: rs.string(forColumnIndex: 11),
+            isbn: rs.string(forColumnIndex: 12),
+            lastModified: rs.string(forColumnIndex: 13))
     }
     
     private func makeArticle(from rs: FMResultSet) -> Article {

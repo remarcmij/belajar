@@ -13,7 +13,8 @@ class PublicationViewController: DynamicTextTableViewController {
     var topic: Topic? {
         didSet {
             if topic != nil {
-                topics = TopicStore.sharedInstance.getPublicationTopics(for: topic!.publication)
+                topics = TopicManager.shared.getPublicationTopics(for: topic!.publication,
+                                                                  preloaded: topic!.lastModified == nil)
                 navigationItem.title = topic?.title
                 tableView.reloadData()
             }

@@ -17,6 +17,11 @@
 		1A400C9E1D48C6A800638C00 /* ArticleContentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A400C9D1D48C6A800638C00 /* ArticleContentsTableViewController.swift */; };
 		1A4547261D16F3580003BA2F /* DictionaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4547251D16F3580003BA2F /* DictionaryViewController.swift */; };
 		1A5C5C681D479F9100175041 /* DynamicTextTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */; };
+		1A6486C31D6F31010083B4B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A6486C21D6F31010083B4B7 /* GoogleService-Info.plist */; };
+		1A6486C91D71CB300083B4B7 /* BackendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6486C81D71CB300083B4B7 /* BackendService.swift */; };
+		1A6486CF1D731DBE0083B4B7 /* TopicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6486CE1D731DBE0083B4B7 /* TopicManager.swift */; };
+		1A6486D11D73223B0083B4B7 /* SyncableTopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6486D01D73223B0083B4B7 /* SyncableTopicStore.swift */; };
+		1A6486D31D7368CC0083B4B7 /* Topics.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1A6486D21D7368CC0083B4B7 /* Topics.sqlite */; };
 		1A774EE51D60BAD800200BEF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A774EE71D60BAD800200BEF /* InfoPlist.strings */; };
 		1A774EEA1D60BAD900200BEF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A774EEC1D60BAD900200BEF /* InfoPlist.strings */; };
 		1A774EEF1D60BADA00200BEF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A774EF11D60BADA00200BEF /* InfoPlist.strings */; };
@@ -42,7 +47,6 @@
 		1AC5553B1D5E2E9C00F82FB5 /* vandale-nl-id.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */; };
 		1AC5553C1D5E2E9C00F82FB5 /* wat-en-hoe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC555391D5E2E9C00F82FB5 /* wat-en-hoe.jpg */; };
 		1AC5553E1D5E2F6700F82FB5 /* sneddon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */; };
-		1AC555401D5E42FE00F82FB5 /* Topics.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */; };
 		1AC8F9151D4CBB2800CB9F76 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC8F9141D4CBB2800CB9F76 /* MainMenuTableViewController.swift */; };
 		1ACA705C1D417989004536E0 /* AttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */; };
 		1ACA705E1D437DC4004536E0 /* LemmaReferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA705D1D437DC4004536E0 /* LemmaReferenceCell.swift */; };
@@ -94,6 +98,12 @@
 		1A400C9D1D48C6A800638C00 /* ArticleContentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleContentsTableViewController.swift; sourceTree = "<group>"; };
 		1A4547251D16F3580003BA2F /* DictionaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryViewController.swift; sourceTree = "<group>"; };
 		1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTextTableViewController.swift; sourceTree = "<group>"; };
+		1A6486C21D6F31010083B4B7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1A6486C41D6F34EB0083B4B7 /* Belajar-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Belajar-Bridging-Header.h"; sourceTree = "<group>"; };
+		1A6486C81D71CB300083B4B7 /* BackendService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendService.swift; sourceTree = "<group>"; };
+		1A6486CE1D731DBE0083B4B7 /* TopicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicManager.swift; sourceTree = "<group>"; };
+		1A6486D01D73223B0083B4B7 /* SyncableTopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncableTopicStore.swift; sourceTree = "<group>"; };
+		1A6486D21D7368CC0083B4B7 /* Topics.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Topics.sqlite; sourceTree = "<group>"; };
 		1A774EDF1D60B84B00200BEF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		1A774EE01D60B84B00200BEF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1A774EE11D60B85300200BEF /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
@@ -129,7 +139,6 @@
 		1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "vandale-nl-id.jpg"; sourceTree = "<group>"; };
 		1AC555391D5E2E9C00F82FB5 /* wat-en-hoe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wat-en-hoe.jpg"; sourceTree = "<group>"; };
 		1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sneddon.jpg; sourceTree = "<group>"; };
-		1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Topics.sqlite; sourceTree = "<group>"; };
 		1AC8F9141D4CBB2800CB9F76 /* MainMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuTableViewController.swift; sourceTree = "<group>"; };
 		1ACA705B1D417989004536E0 /* AttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringHelper.swift; sourceTree = "<group>"; };
 		1ACA705D1D437DC4004536E0 /* LemmaReferenceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LemmaReferenceCell.swift; sourceTree = "<group>"; };
@@ -191,30 +200,40 @@
 		1A275EC71D11796300D38BC4 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				1AB995551D0715D60039FF6E /* AppDelegate.swift */,
+				1A400C9D1D48C6A800638C00 /* ArticleContentsTableViewController.swift */,
 				1AD397A51D11B20500365164 /* ArticleViewController.swift */,
+				1A6486C41D6F34EB0083B4B7 /* Belajar-Bridging-Header.h */,
 				1AD758911D34FEC9004756C4 /* DictionaryPopoverService.swift */,
 				1A4547251D16F3580003BA2F /* DictionaryViewController.swift */,
 				1A5C5C671D479F9100175041 /* DynamicTextTableViewController.swift */,
+				1A774EF71D6218BA00200BEF /* FlashCardContainerViewController.swift */,
+				1AF18EFE1D64633600E18630 /* FlashCardPageViewController.swift */,
+				1AF18EFC1D645EC100E18630 /* FlashCardViewController.swift */,
 				1A027A6D1D40D18D0033B605 /* LemmaCell.swift */,
 				1A027A711D40D4740033B605 /* LemmaContinuationCell.swift */,
 				1A027A6F1D40D2AD0033B605 /* LemmaHeaderCell.swift */,
 				1ACA705D1D437DC4004536E0 /* LemmaReferenceCell.swift */,
-				1ABE36381D5253B600B2BF4C /* LibraryCollectionViewController.swift */,
+				1AFECACF1D538CE1002540CA /* LibraryCollectionCellOverlayView.swift */,
 				1ABE363A1D52774D00B2BF4C /* LibraryCollectionViewCell.swift */,
+				1ABE36381D5253B600B2BF4C /* LibraryCollectionViewController.swift */,
 				1AC8F9141D4CBB2800CB9F76 /* MainMenuTableViewController.swift */,
 				1A96D20E1D45309D00261F66 /* PublicationTableViewCell.swift */,
 				1AD397A31D11A54500365164 /* PublicationViewController.swift */,
 				1A027A751D410C720033B605 /* SearchResultsController.swift */,
-				1A400C9D1D48C6A800638C00 /* ArticleContentsTableViewController.swift */,
-				1A027A731D40EE950033B605 /* UIKitExtensions.swift */,
-				1AFECACF1D538CE1002540CA /* LibraryCollectionCellOverlayView.swift */,
-				1A1DEA661D5A269900822CF5 /* SpeechService.swift */,
 				1AC555351D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift */,
-				1A774EF71D6218BA00200BEF /* FlashCardContainerViewController.swift */,
-				1AF18EFC1D645EC100E18630 /* FlashCardViewController.swift */,
-				1AF18EFE1D64633600E18630 /* FlashCardPageViewController.swift */,
+				1A1DEA661D5A269900822CF5 /* SpeechService.swift */,
+				1A027A731D40EE950033B605 /* UIKitExtensions.swift */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		1A6486C71D71CAFD0083B4B7 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1A6486C81D71CB300083B4B7 /* BackendService.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		1AB995491D0715D60039FF6E = {
@@ -242,18 +261,17 @@
 		1AB995541D0715D60039FF6E /* Belajar */ = {
 			isa = PBXGroup;
 			children = (
+				1A6486C21D6F31010083B4B7 /* GoogleService-Info.plist */,
 				1A774EF61D60BADA00200BEF /* Localizable.strings */,
 				1A774EE71D60BAD800200BEF /* InfoPlist.strings */,
 				1AD397A91D11E13200365164 /* www */,
 				1A275EC71D11796300D38BC4 /* UI */,
 				1AFB93E31D098723007CA509 /* Helpers */,
 				1AFB93DE1D0974F5007CA509 /* Stores */,
-				1AFB93DB1D096DF5007CA509 /* Model */,
+				1A6486C71D71CAFD0083B4B7 /* Services */,
 				1AB995831D0716470039FF6E /* Supporting Files */,
-				1AB995551D0715D60039FF6E /* AppDelegate.swift */,
 				1AF18EFB1D645E8C00E18630 /* Storyboards */,
 				1AB9955C1D0715D60039FF6E /* Assets.xcassets */,
-				1AB9955E1D0715D60039FF6E /* LaunchScreen.storyboard */,
 				1AB995611D0715D60039FF6E /* Info.plist */,
 			);
 			path = Belajar;
@@ -283,7 +301,7 @@
 		1AB995831D0716470039FF6E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1AC5553F1D5E42FE00F82FB5 /* Topics.sqlite */,
+				1A6486D21D7368CC0083B4B7 /* Topics.sqlite */,
 				1AC5553D1D5E2F6700F82FB5 /* sneddon.jpg */,
 				1AC555371D5E2E9C00F82FB5 /* harmani.jpg */,
 				1AC555381D5E2E9C00F82FB5 /* vandale-nl-id.jpg */,
@@ -298,6 +316,7 @@
 			children = (
 				1AB995591D0715D60039FF6E /* Main.storyboard */,
 				1AF18EF81D645DD400E18630 /* FlashCard.storyboard */,
+				1AB9955E1D0715D60039FF6E /* LaunchScreen.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -315,8 +334,11 @@
 		1AFB93DE1D0974F5007CA509 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				1AFB93E11D0986BF007CA509 /* TopicStore.swift */,
 				1AFB93F01D0ED1BB007CA509 /* DictionaryStore.swift */,
+				1A6486CE1D731DBE0083B4B7 /* TopicManager.swift */,
+				1AFB93E11D0986BF007CA509 /* TopicStore.swift */,
+				1A6486D01D73223B0083B4B7 /* SyncableTopicStore.swift */,
+				1AFB93DB1D096DF5007CA509 /* Model */,
 			);
 			name = Stores;
 			sourceTree = "<group>";
@@ -483,12 +505,13 @@
 				1AC5553E1D5E2F6700F82FB5 /* sneddon.jpg in Resources */,
 				1AB995601D0715D60039FF6E /* LaunchScreen.storyboard in Resources */,
 				1AB9955D1D0715D60039FF6E /* Assets.xcassets in Resources */,
-				1AC555401D5E42FE00F82FB5 /* Topics.sqlite in Resources */,
 				1AC5553A1D5E2E9C00F82FB5 /* harmani.jpg in Resources */,
 				1AB9955B1D0715D60039FF6E /* Main.storyboard in Resources */,
 				1AC5553C1D5E2E9C00F82FB5 /* wat-en-hoe.jpg in Resources */,
 				1A774EE51D60BAD800200BEF /* InfoPlist.strings in Resources */,
 				1AFB93ED1D0ECE0F007CA509 /* Dictionary.sqlite in Resources */,
+				1A6486C31D6F31010083B4B7 /* GoogleService-Info.plist in Resources */,
+				1A6486D31D7368CC0083B4B7 /* Topics.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,6 +666,7 @@
 				1AFECAD01D538CE1002540CA /* LibraryCollectionCellOverlayView.swift in Sources */,
 				1A96D20F1D45309D00261F66 /* PublicationTableViewCell.swift in Sources */,
 				1A12C2321D0ED36D00A16796 /* CustomErrors.swift in Sources */,
+				1A6486C91D71CB300083B4B7 /* BackendService.swift in Sources */,
 				1AF18EFD1D645EC100E18630 /* FlashCardViewController.swift in Sources */,
 				1A774EF81D6218BA00200BEF /* FlashCardContainerViewController.swift in Sources */,
 				1AC555361D5DDA5000F82FB5 /* SpeechRatePopoverViewController.swift in Sources */,
@@ -663,6 +687,7 @@
 				1AFB93F11D0ED1BB007CA509 /* DictionaryStore.swift in Sources */,
 				1AC8F9151D4CBB2800CB9F76 /* MainMenuTableViewController.swift in Sources */,
 				1A027A721D40D4740033B605 /* LemmaContinuationCell.swift in Sources */,
+				1A6486CF1D731DBE0083B4B7 /* TopicManager.swift in Sources */,
 				1A1DEA671D5A269900822CF5 /* SpeechService.swift in Sources */,
 				1A027A761D410C720033B605 /* SearchResultsController.swift in Sources */,
 				1A400C9E1D48C6A800638C00 /* ArticleContentsTableViewController.swift in Sources */,
@@ -673,6 +698,7 @@
 				1AB995561D0715D60039FF6E /* AppDelegate.swift in Sources */,
 				1ACA705C1D417989004536E0 /* AttributedStringHelper.swift in Sources */,
 				1A96D2051D44556A00261F66 /* PreferredFont.swift in Sources */,
+				1A6486D11D73223B0083B4B7 /* SyncableTopicStore.swift in Sources */,
 				1AFB93E21D0986BF007CA509 /* TopicStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -872,12 +898,17 @@
 			baseConfigurationReference = 94A9B4D6B48C7FDE2CE63B52 /* Pods-Belajar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Belajar/Belajar-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 3.0;
 			};
@@ -888,12 +919,14 @@
 			baseConfigurationReference = 395A131BB762C9A8ACC92FA4 /* Pods-Belajar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Belajar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.belajar.Belajar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Belajar/Belajar-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 3.0;

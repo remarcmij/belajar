@@ -37,14 +37,53 @@ struct FlashCardSection {
     var flashCards: [FlashCard]
 }
 
-struct Article {
+class Article {
     var id: Int
     var topicId: Int
-    var foreignLang: String
-    var nativeLang: String
-    var style: String?
-    var mdText: String?
-    var htmlText: String
+    let foreignLang: String
+    let nativeLang: String
+    let style: String?
+    let mdText: String?
+    let htmlText: String
+    
+    var values: [Any] {
+        return [
+            NSNumber(value: topicId),
+            NSString(string: foreignLang),
+            NSString(string: nativeLang),
+            style != nil ? NSString(string: style!) : NSNull(),
+            mdText != nil ? NSString(string: mdText!) : NSNull(),
+            NSString(string: htmlText)
+        ]
+    }
+    
+    static func create(fromJSONObject json: [String: Any]) -> Article? {
+        guard let foreignLang = json["foreignLang"] as? String,
+        let nativeLang = json["nativeLang"] as? String,
+        let htmlText = json["htmlText"] as? String
+            else { return nil }
+        
+        let style = json["style"] as? String
+        let mdText = json["mdText"] as? String
+        
+        return Article(id: -1,
+                       topicId: -1,
+                       foreignLang: foreignLang,
+                       nativeLang: nativeLang,
+                       style: style,
+                       mdText: mdText,
+                       htmlText: htmlText)
+    }
+    
+    init(id: Int, topicId: Int, foreignLang: String, nativeLang: String, style: String?, mdText: String?, htmlText: String) {
+        self.id = id
+        self.topicId = topicId
+        self.foreignLang = foreignLang
+        self.nativeLang = nativeLang
+        self.style = style
+        self.mdText = mdText
+        self.htmlText = htmlText
+    }
     
     func getAnchors() -> [AnchorInfo] {
         var items = [AnchorInfo]()

@@ -86,7 +86,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
             self?.clearCacheAndReloadData()
         }
         
-        wordClickObserver = NotificationCenter.default.addObserver(forName: Constants.WordClickNotification, object: nil, queue: OperationQueue.main)
+        wordClickObserver = NotificationCenter.default.addObserver(forName: Constants.wordClickNotification, object: nil, queue: OperationQueue.main)
         {
             [unowned self] notification in
             if let userInfo = notification.userInfo,

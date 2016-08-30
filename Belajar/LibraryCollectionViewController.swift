@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 private let publicationOrder = "publicationOrder"
 
@@ -14,46 +15,61 @@ protocol LibraryCollectionViewControllerDelegate: class {
     func setTopic(topic: Topic)
 }
 
-class LibraryCollectionViewController: UICollectionViewController {
+class LibraryCollectionViewController: UICollectionViewController, GIDSignInUIDelegate {
+    
     
     weak var delegate: LibraryCollectionViewControllerDelegate?
+    
+    @IBOutlet weak private var signInButton: GIDSignInButton! {
+        didSet {
+            signInButton.style = .iconOnly
+            signInButton.colorScheme = .dark
+        }
+    }
     
     private struct Storyboard {
         static let libraryCollectionViewCell = "LibraryCollectionViewCell"
     }
     
-    lazy var collectionTopics: [Topic] = {
-        var topics = TopicStore.sharedInstance.getCollection()
-        var publicationNames = topics.map() { $0.publication }
-        UserDefaults.standard.register(defaults: [publicationOrder: publicationNames])
-        publicationNames = UserDefaults.standard.object(forKey: publicationOrder) as! [String]
-        
-        var orderedTopics = [Topic]()
-        for publicationName in publicationNames {
-            if let topic = topics.first(where: {$0.publication == publicationName}) {
-                orderedTopics.append(topic)
-            }
-        }
-        topics = topics.filter() {!orderedTopics.contains($0)}
-        orderedTopics.append(contentsOf: topics)
-        return orderedTopics
-    }()
+    var indexTopics = [Topic]()
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        reloadData()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        // Register cell classes
-        //        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        GIDSignIn.sharedInstance().uiDelegate = self
         
-        // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSyncTopics),
+                                               name: TopicManager.didSyncTopicsNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onSignedIn),
+                                               name: Constants.didSignInNotification,
+                                               object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        signInButton.isHidden = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            if GIDSignIn.sharedInstance().currentUser == nil {
+                self?.signInButton.isHidden = false
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let publicationNames = collectionTopics.map() { $0.publication }
+        let publicationNames = indexTopics.map { $0.publication }
         UserDefaults.standard.set(publicationNames, forKey: publicationOrder)
     }
     
@@ -77,12 +93,12 @@ class LibraryCollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return collectionTopics.count
+        return indexTopics.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.libraryCollectionViewCell, for: indexPath) as! LibraryCollectionViewCell
-        cell.topic = collectionTopics[indexPath.row]
+        cell.topic = indexTopics[indexPath.row]
         return cell
     }
     
@@ -92,9 +108,9 @@ class LibraryCollectionViewController: UICollectionViewController {
         let selectedCell = collectionView.cellForItem(at: indexPath) as! LibraryCollectionViewCell
         selectedCell.showSelectedState()
         
-        let topic = collectionTopics[indexPath.row]
-        collectionTopics.remove(at: indexPath.row)
-        collectionTopics.insert(topic, at: 0)
+        let topic = indexTopics[indexPath.row]
+        indexTopics.remove(at: indexPath.row)
+        indexTopics.insert(topic, at: 0)
         
         delegate?.setTopic(topic: topic)
         
@@ -132,7 +148,7 @@ class LibraryCollectionViewController: UICollectionViewController {
      */
     
     @IBAction func infoButtonTapped(_ sender: UIButton) {
-        if let topic = collectionTopics.first(where: {$0.id == sender.tag}) {
+        if let topic = indexTopics.first(where: {$0.id == sender.tag}) {
             let message = NSMutableString()
             
             if let author = topic.author {
@@ -155,13 +171,89 @@ class LibraryCollectionViewController: UICollectionViewController {
             present(alert, animated: true, completion: nil)
         }
     }
+    
+    @IBAction func didTapMoreButton(_ sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "Library More button action sheet")
+        actionSheet.addAction(UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil))
+        
+        let isUserSignedIn = GIDSignIn.sharedInstance().currentUser != nil
+        
+        let syncActionTitle = NSLocalizedString("Synchronize", comment: "Library More button action sheet")
+        let syncAction = UIAlertAction(title: syncActionTitle, style: .default) { _ in
+            TopicManager.shared.syncTopics(isUserInitiated: true)
+        }
+        syncAction.isEnabled = isUserSignedIn
+        actionSheet.addAction(syncAction)
+        
+        let signOutActionTitle = NSLocalizedString("Sign out", comment: "Library More button action sheet")
+        let signOutAction = UIAlertAction(title: signOutActionTitle, style: .default) { [weak self]_ in
+            GIDSignIn.sharedInstance().signOut()
+            self?.signInButton.isHidden = false
+        }
+        signOutAction.isEnabled = isUserSignedIn
+        actionSheet.addAction(signOutAction)
+        
+        present(actionSheet, animated: true, completion: nil)
+        
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.barButtonItem = sender
+        }
+    }
+    
+    func onSignedIn(_ notification: NSNotification) {
+        signInButton.isHidden = true
+    }
+    
+    func onDidSyncTopics(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+            let userInitiatedSync = userInfo[TopicManager.userInitiatedSync] as? Bool,
+            let newTopicCount = userInfo[TopicManager.newTopicCount] as? Int,
+            let updatedTopicCount = userInfo[TopicManager.updatedTopicCount] as? Int,
+            let deletedTopicCount = userInfo[TopicManager.deletedTopicCount] as? Int
+            else { return }
+        
+        if newTopicCount + updatedTopicCount + deletedTopicCount > 0 {
+            reloadData()
+        } else if (userInitiatedSync) {
+            let title = NSLocalizedString("Synchronization Completed", comment: "Synchronization completed alert")
+            let message = NSLocalizedString("The latest updates have already been applied.", comment: "Synchronization completed alert")
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+        
+        #if DEBUG
+            print("Topics synchronized: new: \(newTopicCount), updated: \(updatedTopicCount), deleted: \(deletedTopicCount)")
+        #endif
+    }
+    
+    private func reloadData() {
+        var topics = TopicManager.shared.indexTopics
+        var publicationNames = topics.map() { $0.publication }
+        UserDefaults.standard.register(defaults: [publicationOrder: publicationNames])
+        publicationNames = UserDefaults.standard.object(forKey: publicationOrder) as! [String]
+        
+        var orderedTopics = [Topic]()
+        for publicationName in publicationNames {
+            if let topic = topics.first(where: {$0.publication == publicationName}) {
+                orderedTopics.append(topic)
+            }
+        }
+        topics = topics.filter() {!orderedTopics.contains($0)}
+        orderedTopics.append(contentsOf: topics)
+        indexTopics = orderedTopics
+        
+        collectionView?.reloadData()
+    }
 }
 
 extension LibraryCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if let image = UIImage(named: collectionTopics[indexPath.row].imageName) {
+        if let image = UIImage(named: indexTopics[indexPath.row].imageName) {
             let height = 125.0 / image.size.width * image.size.height
             return CGSize(width: 125, height: height)
         } else {

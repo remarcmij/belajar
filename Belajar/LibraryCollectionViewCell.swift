@@ -22,10 +22,12 @@ class LibraryCollectionViewCell: UICollectionViewCell {
                 infoButton.tag = topic.id
                 if let image = UIImage(named: topic.imageName) {
                     imageView.image = image
+                    imageView.isHidden = false
                     blankCoverView.isHidden = true
                 } else  {
                     titleLabel.text = topic.title
                     imageView.isHidden = true
+                    blankCoverView.isHidden = false
                 }
             }
         }

@@ -9,9 +9,15 @@
 import Foundation
 
 class Topic: NSObject, NSCoding {
-    let id: Int
+    
+    enum TopicError: Error {
+        case InvalidJSONData(String)
+    }
+    
+    var id: Int = -1
     let fileName: String
     let publication: String
+    let part: String?
     let chapter: String
     let groupName: String
     let sortIndex: Int
@@ -21,18 +27,37 @@ class Topic: NSObject, NSCoding {
     let publisher: String?
     let pubDate: String?
     let isbn: String?
-    let lastModified: String
+    let lastModified: String?
     
     var imageName: String {
         return "\(publication).jpg"
     }
     
-    init(id: Int, fileName: String, publication: String, chapter: String, groupName: String,
+    var values: [Any] {
+        return [
+            NSString(string: fileName),
+            NSString(string: publication),
+            part != nil ? NSString(string: part!) : NSNull(),
+            NSString(string: chapter),
+            NSString(string: groupName),
+            NSNumber(value: sortIndex),
+            NSString(string: title),
+            subtitle != nil ? NSString(string: subtitle!) : NSNull(),
+            author != nil ? NSString(string: author!) : NSNull(),
+            publisher != nil ? NSString(string: publisher!) : NSNull(),
+            pubDate != nil ? NSString(string: pubDate!) : NSNull(),
+            isbn != nil ? NSString(string: isbn!) : NSNull(),
+            lastModified != nil ? NSString(string: lastModified!) : NSNull()
+        ]
+    }
+    
+    init(id: Int, fileName: String, publication: String, part: String?, chapter: String, groupName: String,
          sortIndex: Int, title: String, subtitle: String?, author: String?, publisher: String?,
-         pubDate: String?, isbn: String?, lastModified: String) {
+         pubDate: String?, isbn: String?, lastModified: String?) {
         self.id = id
         self.fileName = fileName
         self.publication = publication
+        self.part = part
         self.chapter = chapter
         self.groupName = groupName
         self.sortIndex = sortIndex
@@ -49,6 +74,7 @@ class Topic: NSObject, NSCoding {
         id = coder.decodeInteger(forKey: ColumnName.id.rawValue)
         fileName = coder.decodeObject(forKey: ColumnName.fileName.rawValue) as! String
         publication = coder.decodeObject(forKey: ColumnName.publication.rawValue) as! String
+        part = coder.decodeObject(forKey: ColumnName.part.rawValue) as? String
         chapter = coder.decodeObject(forKey: ColumnName.chapter.rawValue) as! String
         groupName = coder.decodeObject(forKey: ColumnName.groupName.rawValue) as! String
         sortIndex = coder.decodeInteger(forKey: ColumnName.sortIndex.rawValue)
@@ -58,17 +84,19 @@ class Topic: NSObject, NSCoding {
         publisher = coder.decodeObject(forKey: ColumnName.publisher.rawValue) as? String
         pubDate = coder.decodeObject(forKey: ColumnName.pubDate.rawValue) as? String
         isbn = coder.decodeObject(forKey: ColumnName.isbn.rawValue) as? String
-        lastModified = coder.decodeObject(forKey: ColumnName.lastModified.rawValue) as! String
+        lastModified = coder.decodeObject(forKey: ColumnName.lastModified.rawValue) as? String
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(id, forKey: ColumnName.id.rawValue)
         coder.encode(fileName, forKey: ColumnName.fileName.rawValue)
         coder.encode(publication, forKey: ColumnName.publication.rawValue)
+        coder.encode(part, forKey: ColumnName.part.rawValue)
         coder.encode(chapter, forKey: ColumnName.chapter.rawValue)
         coder.encode(groupName, forKey: ColumnName.groupName.rawValue)
         coder.encode(sortIndex, forKey: ColumnName.sortIndex.rawValue)
         coder.encode(title, forKey: ColumnName.title.rawValue)
+        coder.encode(subtitle, forKey: ColumnName.subtitle.rawValue)
         coder.encode(author, forKey: ColumnName.author.rawValue)
         coder.encode(publisher, forKey: ColumnName.publisher.rawValue)
         coder.encode(pubDate, forKey: ColumnName.pubDate.rawValue)
@@ -77,7 +105,7 @@ class Topic: NSObject, NSCoding {
     }
     
     enum ColumnName: String {
-        case id, fileName, publication, chapter, groupName, sortIndex,
+        case id, fileName, publication, part, chapter, groupName, sortIndex,
         title, subtitle, author, publisher, pubDate, isbn, lastModified
     }
     
@@ -85,6 +113,7 @@ class Topic: NSObject, NSCoding {
         ColumnName.id.rawValue,
         ColumnName.fileName.rawValue,
         ColumnName.publication.rawValue,
+        ColumnName.part.rawValue,
         ColumnName.chapter.rawValue,
         ColumnName.groupName.rawValue,
         ColumnName.sortIndex.rawValue,
@@ -96,4 +125,40 @@ class Topic: NSObject, NSCoding {
         ColumnName.isbn.rawValue,
         ColumnName.lastModified.rawValue
     ]
+    
+    static func create(fromJSONObject json: [String: Any]) -> Topic? {
+        
+        guard let fileName = json["filename"] as? String,
+            let publication = json["publication"] as? String,
+            let chapter = json["chapter"] as? String,
+            let groupName = json["group"] as? String,
+            let sortIndex = json["sortindex"] as? Int,
+            let title = json["title"] as? String,
+            let lastModified = json["lastmodified"] as? String
+            else {
+                return nil
+        }
+        
+        let part = json["part"] as? String
+        let subtitle = json["subtitle"] as? String
+        let author = json["author"] as? String
+        let publisher = json["publisher"] as? String
+        let pubDate = json["pubdate"] as? String
+        let isbn = json["isbn"] as? String
+        
+        return Topic(id: -1,
+                     fileName: fileName,
+                     publication: publication,
+                     part: part,
+                     chapter: chapter,
+                     groupName: groupName,
+                     sortIndex: sortIndex,
+                     title: title,
+                     subtitle: subtitle,
+                     author: author,
+                     publisher: publisher,
+                     pubDate: pubDate,
+                     isbn: isbn,
+                     lastModified: lastModified)
+    }
 }
