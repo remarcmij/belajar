@@ -13,8 +13,8 @@ private let anchorRegExp = try! NSRegularExpression(pattern: "<(h\\d) id=\"(.+?)
 private let htmlTagRegExp = try! NSRegularExpression(pattern: "<.+?>", options: [])
 
 // regexp's for flashcards
-private let beginMarkerRegExp = try! NSRegularExpression(pattern: "<!-- flashcard: start -->", options: [])
-private let endMarkerRegExp = try! NSRegularExpression(pattern: "<!-- flashcard: end -->", options: [])
+private let beginMarkerRegExp = try! NSRegularExpression(pattern: "<a class=\"flashcard-start\"></a>", options: [])
+private let endMarkerRegExp = try! NSRegularExpression(pattern: "<a class=\"flashcard-end\"></a>", options: [])
 private let headerRegExp = try! NSRegularExpression(pattern: "^#+\\s*(.*)$", options: [])
 private let foreignFragmentRegExp = try! NSRegularExpression(pattern: "\\*\\*(.+?)\\*\\*", options: [])
 
@@ -42,7 +42,6 @@ class Article {
     var topicId: Int
     let foreignLang: String
     let nativeLang: String
-    let style: String?
     let mdText: String?
     let htmlText: String
     
@@ -51,7 +50,6 @@ class Article {
             NSNumber(value: topicId),
             NSString(string: foreignLang),
             NSString(string: nativeLang),
-            style != nil ? NSString(string: style!) : NSNull(),
             mdText != nil ? NSString(string: mdText!) : NSNull(),
             NSString(string: htmlText)
         ]
@@ -63,24 +61,21 @@ class Article {
         let htmlText = json["htmlText"] as? String
             else { return nil }
         
-        let style = json["style"] as? String
         let mdText = json["mdText"] as? String
         
         return Article(id: -1,
                        topicId: -1,
                        foreignLang: foreignLang,
                        nativeLang: nativeLang,
-                       style: style,
                        mdText: mdText,
                        htmlText: htmlText)
     }
     
-    init(id: Int, topicId: Int, foreignLang: String, nativeLang: String, style: String?, mdText: String?, htmlText: String) {
+    init(id: Int, topicId: Int, foreignLang: String, nativeLang: String, mdText: String?, htmlText: String) {
         self.id = id
         self.topicId = topicId
         self.foreignLang = foreignLang
         self.nativeLang = nativeLang
-        self.style = style
         self.mdText = mdText
         self.htmlText = htmlText
     }
@@ -151,7 +146,6 @@ class Article {
         "topicId",
         "foreignLang",
         "nativeLang",
-        "style",
         "mdText",
         "htmlText"
     ]

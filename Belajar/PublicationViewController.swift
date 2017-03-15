@@ -13,8 +13,7 @@ class PublicationViewController: DynamicTextTableViewController {
     var topic: Topic? {
         didSet {
             if topic != nil {
-                topics = TopicManager.shared.getPublicationTopics(for: topic!.publication,
-                                                                  preloaded: topic!.lastModified == nil)
+                topics = TopicManager.shared.getPublicationTopics(for: topic!.publication)
                 navigationItem.title = topic?.title
                 tableView.reloadData()
             }
@@ -101,7 +100,7 @@ class PublicationViewController: DynamicTextTableViewController {
                 else { return }
             prepare(articleViewController: articleViewController, for: topics[indexPath.row])
         } else if segue.identifier == Storyboard.ShowLibrary {
-            guard let libraryViewController = segue.destination.contentViewController as? LibraryCollectionViewController
+            guard let libraryViewController = segue.destination.contentViewController as? LibraryViewController
                 else { return }
             libraryViewController.delegate = self
         } else if segue.identifier == Storyboard.PresentMenu {
@@ -150,7 +149,7 @@ extension PublicationViewController: MainMenuTableViewControllerDelegate {
     }
 }
 
-extension PublicationViewController: LibraryCollectionViewControllerDelegate {
+extension PublicationViewController: LibraryViewControllerDelegate {
     func setTopic(topic: Topic) {
         self.topic = topic
         let lastSelectedRow = UserDefaults.standard.integer(forKey: lastSelectedKey)

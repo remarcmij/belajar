@@ -61,13 +61,6 @@ class DictionaryPopoverService: NSObject {
             let attributedLemmaText = AttributedStringHelper.makeAttributedText(from: message as NSString, clickAction: nil, useSmallFont: true)
             alert.setValue(attributedLemmaText, forKey: "attributedMessage")
             
-            let sayActionTitle = String(format: NSLocalizedString("Say: %@", comment: "Alert action title in word-click popover"), word.lowercased())
-            let sayAction = UIAlertAction(title: sayActionTitle, style: .default) { _ in
-                let cleansedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: word, options: [], range: NSMakeRange(0, word.utf16.count), withTemplate: "$1")
-                SpeechService.sharedInstance.speak(phrase: cleansedWord)
-            }
-            alert.addAction(sayAction)
-            
             if resolvedWord != nil {
                 let dictionaryActionTitle = String(format: NSLocalizedString("Lookup: %@", comment: "Alert action title in word-click popover"), resolvedWord!)
                 let dictionaryAction = UIAlertAction(title: dictionaryActionTitle, style: .default) {[weak self] action in
@@ -75,6 +68,13 @@ class DictionaryPopoverService: NSObject {
                 }
                 alert.addAction(dictionaryAction)
             }
+            
+            let sayActionTitle = String(format: NSLocalizedString("Say: %@", comment: "Alert action title in word-click popover"), word.lowercased())
+            let sayAction = UIAlertAction(title: sayActionTitle, style: .default) { _ in
+                let cleansedWord = parenthesizedSnippetRegExp.stringByReplacingMatches(in: word, options: [], range: NSMakeRange(0, word.utf16.count), withTemplate: "$1")
+                SpeechService.sharedInstance.speak(phrase: cleansedWord)
+            }
+            alert.addAction(sayAction)
             
             if (viewController as! DictionaryPopoverServiceDelegate).showSpeakOnTapOption {
                 let speakOnTapActionTitle = NSLocalizedString("Enable Speech Mode", comment: "Alert action title in word-click popover")

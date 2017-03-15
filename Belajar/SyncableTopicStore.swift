@@ -22,6 +22,7 @@ private let createTopicsTableSql = "CREATE TABLE IF NOT EXISTS Topics (\n"
     + "publisher TEXT DEFAULT NULL,\n"
     + "pubDate TEXT DEFAULT NULL,\n"
     + "isbn TEXT DEFAULT NULL,\n"
+    + "hash TEXT NOT NULL,\n"
     + "lastModified TEXT)"
 
 private let createArticlesTableSql = "CREATE TABLE IF NOT EXISTS Articles (\n"
@@ -29,20 +30,19 @@ private let createArticlesTableSql = "CREATE TABLE IF NOT EXISTS Articles (\n"
     + "topicId INTEGER UNIQUE,\n"
     + "foreignLang TEXT NOT NULL,\n"
     + "nativeLang TEXT NOT NULL,\n"
-    + "style TEXT DEFAULT NULL,\n"
     + "mdText TEXT DEFAULT NULL,\n"
     + "htmlText TEXT NOT NULL)"
 
 private let deleteArticleSql = "DELETE FROM Articles WHERE topicId=?"
 
 private let insertArticleSql = "INSERT INTO Articles "
-    + "(topicId,foreignLang,nativeLang,style,mdText,htmlText) "
-    + "VALUES(?,?,?,?,?,?)"
+    + "(topicId,foreignLang,nativeLang,mdText,htmlText) "
+    + "VALUES(?,?,?,?,?)"
 
 private let insertTopicSql = "INSERT INTO Topics "
     + "(fileName,publication,part,chapter,groupName,sortIndex,title,"
-    + "subtitle,author,publisher,pubDate,isbn,lastModified) "
-    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    + "subtitle,author,publisher,pubDate,isbn,hash,lastModified) "
+    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
 private let updateTopicSql = "UPDATE Topics SET "
     + "fileName=?,"
@@ -57,6 +57,7 @@ private let updateTopicSql = "UPDATE Topics SET "
     + "publisher=?,"
     + "pubDate=?,"
     + "isbn=?,"
+    + "hash=?,"
     + "lastModified=?"
     + " WHERE id=?"
 
@@ -66,9 +67,12 @@ class SyncableTopicStore: TopicStore {
     
     override init(path: String) {
         super.init(path: path)
+        if !createTables() {
+            fatalError("SyncableTopicStore: could not create tables")
+        }
     }
     
-    func createTables() -> Bool {
+    private func createTables() -> Bool {
         return database.executeStatements(createTopicsTableSql) &&
             database.executeStatements(createArticlesTableSql)
     }
@@ -116,6 +120,4 @@ class SyncableTopicStore: TopicStore {
             print(error)
         }
     }
-    
-    
 }

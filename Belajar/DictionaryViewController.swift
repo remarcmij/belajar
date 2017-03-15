@@ -62,7 +62,7 @@ class DictionaryViewController : UITableViewController, SearchResultsControllerD
         
         let searchBar = searchController.searchBar
         searchBar.delegate = self
-        searchBar.showsSearchResultsButton = true
+//        searchBar.showsSearchResultsButton = true
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.sizeToFit()

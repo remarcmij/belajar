@@ -12,6 +12,8 @@ struct Constants {
     static let wordClickNotification = Notification.Name("wordClick")
     static let wordLookupNotification = Notification.Name("wordLookup")
     static let didSignInNotification = Notification.Name("didSignIn")
+    
+    static let googleUser = "googleUser"
 
     static let ForeignLang = "id"
     static let NativeLang = "nl"

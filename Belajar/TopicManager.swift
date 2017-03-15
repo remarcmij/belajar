@@ -8,6 +8,11 @@
 
 import Foundation
 
+private var syncableTopicsDatabasePath: String = {
+    let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    return (documentsPath as NSString).appendingPathComponent("SyncableTopics.sqlite")
+}()
+
 class TopicManager {
     
     static let shared = TopicManager()
@@ -20,107 +25,107 @@ class TopicManager {
     
     var upsertToDoCount = 0
     
-    private lazy var preloadedTopicStore: TopicStore! = {
+    private lazy var preloadedTopicStore: TopicStore = {
         let databasePath = Bundle.main.path(forResource: "Topics", ofType: "sqlite")
         return TopicStore(path: databasePath!)
     }()
     
-    private lazy var syncableTopicStore: SyncableTopicStore? = {
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let databasePath = (documentsPath as NSString).appendingPathComponent("SyncableTopics.sqlite")
-        let topicStore = SyncableTopicStore(path: databasePath)
-        guard topicStore.createTables() else {
-            #if DEBUG
-                print("Could not create tables in writable topic store")
-            #endif
-            return nil
-        }
-        return topicStore
-    }()
-    
-    var allTopics: [Topic] {
-        var topics = preloadedTopicStore.allTopics
-        if let topicStore = syncableTopicStore {
-            topics.append(contentsOf: topicStore.allTopics)
-        }
-        return topics
-    }
+    private lazy var syncableTopicStore: SyncableTopicStore = SyncableTopicStore(path: syncableTopicsDatabasePath)
     
     var indexTopics: [Topic] {
         var topics = preloadedTopicStore.getCollection()
-        if syncableTopicStore != nil {
-            topics.append(contentsOf: syncableTopicStore!.getCollection())
-        }
+        topics.append(contentsOf: syncableTopicStore.getCollection())
         return topics
     }
     
     func getCollection() -> [Topic] {
         var topics = preloadedTopicStore.getCollection()
-        if syncableTopicStore != nil {
-            topics.append(contentsOf: syncableTopicStore!.getCollection())
-        }
+        topics.append(contentsOf: syncableTopicStore.getCollection())
         return topics
     }
     
-    func getPublicationTopics(for publication: String, preloaded: Bool) -> [Topic] {
-        let topicStore: TopicStore = preloaded ? preloadedTopicStore : syncableTopicStore!
-        return topicStore.getPublicationTopics(for: publication)
+    func getAllTopics() -> [Topic] {
+        var topics = syncableTopicStore.getAllTopics()
+        let syncableTopicFileNameSet = Set(topics.map({$0.fileName}))
+        let filteredPreloadedTopics = preloadedTopicStore.getAllTopics()
+            .filter {!syncableTopicFileNameSet.contains($0.fileName)}
+        topics.append(contentsOf: filteredPreloadedTopics)
+        return topics
+    }
+    
+    func getPublicationTopics(for publication: String) -> [Topic] {
+        var topics = syncableTopicStore.getPublicationTopics(for: publication)
+        let syncableTopicFileNameSet = Set(topics.map({$0.fileName}))
+        let filteredPreloadedTopics = preloadedTopicStore.getPublicationTopics(for: publication)
+            .filter {!syncableTopicFileNameSet.contains($0.fileName)}
+        topics.append(contentsOf: filteredPreloadedTopics)
+
+        return topics.sorted() {
+            if $0.sortIndex < $1.sortIndex {
+                return true
+            } else if $0.sortIndex > $1.sortIndex {
+                return false
+            } else {
+                return $0.title < $1.title
+            }
+        }
     }
     
     func getArticle(withTopicId topicId: Int, preloaded: Bool) -> Article? {
-        let topicStore: TopicStore = preloaded ? preloadedTopicStore : syncableTopicStore!
+        let topicStore: TopicStore = preloaded ? preloadedTopicStore : syncableTopicStore
         return topicStore.getArticle(withTopicId: topicId)
     }
     
     func syncTopics(isUserInitiated: Bool) {
-        BackendService.shared.getHostTopics {[weak self] serverTopics in
-            guard let localTopics = self?.allTopics else {
+        
+        BackendClient.shared.getHostTopics {[weak self] serverTopics in
+            guard let me = self else {
                 return
             }
-            if let (newTopics, updatedTopics, deletedTopics) = self?.compare(localTopics: localTopics, serverTopics: serverTopics!) {
-                guard let me = self else { return }
-                
-                let userInfo = [TopicManager.userInitiatedSync: isUserInitiated,
-                                TopicManager.newTopicCount: newTopics.count,
-                                TopicManager.updatedTopicCount: updatedTopics.count,
-                                TopicManager.deletedTopicCount: deletedTopics.count] as [String : Any]
-                
-                let notifier: () -> Void = {_ in
-                    DispatchQueue.main.async() { _ in
-                        NotificationCenter.default.post(name: TopicManager.didSyncTopicsNotification,
-                                                        object: self,
-                                                        userInfo: userInfo)
-                    }
-                }
-                
-                for topic in deletedTopics {
-                    me.syncableTopicStore?.delete(topic: topic)
-                }
-                
-                me.upsertToDoCount = newTopics.count + updatedTopics.count
-                if me.upsertToDoCount == 0 {
-                    notifier()
-                }
-                
-                for topic in newTopics {
-                    me.upsertAsync(topic: topic, notifier: notifier)
-                }
-                
-                for topic in updatedTopics {
-                    me.upsertAsync(topic: topic, notifier: notifier)
+            
+            let localTopics = me.getAllTopics()
+            let (newTopics, updatedTopics, deletedTopics) = me.compare(localTopics: localTopics, serverTopics: serverTopics!)
+            
+            func didSyncTopics() {
+                DispatchQueue.main.async() {
+                    let userInfo = [TopicManager.userInitiatedSync: isUserInitiated,
+                                    TopicManager.newTopicCount: newTopics.count,
+                                    TopicManager.updatedTopicCount: updatedTopics.count,
+                                    TopicManager.deletedTopicCount: deletedTopics.count] as [String : Any]
+                    NotificationCenter.default.post(name: TopicManager.didSyncTopicsNotification,
+                                                    object: self,
+                                                    userInfo: userInfo)
                 }
             }
-        }
-    }
-    
-    private func upsertAsync(topic: Topic, notifier: @escaping () -> Void) {
-        BackendService.shared.getHostArticle(fileName: topic.fileName) { [weak self] article in
-            guard let me = self else { return }
-            DispatchQueue.main.async() { _ in
-                me.syncableTopicStore?.upsert(topic: topic, article: article)
-                me.upsertToDoCount -= 1
-                if me.upsertToDoCount <= 0 {
-                    notifier()
+            
+            if newTopics.count + updatedTopics.count + deletedTopics.count == 0 {
+                didSyncTopics()
+                return
+            }
+            
+            var fileNames = newTopics.map({$0.fileName})
+            fileNames.append(contentsOf: updatedTopics.map({$0.fileName}))
+            
+            BackendClient.shared.getHostArticles(withFileNames: fileNames) { articles in
+                
+                let queue = DispatchQueue(label: "TopicManager", attributes: [])
+                queue.sync {
+                    
+                    let mutatingStore = SyncableTopicStore(path: syncableTopicsDatabasePath)
+                    
+                    for topic in deletedTopics {
+                        mutatingStore.delete(topic: topic)
+                    }
+                    
+                    for topic in newTopics {
+                        mutatingStore.upsert(topic: topic, article: articles[topic.fileName]!)
+                    }
+                    
+                    for topic in updatedTopics {
+                        mutatingStore.upsert(topic: topic, article: articles[topic.fileName]!)
+                    }
+                    
+                    didSyncTopics()
                 }
             }
         }
@@ -144,7 +149,7 @@ class TopicManager {
                 newTopics.append(serverTopic)
             } else {
                 referencedLocalTopicIds.insert(localTopic!.id)
-                if localTopic!.lastModified != nil && localTopic!.lastModified! != serverTopic.lastModified! {
+                if localTopic!.topicHash != serverTopic.topicHash {
                     referencedLocalTopicIds.insert(localTopic!.id)
                     serverTopic.id = localTopic!.id
                     updatedTopics.append(serverTopic)

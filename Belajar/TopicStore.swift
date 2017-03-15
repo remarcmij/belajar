@@ -25,10 +25,13 @@ class TopicStore {
     }
     
     deinit {
+        #if DEBUG
+            print("closing database at path: \(database.databasePath())")
+        #endif
         database.close()
     }
     
-    var allTopics: [Topic] {
+    func getAllTopics() -> [Topic] {
         let sql = "SELECT \(Util.joinWithComma(Topic.fieldNames)) FROM Topics"
         return executeTopicQuery(sql, values: nil)
     }
@@ -60,7 +63,7 @@ class TopicStore {
     
     func executeTopicQuery(_ sql: String, values: [Any]!) -> [Topic] {
         var topics = [Topic]()
-        let rs = try! database.executeQuery(sql + " ORDER BY sortIndex", values: values)
+        let rs = try! database.executeQuery(sql + " ORDER BY sortIndex, title", values: values)
         while rs.next() == true {
             topics.append(makeTopic(from: rs))
         }
@@ -82,7 +85,8 @@ class TopicStore {
             publisher: rs.string(forColumnIndex: 10),
             pubDate: rs.string(forColumnIndex: 11),
             isbn: rs.string(forColumnIndex: 12),
-            lastModified: rs.string(forColumnIndex: 13))
+            topicHash: rs.string(forColumnIndex: 13),
+            lastModified: rs.string(forColumnIndex: 14))
     }
     
     private func makeArticle(from rs: FMResultSet) -> Article {
@@ -91,8 +95,7 @@ class TopicStore {
             topicId: Int(rs.int(forColumnIndex: 1)),
             foreignLang: rs.string(forColumnIndex: 2),
             nativeLang: rs.string(forColumnIndex: 3),
-            style: rs.string(forColumnIndex: 4),
-            mdText: rs.string(forColumnIndex: 5),
-            htmlText: rs.string(forColumnIndex: 6))
+            mdText: rs.string(forColumnIndex: 4),
+            htmlText: rs.string(forColumnIndex: 5))
     }
 }

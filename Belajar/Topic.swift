@@ -27,6 +27,7 @@ class Topic: NSObject, NSCoding {
     let publisher: String?
     let pubDate: String?
     let isbn: String?
+    let topicHash: String
     let lastModified: String?
     
     var imageName: String {
@@ -47,13 +48,14 @@ class Topic: NSObject, NSCoding {
             publisher != nil ? NSString(string: publisher!) : NSNull(),
             pubDate != nil ? NSString(string: pubDate!) : NSNull(),
             isbn != nil ? NSString(string: isbn!) : NSNull(),
+            NSString(string: topicHash),
             lastModified != nil ? NSString(string: lastModified!) : NSNull()
         ]
     }
     
     init(id: Int, fileName: String, publication: String, part: String?, chapter: String, groupName: String,
          sortIndex: Int, title: String, subtitle: String?, author: String?, publisher: String?,
-         pubDate: String?, isbn: String?, lastModified: String?) {
+         pubDate: String?, isbn: String?, topicHash: String, lastModified: String?) {
         self.id = id
         self.fileName = fileName
         self.publication = publication
@@ -67,6 +69,7 @@ class Topic: NSObject, NSCoding {
         self.publisher = publisher
         self.pubDate = pubDate
         self.isbn = isbn
+        self.topicHash = topicHash
         self.lastModified = lastModified
     }
     
@@ -84,6 +87,7 @@ class Topic: NSObject, NSCoding {
         publisher = coder.decodeObject(forKey: ColumnName.publisher.rawValue) as? String
         pubDate = coder.decodeObject(forKey: ColumnName.pubDate.rawValue) as? String
         isbn = coder.decodeObject(forKey: ColumnName.isbn.rawValue) as? String
+        topicHash = coder.decodeObject(forKey: ColumnName.hash.rawValue) as! String
         lastModified = coder.decodeObject(forKey: ColumnName.lastModified.rawValue) as? String
     }
     
@@ -101,12 +105,17 @@ class Topic: NSObject, NSCoding {
         coder.encode(publisher, forKey: ColumnName.publisher.rawValue)
         coder.encode(pubDate, forKey: ColumnName.pubDate.rawValue)
         coder.encode(isbn, forKey: ColumnName.isbn.rawValue)
+        coder.encode(topicHash, forKey: ColumnName.hash.rawValue)
         coder.encode(lastModified, forKey: ColumnName.lastModified.rawValue)
+    }
+    
+    override var description: String {
+        return "\(fileName): \(title)"
     }
     
     enum ColumnName: String {
         case id, fileName, publication, part, chapter, groupName, sortIndex,
-        title, subtitle, author, publisher, pubDate, isbn, lastModified
+        title, subtitle, author, publisher, pubDate, isbn, hash, lastModified
     }
     
     static let fieldNames = [
@@ -123,18 +132,20 @@ class Topic: NSObject, NSCoding {
         ColumnName.publisher.rawValue,
         ColumnName.pubDate.rawValue,
         ColumnName.isbn.rawValue,
+        ColumnName.hash.rawValue,
         ColumnName.lastModified.rawValue
     ]
     
     static func create(fromJSONObject json: [String: Any]) -> Topic? {
         
-        guard let fileName = json["filename"] as? String,
+        guard let fileName = json["fileName"] as? String,
             let publication = json["publication"] as? String,
             let chapter = json["chapter"] as? String,
-            let groupName = json["group"] as? String,
-            let sortIndex = json["sortindex"] as? Int,
+            let groupName = json["groupName"] as? String,
+            let sortIndex = json["sortIndex"] as? Int,
             let title = json["title"] as? String,
-            let lastModified = json["lastmodified"] as? String
+            let hash = json["hash"] as? String,
+            let lastModified = json["lastModified"] as? String
             else {
                 return nil
         }
@@ -143,7 +154,7 @@ class Topic: NSObject, NSCoding {
         let subtitle = json["subtitle"] as? String
         let author = json["author"] as? String
         let publisher = json["publisher"] as? String
-        let pubDate = json["pubdate"] as? String
+        let pubDate = json["pubDate"] as? String
         let isbn = json["isbn"] as? String
         
         return Topic(id: -1,
@@ -159,6 +170,7 @@ class Topic: NSObject, NSCoding {
                      publisher: publisher,
                      pubDate: pubDate,
                      isbn: isbn,
+                     topicHash: hash,
                      lastModified: lastModified)
     }
 }
